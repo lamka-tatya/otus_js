@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "test": "jest || exit 0",
+    "test": "jest",
     "lint": "eslint ./src/* --fix",
     "build": "webpack --mode=development"
   },
