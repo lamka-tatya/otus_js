@@ -10,8 +10,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test && npm run lint",
-      "pre-push": "npm run test && npm run lint"
+      "pre-commit": "npm test && npm run lint",
+      "pre-push": "npm test && npm run lint"
     }
   },
   "repository": {
@@ -42,6 +42,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.3",
     "jest": "^25.2.7",
     "prettier": "^2.0.2",
     "typescript": "^3.8.3",
