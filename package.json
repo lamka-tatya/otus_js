@@ -2,7 +2,7 @@
   "name": "otus_js",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest --passWithNoTests",
     "lint": "eslint ./src/* --fix",
