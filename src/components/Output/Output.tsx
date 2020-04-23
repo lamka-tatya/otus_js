@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 
 export const Output: FC<{ userName: string }> = ({ userName }) => (
-  <>
-    {userName && <span style={{ margin: "5px" }}>{`Hello, ${userName}!`}</span>}
-  </>
+  <span
+    hidden={!userName}
+    style={{ margin: "5px" }}
+  >{`Hello, ${userName}!`}</span>
 );

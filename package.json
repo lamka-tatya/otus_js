@@ -83,8 +83,7 @@
     "react-dom": "^16.13.1"
   },
   "loki": {
-	"chromeSelector": "*",
-    "configurations": {
+	"configurations": {
       "chrome.laptop": {
         "target": "chrome.app",
         "width": 1366,

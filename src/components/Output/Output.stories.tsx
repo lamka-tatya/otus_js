@@ -8,11 +8,6 @@ export default {
   decorators: [withKnobs],
 };
 
-export const EmptyOutputStory: FC = () => {
-  const userName = text("UserName", "");
-  return <Output userName={userName} />;
-};
-
 export const OutputStory: FC = () => {
   const userName = text("UserName", "Name");
   return <Output userName={userName} />;
