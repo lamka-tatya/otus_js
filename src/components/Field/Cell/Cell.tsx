@@ -10,10 +10,21 @@ export enum CellState {
 export interface CellModel {
   row: number;
   column: number;
-  cellState: CellState;
+  state: CellState;
 }
 
-export const Cell: FC<CellModel> = ({ cellState, column, row }) => {
-  const cssName = `cell cell-is-${cellState}`;
-  return <div className={cssName}></div>;
+export interface CellProps {
+  cell: CellModel;
+  onClick: (c: number, r: number) => void;
+}
+
+export const Cell: FC<CellProps> = ({ cell, onClick }) => {
+  const cssName = `cell cell-is-${cell.state}`;
+  return (
+    <button
+      className={cssName}
+      disabled={cell.state === CellState.empty}
+      onClick={() => onClick(cell.column, cell.row)}
+    ></button>
+  );
 };

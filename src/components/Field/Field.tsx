@@ -8,7 +8,7 @@ export interface FieldProps {
   emptyPercent: number;
 }
 
-interface FieldState {
+export interface FieldState {
   cells: CellModel[];
 }
 
@@ -19,7 +19,11 @@ class Field extends React.Component<FieldProps, FieldState> {
     for (let x = 0; x < props.columnCount; x++) {
       for (let y = 0; y < props.rowCount; y++) {
         // todo: handle emptyPercent
-        result.push({ row: y, column: x, cellState: CellState.dead });
+        result.push({
+          row: y,
+          column: x,
+          state: y % 2 === 0 ? CellState.dead : CellState.empty,
+        });
       }
     }
 
@@ -31,6 +35,21 @@ class Field extends React.Component<FieldProps, FieldState> {
     this.state = {
       cells: this.prepareCells(props),
     };
+
+    this.onCellClick = this.onCellClick.bind(this);
+  }
+
+  onCellClick(col: number, row: number) {
+    const cells = this.state.cells.slice();
+    cells.forEach((c) => {
+      if (c.row === row && c.column === col) {
+        c.state = CellState.alive;
+      }
+    });
+
+    this.setState({
+      cells: cells,
+    });
   }
 
   getRow(row: number) {
@@ -45,8 +64,10 @@ class Field extends React.Component<FieldProps, FieldState> {
         throw TypeError("Unexpected error");
       }
 
+      const cellModel: CellModel = { column: col, row: row, state: cell.state };
+
       cells.push(
-        <Cell key={col} row={row} column={col} cellState={cell.cellState} />
+        <Cell key={col} cell={cellModel} onClick={this.onCellClick} />
       );
     }
 
