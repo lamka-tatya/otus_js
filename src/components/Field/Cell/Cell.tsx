@@ -7,13 +7,13 @@ export enum CellState {
   dead = "dead",
 }
 
-export interface Cell {
+export interface CellModel {
   row: number;
   column: number;
   cellState: CellState;
 }
 
-export const Cell: FC<Cell> = ({ cellState }) => {
+export const Cell: FC<CellModel> = ({ cellState, column, row }) => {
   const cssName = `cell cell-is-${cellState}`;
   return <div className={cssName}></div>;
 };

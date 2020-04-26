@@ -2,6 +2,7 @@ import React, { FC, Component } from "react";
 import { Input } from "./Input/Input";
 import { HelloButton } from "./HelloButton/HelloButton";
 import { Output } from "./Output/Output";
+import Field from "./Field/Field";
 
 export class App extends Component {
   constructor(props: any) {
@@ -24,18 +25,6 @@ export class App extends Component {
   }
 
   render() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-        }}
-      >
-        <Input onChange={this.onChangeInput} />
-        <HelloButton onClick={this.onClickHelloButton} />
-        <Output userName={this.state.userName} />
-      </div>
-    );
+    return <Field rowCount={5} columnCount={6} emptyPercent={0} />;
   }
 }
