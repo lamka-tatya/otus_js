@@ -2,3 +2,4 @@ node_modules
 /dist
 /commands.txt
 /lib
+/storybook-static
