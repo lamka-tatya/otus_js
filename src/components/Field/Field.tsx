@@ -9,31 +9,37 @@ export interface FieldProps {
 }
 
 export interface FieldState {
+  rowCount: number;
+  columnCount: number;
+  emptyPercent: number;
   cells: CellModel[];
 }
 
-class Field extends React.Component<FieldProps, FieldState> {
-  prepareCells(props: FieldProps): CellModel[] {
-    const result: CellModel[] = [];
+const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
+  const result: CellModel[] = [];
 
-    for (let x = 0; x < props.columnCount; x++) {
-      for (let y = 0; y < props.rowCount; y++) {
-        // todo: handle emptyPercent
-        result.push({
-          row: y,
-          column: x,
-          state: y % 2 === 0 ? CellState.dead : CellState.empty,
-        });
-      }
+  for (let x = 0; x < fieldProps.columnCount; x++) {
+    for (let y = 0; y < fieldProps.rowCount; y++) {
+      // todo: handle emptyPercent
+      result.push({
+        row: y,
+        column: x,
+        state: y % 2 === 0 ? CellState.dead : CellState.empty,
+      });
     }
-
-    return result;
   }
 
+  return result;
+};
+
+export class Field extends React.Component<FieldProps, FieldState> {
   constructor(props: FieldProps) {
     super(props);
     this.state = {
-      cells: this.prepareCells(props),
+      rowCount: props.rowCount,
+      columnCount: props.columnCount,
+      emptyPercent: props.emptyPercent,
+      cells: prepareCells(props),
     };
 
     this.onCellClick = this.onCellClick.bind(this);
@@ -51,9 +57,7 @@ class Field extends React.Component<FieldProps, FieldState> {
         state: CellState.alive,
       };
 
-      this.setState({
-        cells,
-      });
+      this.setState({ ...this.state, cells });
     }
   }
 
@@ -79,6 +83,27 @@ class Field extends React.Component<FieldProps, FieldState> {
     return cells;
   }
 
+  static getDerivedStateFromProps(props: FieldProps, state: FieldState) {
+    if (
+      state.columnCount !== props.columnCount ||
+      state.rowCount !== props.rowCount ||
+      state.emptyPercent !== props.emptyPercent
+    ) {
+      return {
+        rowCount: props.rowCount,
+        columnCount: props.columnCount,
+        emptyPercent: props.emptyPercent,
+        cells: prepareCells(props),
+      };
+    }
+
+    return null;
+  }
+
+  shouldComponentUpdate(_: FieldProps, nextState: FieldState) {
+    return this.state.cells !== nextState.cells;
+  }
+
   render() {
     const rows: JSX.Element[] = [];
 
@@ -89,5 +114,3 @@ class Field extends React.Component<FieldProps, FieldState> {
     return <FieldStyled>{rows}</FieldStyled>;
   }
 }
-
-export default Field;

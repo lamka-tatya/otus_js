@@ -1,5 +1,5 @@
 import { mount, render, shallow } from "enzyme";
-import Field, { FieldState } from "./Field";
+import { Field, FieldState } from "./Field";
 import React from "react";
 import { CellState } from "./Cell/Cell";
 
