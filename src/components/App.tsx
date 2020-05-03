@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, { FC } from "react";
 import Field from "./Field/Field";
 
-export class App extends Component {
-  render() {
-    return <Field rowCount={5} columnCount={6} emptyPercent={0} />;
-  }
-}
+export const App: FC = () => (
+  <Field rowCount={5} columnCount={6} emptyPercent={0} />
+);
