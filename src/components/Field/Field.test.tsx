@@ -8,7 +8,7 @@ describe("Field is rendered with 2 columns and 2 rows", () => {
     const wrapper = render(
       <Field columnCount={2} emptyPercent={0} rowCount={2} />
     );
-    const cells = wrapper.find("button.cell");
+    const cells = wrapper.find("button");
 
     expect(cells.length).toBe(4);
   });
@@ -19,7 +19,7 @@ describe("Dead cell is clicked", () => {
     const wrapper = mount(
       <Field columnCount={1} emptyPercent={0} rowCount={1} />
     );
-    const deadCell = wrapper.find("button.cell.cell-is-dead").first();
+    const deadCell = wrapper.find("button");
 
     deadCell.simulate("click");
 

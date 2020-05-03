@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import "./Field.css";
 import { Cell, CellState, CellModel } from "./Cell/Cell";
+import { RowStyled, FieldStyled } from "./Field.styles";
 
 export interface FieldProps {
   rowCount: number;
@@ -83,14 +83,10 @@ class Field extends React.Component<FieldProps, FieldState> {
     const rows: JSX.Element[] = [];
 
     for (let row = 0; row < this.props.rowCount; row++) {
-      rows.push(
-        <div className="field-row" key={row}>
-          {this.getRow(row)}
-        </div>
-      );
+      rows.push(<RowStyled key={row}>{this.getRow(row)}</RowStyled>);
     }
 
-    return <div className="field">{rows}</div>;
+    return <FieldStyled>{rows}</FieldStyled>;
   }
 }
 

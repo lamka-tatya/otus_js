@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import "./Cell.css";
+import { CellStyled } from "./Cell.styles";
 
 export enum CellState {
   empty = "empty",
@@ -19,12 +19,11 @@ export interface CellProps {
 }
 
 export const Cell: FC<CellProps> = ({ cell, onClick }) => {
-  const cssName = `cell cell-is-${cell.state}`;
   return (
-    <button
-      className={cssName}
+    <CellStyled
+      state={cell.state}
       disabled={cell.state === CellState.empty}
       onClick={() => onClick(cell.column, cell.row)}
-    ></button>
+    ></CellStyled>
   );
 };
