@@ -52,7 +52,7 @@ class Field extends React.Component<FieldProps, FieldState> {
       };
 
       this.setState({
-        cells: cells,
+        cells,
       });
     }
   }
