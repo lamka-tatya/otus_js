@@ -5,6 +5,8 @@ interface AppState {
   rowCount: number;
   columnCount: number;
   emptyPercent: number;
+  height: number;
+  width: number;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -15,16 +17,12 @@ export class App extends React.Component<{}, AppState> {
       rowCount: 5,
       columnCount: 5,
       emptyPercent: 0,
+      height: 100,
+      width: 100,
     };
   }
 
   render() {
-    return (
-      <Field
-        rowCount={this.state.rowCount}
-        columnCount={this.state.columnCount}
-        emptyPercent={this.state.emptyPercent}
-      />
-    );
+    return <Field {...this.state} />;
   }
 }

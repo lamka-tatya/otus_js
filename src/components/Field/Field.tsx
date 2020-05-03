@@ -6,6 +6,8 @@ export interface FieldProps {
   rowCount: number;
   columnCount: number;
   emptyPercent: number;
+  height: number;
+  width: number;
 }
 
 export interface FieldState {
@@ -100,10 +102,6 @@ export class Field extends React.Component<FieldProps, FieldState> {
     return null;
   }
 
-  shouldComponentUpdate(_: FieldProps, nextState: FieldState) {
-    return this.state.cells !== nextState.cells;
-  }
-
   render() {
     const rows: JSX.Element[] = [];
 
@@ -111,6 +109,10 @@ export class Field extends React.Component<FieldProps, FieldState> {
       rows.push(<RowStyled key={row}>{this.getRow(row)}</RowStyled>);
     }
 
-    return <FieldStyled>{rows}</FieldStyled>;
+    return (
+      <FieldStyled width={this.props.width} height={this.props.height}>
+        {rows}
+      </FieldStyled>
+    );
   }
 }

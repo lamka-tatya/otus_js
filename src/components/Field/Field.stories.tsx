@@ -11,7 +11,15 @@ export default {
 export const FieldStory: FC = () => {
   const columnsCount = number("Columns count", 3);
   const rowsCount = number("Rows count", 3);
+  const width = number("Width", 150);
+  const height = number("Height", 150);
   return (
-    <Field rowCount={rowsCount} columnCount={columnsCount} emptyPercent={0} />
+    <Field
+      height={height}
+      width={width}
+      rowCount={rowsCount}
+      columnCount={columnsCount}
+      emptyPercent={0}
+    />
   );
 };
