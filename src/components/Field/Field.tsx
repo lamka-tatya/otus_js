@@ -40,16 +40,21 @@ class Field extends React.Component<FieldProps, FieldState> {
   }
 
   onCellClick(col: number, row: number) {
-    const cells = this.state.cells.slice();
-    cells.forEach((c) => {
-      if (c.row === row && c.column === col) {
-        c.state = CellState.alive;
-      }
-    });
+    const cellIndex = this.state.cells.findIndex(
+      (x) => x.column === col && x.row === row
+    );
 
-    this.setState({
-      cells: cells,
-    });
+    if (cellIndex !== -1) {
+      const cells = this.state.cells.slice();
+      cells[cellIndex] = {
+        ...this.state.cells[cellIndex],
+        state: CellState.alive,
+      };
+
+      this.setState({
+        cells: cells,
+      });
+    }
   }
 
   getRow(row: number) {
