@@ -45,7 +45,7 @@ class Field extends React.Component<FieldProps, FieldState> {
     );
 
     if (cellIndex !== -1) {
-      const cells = this.state.cells.slice();
+      const cells = [...this.state.cells];
       cells[cellIndex] = {
         ...this.state.cells[cellIndex],
         state: CellState.alive,
