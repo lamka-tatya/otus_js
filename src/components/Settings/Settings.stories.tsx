@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { action } from "@storybook/addon-actions";
 
 export default {
-  title: "Cell",
+  title: "Settings",
   component: Settings,
 };
 
