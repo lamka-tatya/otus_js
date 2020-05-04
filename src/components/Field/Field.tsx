@@ -1,39 +1,47 @@
 import React, { FC } from "react";
-import "./Field.css";
 import { Cell, CellState, CellModel } from "./Cell/Cell";
+import { RowStyled, FieldStyled } from "./Field.styles";
 
 export interface FieldProps {
   rowCount: number;
   columnCount: number;
   emptyPercent: number;
+  height: number;
+  width: number;
 }
 
 export interface FieldState {
+  rowCount: number;
+  columnCount: number;
+  emptyPercent: number;
   cells: CellModel[];
 }
 
-class Field extends React.Component<FieldProps, FieldState> {
-  prepareCells(props: FieldProps): CellModel[] {
-    const result: CellModel[] = [];
+const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
+  const result: CellModel[] = [];
 
-    for (let x = 0; x < props.columnCount; x++) {
-      for (let y = 0; y < props.rowCount; y++) {
-        // todo: handle emptyPercent
-        result.push({
-          row: y,
-          column: x,
-          state: y % 2 === 0 ? CellState.dead : CellState.empty,
-        });
-      }
+  for (let x = 0; x < fieldProps.columnCount; x++) {
+    for (let y = 0; y < fieldProps.rowCount; y++) {
+      // todo: handle emptyPercent
+      result.push({
+        row: y,
+        column: x,
+        cellState: y % 2 === 0 ? CellState.dead : CellState.empty,
+      });
     }
-
-    return result;
   }
 
+  return result;
+};
+
+export class Field extends React.Component<FieldProps, FieldState> {
   constructor(props: FieldProps) {
     super(props);
     this.state = {
-      cells: this.prepareCells(props),
+      rowCount: props.rowCount,
+      columnCount: props.columnCount,
+      emptyPercent: props.emptyPercent,
+      cells: prepareCells(props),
     };
 
     this.onCellClick = this.onCellClick.bind(this);
@@ -48,12 +56,10 @@ class Field extends React.Component<FieldProps, FieldState> {
       const cells = [...this.state.cells];
       cells[cellIndex] = {
         ...this.state.cells[cellIndex],
-        state: CellState.alive,
+        cellState: CellState.alive,
       };
 
-      this.setState({
-        cells,
-      });
+      this.setState({ ...this.state, cells });
     }
   }
 
@@ -69,7 +75,11 @@ class Field extends React.Component<FieldProps, FieldState> {
         throw TypeError("Unexpected error");
       }
 
-      const cellModel: CellModel = { column: col, row: row, state: cell.state };
+      const cellModel: CellModel = {
+        column: col,
+        row: row,
+        cellState: cell.cellState,
+      };
 
       cells.push(
         <Cell key={col} cell={cellModel} onClick={this.onCellClick} />
@@ -79,19 +89,34 @@ class Field extends React.Component<FieldProps, FieldState> {
     return cells;
   }
 
+  static getDerivedStateFromProps(props: FieldProps, state: FieldState) {
+    if (
+      state.columnCount !== props.columnCount ||
+      state.rowCount !== props.rowCount ||
+      state.emptyPercent !== props.emptyPercent
+    ) {
+      return {
+        rowCount: props.rowCount,
+        columnCount: props.columnCount,
+        emptyPercent: props.emptyPercent,
+        cells: prepareCells(props),
+      };
+    }
+
+    return null;
+  }
+
   render() {
     const rows: JSX.Element[] = [];
 
     for (let row = 0; row < this.props.rowCount; row++) {
-      rows.push(
-        <div className="field-row" key={row}>
-          {this.getRow(row)}
-        </div>
-      );
+      rows.push(<RowStyled key={row}>{this.getRow(row)}</RowStyled>);
     }
 
-    return <div className="field">{rows}</div>;
+    return (
+      <FieldStyled width={this.props.width} height={this.props.height}>
+        {rows}
+      </FieldStyled>
+    );
   }
 }
-
-export default Field;
