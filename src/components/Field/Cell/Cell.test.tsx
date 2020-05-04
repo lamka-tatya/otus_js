@@ -10,7 +10,7 @@ describe("Cell is rendered", () => {
     ${"empty"} | ${CellState.empty}
   `(`when cell is $stateName`, (state) => {
     const cellModel: CellModel = {
-      state,
+      cellState: state,
       row: 0,
       column: 0,
     };
@@ -23,7 +23,11 @@ describe("Cell is rendered", () => {
 describe("When click on cell", () => {
   it("should call handler with row and column numbers", () => {
     const mock = jest.fn();
-    const cellModel: CellModel = { state: CellState.dead, row: 4, column: 44 };
+    const cellModel: CellModel = {
+      cellState: CellState.dead,
+      row: 4,
+      column: 44,
+    };
     const wrapper = shallow(<Cell cell={cellModel} onClick={mock} />);
 
     wrapper.simulate("click");

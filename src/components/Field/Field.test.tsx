@@ -35,7 +35,7 @@ describe("Dead cell is clicked", () => {
 
     deadCell.simulate("click");
 
-    const cellState = (wrapper.state() as FieldState).cells[0].state;
+    const cellState = (wrapper.state() as FieldState).cells[0].cellState;
     expect(cellState).toBe(CellState.alive);
   });
 });

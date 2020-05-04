@@ -11,18 +11,18 @@ export default {
 
 export const AliveCellStory: FC = () => {
   const cellState = select("Cell state", CellState, CellState.alive);
-  const cellModel: CellModel = { state: cellState, row: 0, column: 0 };
+  const cellModel: CellModel = { cellState: cellState, row: 0, column: 0 };
   return <Cell cell={cellModel} onClick={action("Click")} />;
 };
 
 export const DeadCellStory: FC = () => {
   const cellState = select("Cell state", CellState, CellState.dead);
-  const cellModel: CellModel = { state: cellState, row: 0, column: 0 };
+  const cellModel: CellModel = { cellState: cellState, row: 0, column: 0 };
   return <Cell cell={cellModel} onClick={action("Click")} />;
 };
 
 export const EmptyCellStory: FC = () => {
   const cellState = select("Cell state", CellState, CellState.empty);
-  const cellModel: CellModel = { state: cellState, row: 0, column: 0 };
+  const cellModel: CellModel = { cellState: cellState, row: 0, column: 0 };
   return <Cell cell={cellModel} onClick={action("Click")} />;
 };

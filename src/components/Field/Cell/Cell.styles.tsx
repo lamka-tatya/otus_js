@@ -31,7 +31,14 @@ const getStyle: (cellState: CellState) => SerializedStyles = (cellState) => {
   }
 };
 
-export const CellStyled = styled.button<{ state: CellState }>`
+const newCellStateStyle = css`
+  opacity: 0.7;
+`;
+
+export const CellStyled = styled.button<{
+  cellState: CellState;
+  newCellState: boolean;
+}>`
   width: 25px;
   height: 25px;
   border: 1px solid;
@@ -40,5 +47,7 @@ export const CellStyled = styled.button<{ state: CellState }>`
   line-height: 25px;
   margin: 5px;
 
-  ${(props) => getStyle(props.state)};
+  ${(props) => getStyle(props.cellState)};
+
+  ${(props) => (props.newCellState ? newCellStateStyle : null)};
 `;

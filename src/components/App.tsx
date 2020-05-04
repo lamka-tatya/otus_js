@@ -17,8 +17,8 @@ export class App extends React.Component<{}, AppState> {
       rowCount: 5,
       columnCount: 5,
       emptyPercent: 0,
-      height: 100,
-      width: 100,
+      height: 200,
+      width: 200,
     };
   }
 

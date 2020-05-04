@@ -26,7 +26,7 @@ const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
       result.push({
         row: y,
         column: x,
-        state: y % 2 === 0 ? CellState.dead : CellState.empty,
+        cellState: y % 2 === 0 ? CellState.dead : CellState.empty,
       });
     }
   }
@@ -56,7 +56,7 @@ export class Field extends React.Component<FieldProps, FieldState> {
       const cells = [...this.state.cells];
       cells[cellIndex] = {
         ...this.state.cells[cellIndex],
-        state: CellState.alive,
+        cellState: CellState.alive,
       };
 
       this.setState({ ...this.state, cells });
@@ -75,7 +75,11 @@ export class Field extends React.Component<FieldProps, FieldState> {
         throw TypeError("Unexpected error");
       }
 
-      const cellModel: CellModel = { column: col, row: row, state: cell.state };
+      const cellModel: CellModel = {
+        column: col,
+        row: row,
+        cellState: cell.cellState,
+      };
 
       cells.push(
         <Cell key={col} cell={cellModel} onClick={this.onCellClick} />
