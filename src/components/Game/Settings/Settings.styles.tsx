@@ -5,21 +5,24 @@ export const FlexContainer = styled.div`
   display: flex;
 `;
 
-export const FillingStyled = styled(FlexContainer)`
-  display: flex;
+export const OverlayChildrenStyled = styled(FlexContainer)`
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 0;
-  z-index: 1;
   left: 0;
   width: 100%;
   height: 100%;
+`;
+
+export const OverlayStyled = styled(OverlayChildrenStyled)`
+  z-index: 1;
   background: grey;
   opacity: 0.5;
 `;
 
 export const FormStyled = styled(Form)`
+  z-index: 1;
   background: white;
   display: flex;
   flex-direction: column;
@@ -64,16 +67,6 @@ export const LabelStyled = styled.label`
 
 export const InputStyled = styled.input`
   width: 50px;
-`;
-
-export const ButtonStyled = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  height: fit-content;
-  width: fit-content;
-  padding: 0.5rem;
 `;
 
 export const ButtonsContainer = styled(FlexContainer)`

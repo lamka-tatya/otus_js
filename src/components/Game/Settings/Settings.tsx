@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 import {
-  ImageStyled,
-  ButtonStyled,
   FieldsetStyled,
   FieldStyled,
   FieldsContainer,
@@ -9,13 +7,16 @@ import {
   ButtonsContainer,
   FieldContainer,
   LabelStyled,
-  FillingStyled,
+  OverlayStyled,
+  OverlayChildrenStyled,
+  ImageStyled,
 } from "./Settings.styles";
 import { Formik } from "formik";
 import VArrowsImg from "./../../../assets/images/v_arrows_svg.svg";
 import HArrowsImg from "./../../../assets/images/h_arrows_svg.svg";
 import CancelImg from "./../../../assets/images/cancel_svg.svg";
 import OkImg from "./../../../assets/images/ok_svg.svg";
+import { ImageButton } from "../../common/ImageButton/ImageButton";
 
 export interface GameSettings {
   height: number;
@@ -46,6 +47,13 @@ const XYSettingsSet: FC<{
   </FieldsetStyled>
 );
 
+const Overlay: FC<{ children?: JSX.Element }> = ({ children }) => (
+  <>
+    <OverlayStyled />
+    <OverlayChildrenStyled>{children}</OverlayChildrenStyled>
+  </>
+);
+
 export const Settings: FC<{
   visible: boolean;
   settings: GameSettings;
@@ -53,7 +61,7 @@ export const Settings: FC<{
   onCancel: () => void;
 }> = ({ visible, settings, onSubmit, onCancel }) => {
   return visible ? (
-    <FillingStyled>
+    <Overlay>
       <Formik initialValues={settings} onSubmit={onSubmit} key="settingsForm">
         <FormStyled>
           <XYSettingsSet
@@ -79,16 +87,20 @@ export const Settings: FC<{
           </FieldsContainer>
 
           <ButtonsContainer>
-            <ButtonStyled type="button" onClick={onCancel}>
-              <ImageStyled src={CancelImg} />
-            </ButtonStyled>
-            <ButtonStyled key="submitBtn" type="submit">
-              <ImageStyled src={OkImg} />
-            </ButtonStyled>
+            <ImageButton
+              type="button"
+              onClick={onCancel}
+              src={CancelImg}
+            ></ImageButton>
+            <ImageButton
+              type="submit"
+              key="submitBtn"
+              src={OkImg}
+            ></ImageButton>
           </ButtonsContainer>
         </FormStyled>
       </Formik>
-    </FillingStyled>
+    </Overlay>
   ) : (
     <></>
   );
