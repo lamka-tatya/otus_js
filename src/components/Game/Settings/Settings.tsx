@@ -12,10 +12,10 @@ import {
   FillingStyled,
 } from "./Settings.styles";
 import { Formik } from "formik";
-import VArrowsImg from "./../../assets/images/v_arrows_svg.svg";
-import HArrowsImg from "./../../assets/images/h_arrows_svg.svg";
-import CancelImg from "./../../assets/images/cancel_svg.svg";
-import OkImg from "./../../assets/images/ok_svg.svg";
+import VArrowsImg from "./../../../assets/images/v_arrows_svg.svg";
+import HArrowsImg from "./../../../assets/images/h_arrows_svg.svg";
+import CancelImg from "./../../../assets/images/cancel_svg.svg";
+import OkImg from "./../../../assets/images/ok_svg.svg";
 
 export interface GameSettings {
   height: number;
