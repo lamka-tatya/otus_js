@@ -1,13 +1,10 @@
 import React, { FC } from "react";
 import { Field } from "./Field/Field";
-import { Settings } from "./Settings/Settings";
+import { Settings, GameSettings } from "./Settings/Settings";
 
 interface AppState {
-  rowCount: number;
-  columnCount: number;
-  emptyPercent: number;
-  height: number;
-  width: number;
+  gameSettings: GameSettings;
+  settingsVisible: boolean;
 }
 
 export class App extends React.Component<{}, AppState> {
@@ -15,35 +12,43 @@ export class App extends React.Component<{}, AppState> {
     super(props);
 
     this.state = {
-      rowCount: 5,
-      columnCount: 5,
-      emptyPercent: 0,
-      height: 200,
-      width: 200,
+      settingsVisible: false,
+      gameSettings: {
+        height: 200,
+        width: 200,
+        rowCount: 5,
+        columnCount: 5,
+        emptyPercent: 0,
+        frequency: 1,
+      },
     };
 
-    this.onWidthChange = this.onWidthChange.bind(this);
-    this.onHeightChange = this.onHeightChange.bind(this);
+    this.onSubmitSettings = this.onSubmitSettings.bind(this);
+    this.onCancelSettings = this.onCancelSettings.bind(this);
   }
 
-  onWidthChange(width: number) {
-    this.setState({ ...this.state, width });
+  onCancelSettings() {
+    this.setState({ ...this.state, settingsVisible: false });
   }
 
-  onHeightChange(height: number) {
-    this.setState({ ...this.state, height });
+  onSubmitSettings(settings: GameSettings) {
+    this.setState({
+      ...this.state,
+      gameSettings: settings,
+      settingsVisible: false,
+    });
   }
 
   render() {
     return (
       <>
         <Settings
-          initHeight={this.state.height}
-          initWidth={this.state.width}
-          onHeightChange={this.onHeightChange}
-          onWidthChange={this.onWidthChange}
+          visible={this.state.settingsVisible}
+          settings={this.state.gameSettings}
+          onSubmit={this.onSubmitSettings}
+          onCancel={this.onCancelSettings}
         />
-        <Field key="field" {...this.state} />
+        <Field key="field" {...this.state.gameSettings} />
       </>
     );
   }
