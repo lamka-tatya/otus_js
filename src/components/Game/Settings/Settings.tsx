@@ -12,10 +12,10 @@ import {
   ImageStyled,
 } from "./Settings.styles";
 import { Formik } from "formik";
-import VArrowsImg from "./../../../assets/images/v_arrows_svg.svg";
-import HArrowsImg from "./../../../assets/images/h_arrows_svg.svg";
-import CancelImg from "./../../../assets/images/cancel_svg.svg";
-import OkImg from "./../../../assets/images/ok_svg.svg";
+import VArrowsImg from "./assets/v_arrows_svg.svg";
+import HArrowsImg from "./assets/h_arrows_svg.svg";
+import CancelImg from "./assets/cancel_svg.svg";
+import OkImg from "./assets/ok_svg.svg";
 import { ImageButton } from "../../common/ImageButton/ImageButton";
 
 export interface GameSettings {

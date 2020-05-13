@@ -1,5 +1,5 @@
 import React from "react";
-import { Game, GameState } from "./Game";
+import { Game } from "./Game";
 import { mount, ReactWrapper } from "enzyme";
 
 let wrapper: ReactWrapper;

@@ -9,10 +9,10 @@ import {
   FieldContainer,
 } from "./Game.styles";
 import { ImageButton } from "../common/ImageButton/ImageButton";
-import SettingsImg from "./../../assets/images/settings_svg.svg";
-import PlayImg from "./../../assets/images/play_pause.svg";
-import BackImg from "./../../assets/images/back.svg";
-import ForwardImg from "./../../assets/images/forward.svg";
+import SettingsImg from "./assets/settings_svg.svg";
+import PlayImg from "./assets/play_pause.svg";
+import BackImg from "./assets/back.svg";
+import ForwardImg from "./assets/forward.svg";
 
 export interface GameState {
   gameSettings: GameSettings;
