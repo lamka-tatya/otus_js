@@ -35,20 +35,19 @@ export class Game extends React.Component<{}, GameState> {
   };
 
   onClickPlayPause = () => {
-    this.setState({ ...this.state, isPlaying: !this.state.isPlaying });
+    this.setState({ isPlaying: !this.state.isPlaying });
   };
 
   onClickSettings = () => {
-    this.setState({ ...this.state, isSettingsVisible: true });
+    this.setState({ isSettingsVisible: true });
   };
 
   onCancelSettings = () => {
-    this.setState({ ...this.state, isSettingsVisible: false });
+    this.setState({ isSettingsVisible: false });
   };
 
   onSubmitSettings = (settings: GameSettings) => {
     this.setState({
-      ...this.state,
       gameSettings: settings,
       isSettingsVisible: false,
     });

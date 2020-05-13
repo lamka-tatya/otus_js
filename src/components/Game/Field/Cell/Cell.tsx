@@ -31,15 +31,12 @@ export class Cell extends PureComponent<CellProps, CellComponentState> {
 
   componentDidUpdate(prevProps: CellProps) {
     if (this.props.cell.cellState !== prevProps.cell.cellState) {
-      this.setState({ ...this.state, newCellState: true });
+      this.setState({ newCellState: true });
     } else if (
       this.props.cell.cellState === prevProps.cell.cellState &&
       this.state.newCellState
     ) {
-      setTimeout(
-        () => this.setState({ ...this.state, newCellState: false }),
-        300
-      );
+      setTimeout(() => this.setState({ newCellState: false }), 300);
     }
   }
 

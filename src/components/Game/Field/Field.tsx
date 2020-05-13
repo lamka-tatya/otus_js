@@ -54,7 +54,7 @@ export class Field extends React.Component<FieldProps, FieldState> {
         cellState: CellState.alive,
       };
 
-      this.setState({ ...this.state, cells });
+      this.setState({ cells });
     }
   };
 
