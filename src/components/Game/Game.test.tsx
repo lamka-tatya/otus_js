@@ -1,10 +1,15 @@
 import React from "react";
 import { Game } from "./Game";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
+
+let wrapper: ReactWrapper;
+
+beforeEach(() => {
+  wrapper = mount(<Game />);
+});
 
 describe("When click on settings button", () => {
   it("should show settings form", async () => {
-    const wrapper = mount(<Game />);
     const settingsBtn = wrapper.findWhere((x) => x.key() === "settingsBtn");
     const settingsFormBefore = wrapper.findWhere(
       (x) => x.key() === "settingsForm"
@@ -22,7 +27,6 @@ describe("When click on settings button", () => {
 
 describe("When click on play button", () => {
   it("should change play|pause state", async () => {
-    const wrapper = mount(<Game />);
     const settingsBtn = wrapper.findWhere((x) => x.key() === "playBtn");
     const isPlayingBefore = wrapper.state("isPlaying");
 
