@@ -21,47 +21,38 @@ export interface GameState {
 }
 
 export class Game extends React.Component<{}, GameState> {
-  constructor(props: any) {
-    super(props);
+  state = {
+    isPlaying: false,
+    isSettingsVisible: false,
+    gameSettings: {
+      height: 200,
+      width: 200,
+      rowCount: 5,
+      columnCount: 5,
+      emptyPercent: 0,
+      frequency: 1,
+    },
+  };
 
-    this.state = {
-      isPlaying: false,
-      isSettingsVisible: false,
-      gameSettings: {
-        height: 200,
-        width: 200,
-        rowCount: 5,
-        columnCount: 5,
-        emptyPercent: 0,
-        frequency: 1,
-      },
-    };
-
-    this.onSubmitSettings = this.onSubmitSettings.bind(this);
-    this.onCancelSettings = this.onCancelSettings.bind(this);
-    this.onClickSettings = this.onClickSettings.bind(this);
-    this.onClickPlayPause = this.onClickPlayPause.bind(this);
-  }
-
-  onClickPlayPause() {
+  onClickPlayPause = () => {
     this.setState({ ...this.state, isPlaying: !this.state.isPlaying });
-  }
+  };
 
-  onClickSettings() {
+  onClickSettings = () => {
     this.setState({ ...this.state, isSettingsVisible: true });
-  }
+  };
 
-  onCancelSettings() {
+  onCancelSettings = () => {
     this.setState({ ...this.state, isSettingsVisible: false });
-  }
+  };
 
-  onSubmitSettings(settings: GameSettings) {
+  onSubmitSettings = (settings: GameSettings) => {
     this.setState({
       ...this.state,
       gameSettings: settings,
       isSettingsVisible: false,
     });
-  }
+  };
 
   render() {
     return (

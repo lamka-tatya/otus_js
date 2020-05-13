@@ -24,13 +24,10 @@ interface CellComponentState {
 }
 
 export class Cell extends PureComponent<CellProps, CellComponentState> {
-  constructor(props: CellProps) {
-    super(props);
-    this.state = {
-      cellState: props.cell.cellState,
-      newCellState: false,
-    };
-  }
+  state = {
+    cellState: this.props.cell.cellState,
+    newCellState: false,
+  };
 
   componentDidUpdate(prevProps: CellProps) {
     if (this.props.cell.cellState !== prevProps.cell.cellState) {
