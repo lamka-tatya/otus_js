@@ -1,5 +1,5 @@
 import React from "react";
-import { Game } from "./Game";
+import { Game, GameState } from "./Game";
 import { mount, ReactWrapper } from "enzyme";
 
 let wrapper: ReactWrapper;
@@ -11,17 +11,13 @@ beforeEach(() => {
 describe("When click on settings button", () => {
   it("should show settings form", async () => {
     const settingsBtn = wrapper.findWhere((x) => x.key() === "settingsBtn");
-    const settingsFormBefore = wrapper.findWhere(
-      (x) => x.key() === "settingsForm"
-    );
+    const settingsIsVisibleBefore = wrapper.state("isSettingsVisible");
 
     settingsBtn.simulate("click");
 
-    const settingsFormAfter = wrapper.findWhere(
-      (x) => x.key() === "settingsForm"
-    );
-    expect(settingsFormBefore.isEmpty()).toBeTruthy();
-    expect(settingsFormAfter.isEmpty()).toBeFalsy();
+    const settingsIsVisibleAfter = wrapper.state("isSettingsVisible");
+    expect(settingsIsVisibleBefore).toBeFalsy();
+    expect(settingsIsVisibleAfter).toBeTruthy();
   });
 });
 

@@ -14,9 +14,9 @@ import PlayImg from "./../../assets/images/play_pause.svg";
 import BackImg from "./../../assets/images/back.svg";
 import ForwardImg from "./../../assets/images/forward.svg";
 
-interface GameState {
+export interface GameState {
   gameSettings: GameSettings;
-  settingsVisible: boolean;
+  isSettingsVisible: boolean;
   isPlaying: boolean;
 }
 
@@ -26,7 +26,7 @@ export class Game extends React.Component<{}, GameState> {
 
     this.state = {
       isPlaying: false,
-      settingsVisible: false,
+      isSettingsVisible: false,
       gameSettings: {
         height: 200,
         width: 200,
@@ -48,18 +48,18 @@ export class Game extends React.Component<{}, GameState> {
   }
 
   onClickSettings() {
-    this.setState({ ...this.state, settingsVisible: true });
+    this.setState({ ...this.state, isSettingsVisible: true });
   }
 
   onCancelSettings() {
-    this.setState({ ...this.state, settingsVisible: false });
+    this.setState({ ...this.state, isSettingsVisible: false });
   }
 
   onSubmitSettings(settings: GameSettings) {
     this.setState({
       ...this.state,
       gameSettings: settings,
-      settingsVisible: false,
+      isSettingsVisible: false,
     });
   }
 
@@ -67,7 +67,7 @@ export class Game extends React.Component<{}, GameState> {
     return (
       <>
         <Settings
-          visible={this.state.settingsVisible}
+          visible={this.state.isSettingsVisible}
           settings={this.state.gameSettings}
           onSubmit={this.onSubmitSettings}
           onCancel={this.onCancelSettings}
