@@ -2,8 +2,8 @@ import React from "react";
 import { Settings } from "./Settings";
 import { render, fireEvent, wait } from "@testing-library/react";
 
-const changeNumberInput = async (input: Element, value: number) => {
-  await wait(() => {
+const changeNumberInput = (input: Element, value: number): Promise<void> => {
+  return wait(() => {
     fireEvent.change(input, {
       target: {
         value,
