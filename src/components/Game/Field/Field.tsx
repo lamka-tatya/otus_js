@@ -35,19 +35,14 @@ const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
 };
 
 export class Field extends React.Component<FieldProps, FieldState> {
-  constructor(props: FieldProps) {
-    super(props);
-    this.state = {
-      rowCount: props.rowCount,
-      columnCount: props.columnCount,
-      emptyPercent: props.emptyPercent,
-      cells: prepareCells(props),
-    };
+  state = {
+    rowCount: this.props.rowCount,
+    columnCount: this.props.columnCount,
+    emptyPercent: this.props.emptyPercent,
+    cells: prepareCells(this.props),
+  };
 
-    this.onCellClick = this.onCellClick.bind(this);
-  }
-
-  onCellClick(col: number, row: number) {
+  onCellClick = (col: number, row: number) => {
     const cellIndex = this.state.cells.findIndex(
       (x) => x.column === col && x.row === row
     );
@@ -59,9 +54,9 @@ export class Field extends React.Component<FieldProps, FieldState> {
         cellState: CellState.alive,
       };
 
-      this.setState({ ...this.state, cells });
+      this.setState({ cells });
     }
-  }
+  };
 
   getRow(row: number) {
     const cells = [];

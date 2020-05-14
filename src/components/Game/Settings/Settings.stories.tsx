@@ -10,10 +10,17 @@ export default {
 export const SettingsStory: FC = () => {
   return (
     <Settings
-      initWidth={50}
-      initHeight={50}
-      onHeightChange={action("Height changed")}
-      onWidthChange={action("Width changed")}
+      visible={true}
+      settings={{
+        height: 50,
+        width: 50,
+        rowCount: 5,
+        columnCount: 5,
+        emptyPercent: 0,
+        frequency: 1,
+      }}
+      onSubmit={action("Submit")}
+      onCancel={action("Cancel")}
     />
   );
 };
