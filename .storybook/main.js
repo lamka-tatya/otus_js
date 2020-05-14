@@ -5,7 +5,7 @@ module.exports = {
 	addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs/register',],
 	webpackFinal: async config => {
 		// remove svg from existing rule
-		config.module.rules = config.module.rules.map(rule => {
+		const rules = config.module.rules.map(rule => {
 			if (
 				String(rule.test) === String(/\.(svg|ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/)
 			) {
@@ -18,7 +18,7 @@ module.exports = {
 			return rule
 		});
 
-		config.module.rules.push({
+		rules.push({
 			test: /\.(ts|tsx)$/,
 			use: [
 				{
@@ -28,10 +28,12 @@ module.exports = {
 		});
 
 		// use svgr for svg files
-		config.module.rules.push({
+		rules.push({
 			test: /\.svg$/,
 			use: [require.resolve("@svgr/webpack"), require.resolve("url-loader")],
 		})
+
+		config.module.rules = rules;
 
 		config.resolve.extensions.push('.ts', '.tsx', '.svg');
 		return config;
