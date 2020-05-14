@@ -16,7 +16,7 @@ import VArrowsImg from "./assets/v_arrows_svg.svg";
 import HArrowsImg from "./assets/h_arrows_svg.svg";
 import CancelImg from "./assets/cancel_svg.svg";
 import OkImg from "./assets/ok_svg.svg";
-import { ImageButton } from "../../common/ImageButton/ImageButton";
+import { ImageButton } from "@/ImageButton/ImageButton";
 
 export interface GameSettings {
   height: number;

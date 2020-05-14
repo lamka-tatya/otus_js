@@ -36,6 +36,10 @@ module.exports = {
 		config.module.rules = rules;
 
 		config.resolve.extensions.push('.ts', '.tsx', '.svg');
+		config.resolve.alias = {
+			...config.resolve.alias,
+			"@": path.resolve(__dirname, "../src/components/common"),
+		  };
 		return config;
 	},
 };

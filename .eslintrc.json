@@ -16,5 +16,12 @@
   "rules": {
     "prettier/prettier": "error"
   },
-  "plugins": ["html"]
+  "plugins": ["html"],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "../webpack.config.js"
+      }
+    }
+  }
 }
