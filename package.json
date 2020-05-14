@@ -12,7 +12,7 @@
     "build-storybook": "build-storybook"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint ./src/* --fix"
+    "*.{js,jsx}": "eslint --fix"
   },
   "husky": {
     "hooks": {

@@ -47,7 +47,7 @@ const XYSettingsSet: FC<{
   </FieldsetStyled>
 );
 
-const Overlay: FC<{ children?: JSX.Element }> = ({ children }) => (
+const Overlay: FC = ({ children }) => (
   <>
     <OverlayStyled />
     <OverlayChildrenStyled>{children}</OverlayChildrenStyled>
@@ -101,7 +101,5 @@ export const Settings: FC<{
         </FormStyled>
       </Formik>
     </Overlay>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
