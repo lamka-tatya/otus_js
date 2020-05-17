@@ -14,7 +14,10 @@ export const MainContainer = styled.div`
 
 export const FieldContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
+  background-color: #cccccc;
   border-right: 2px solid grey;
   border-bottom: 2px solid grey;
   border-radius: 0 0 20px 0;

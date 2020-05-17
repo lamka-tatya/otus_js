@@ -39,6 +39,8 @@ export const CellStyled = styled.button<{
   border-radius: 25px;
   line-height: 25px;
   margin: 5px;
+  cursor: pointer;
+  outline: none;
 
   ${(props) => getStyle(props.cellState)};
 
