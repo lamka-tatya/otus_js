@@ -29,7 +29,7 @@ export class Game extends React.Component<{}, GameState> {
       width: 200,
       rowCount: 5,
       columnCount: 5,
-      emptyPercent: 0,
+      fillingPercent: 0,
       frequency: 1,
     },
   };

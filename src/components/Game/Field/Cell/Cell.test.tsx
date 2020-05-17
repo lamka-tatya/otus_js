@@ -7,7 +7,6 @@ describe("Cell is rendered", () => {
     stateName  | state
     ${"alive"} | ${CellState.alive}
     ${"dead"}  | ${CellState.dead}
-    ${"empty"} | ${CellState.empty}
   `(`when cell is $stateName`, (state) => {
     const cellModel: CellModel = {
       cellState: state,

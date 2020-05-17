@@ -2,7 +2,6 @@ import React, { Component, PureComponent } from "react";
 import { CellStyled } from "./Cell.styles";
 
 export enum CellState {
-  empty = "empty",
   alive = "alive",
   dead = "dead",
 }
@@ -45,7 +44,6 @@ export class Cell extends PureComponent<CellProps, CellComponentState> {
       <CellStyled
         newCellState={this.state.newCellState}
         cellState={this.props.cell.cellState}
-        disabled={this.props.cell.cellState === CellState.empty}
         onClick={() =>
           this.props.onClick(this.props.cell.column, this.props.cell.row)
         }

@@ -5,7 +5,7 @@ import { RowStyled, FieldStyled } from "./Field.styles";
 export interface FieldProps {
   rowCount: number;
   columnCount: number;
-  emptyPercent: number;
+  fillingPercent: number;
   height: number;
   width: number;
 }
@@ -13,20 +13,31 @@ export interface FieldProps {
 export interface FieldState {
   rowCount: number;
   columnCount: number;
-  emptyPercent: number;
+  fillingPercent: number;
   cells: CellModel[];
 }
 
 const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
   const result: CellModel[] = [];
+  const cellsCount = fieldProps.columnCount * fieldProps.rowCount;
+  const maxAliveCount = (cellsCount / 100) * fieldProps.fillingPercent;
+  let aliveCount = 0;
 
   for (let x = 0; x < fieldProps.columnCount; x++) {
     for (let y = 0; y < fieldProps.rowCount; y++) {
-      // todo: handle emptyPercent
+      let cellState = CellState.dead;
+
+      if (Math.round(Math.random() * 100) <= fieldProps.fillingPercent) {
+        aliveCount++;
+        if (aliveCount <= maxAliveCount) {
+          cellState = CellState.alive;
+        }
+      }
+
       result.push({
         row: y,
         column: x,
-        cellState: y % 2 === 0 ? CellState.dead : CellState.empty,
+        cellState,
       });
     }
   }
@@ -38,7 +49,7 @@ export class Field extends React.Component<FieldProps, FieldState> {
   state = {
     rowCount: this.props.rowCount,
     columnCount: this.props.columnCount,
-    emptyPercent: this.props.emptyPercent,
+    fillingPercent: this.props.fillingPercent,
     cells: prepareCells(this.props),
   };
 
@@ -88,12 +99,12 @@ export class Field extends React.Component<FieldProps, FieldState> {
     if (
       state.columnCount !== props.columnCount ||
       state.rowCount !== props.rowCount ||
-      state.emptyPercent !== props.emptyPercent
+      state.fillingPercent !== props.fillingPercent
     ) {
       return {
         rowCount: props.rowCount,
         columnCount: props.columnCount,
-        emptyPercent: props.emptyPercent,
+        fillingPercent: props.fillingPercent,
         cells: prepareCells(props),
       };
     }
