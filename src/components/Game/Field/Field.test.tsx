@@ -1,11 +1,12 @@
 import { mount, render, shallow } from "enzyme";
-import { Field, FieldState, CellRow } from "./Field";
+import { Field, CellRow } from "./Field";
 import React from "react";
 import { CellState, CellModel } from "./Cell/Cell";
+import { CellStyled } from "./Cell/Cell.styles";
 
 describe("Field is rendered with 2 columns and 2 rows", () => {
   it("should has 4 cells", () => {
-    const wrapper = render(
+    const wrapper = mount(
       <Field
         width={200}
         height={200}
@@ -35,8 +36,10 @@ describe("Dead cell is clicked", () => {
 
     deadCell.simulate("click");
 
-    const cellState = wrapper.state<CellRow[]>("rows")[0].cells[0].cellState;
-    expect(cellState).toBe(CellState.alive);
+    const cell = wrapper.find("button");
+    expect(
+      (cell.instance() as any).className.indexOf("aliveStyle")
+    ).toBeGreaterThanOrEqual(0);
   });
 });
 
@@ -61,13 +64,10 @@ describe("Field is rendered with 10 columns and 10 rows", () => {
       );
 
       const aliveCellsCount = wrapper
-        .state<CellRow[]>("rows")
-        .reduce<number>(
-          (aliveCellTotal: number, cellRow: CellRow) =>
-            aliveCellTotal +
-            cellRow.cells.filter((c) => c.cellState === CellState.alive).length,
-          0
-        );
+        .find("button")
+        .filter(
+          (x) => (x as any).instance().className.indexOf("aliveStyle") >= 0
+        ).length;
 
       expect(aliveCellsCount).toBeLessThanOrEqual(maxAliveCount);
     }

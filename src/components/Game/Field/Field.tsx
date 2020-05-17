@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import { Cell, CellState, CellModel } from "./Cell/Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
 
@@ -21,19 +21,23 @@ export interface FieldState {
   rows: CellRow[];
 }
 
-const prepareCells: (fieldProps: FieldProps) => CellRow[] = (fieldProps) => {
+const prepareCells: (
+  columnCount: number,
+  rowCount: number,
+  fillingPercent: number
+) => CellRow[] = (columnCount, rowCount, fillingPercent) => {
   const result: CellRow[] = [];
-  const cellsCount = fieldProps.columnCount * fieldProps.rowCount;
-  const maxAliveCount = (cellsCount / 100) * fieldProps.fillingPercent;
+  const cellsCount = columnCount * rowCount;
+  const maxAliveCount = (cellsCount / 100) * fillingPercent;
   let aliveCount = 0;
 
-  for (let y = 0; y < fieldProps.rowCount; y++) {
+  for (let y = 0; y < rowCount; y++) {
     const rowCells: CellModel[] = [];
 
-    for (let x = 0; x < fieldProps.columnCount; x++) {
+    for (let x = 0; x < columnCount; x++) {
       let cellState = CellState.dead;
 
-      if (Math.round(Math.random() * 100) <= fieldProps.fillingPercent) {
+      if (Math.round(Math.random() * 100) <= fillingPercent) {
         aliveCount++;
         if (aliveCount <= maxAliveCount) {
           cellState = CellState.alive;
@@ -50,56 +54,45 @@ const prepareCells: (fieldProps: FieldProps) => CellRow[] = (fieldProps) => {
   return result;
 };
 
-export class Field extends React.Component<FieldProps, FieldState> {
-  state = {
-    rowCount: this.props.rowCount,
-    columnCount: this.props.columnCount,
-    fillingPercent: this.props.fillingPercent,
-    rows: prepareCells(this.props),
-  };
+export const Field: FC<FieldProps> = ({
+  rowCount,
+  columnCount,
+  fillingPercent,
+  height,
+  width,
+}) => {
+  const [rows, setRows] = useState<CellRow[]>([]);
 
-  onCellClick = (colIndex: number, rowIndex: number) => {
-    const rows = [...this.state.rows];
-    const rowCells = [...rows[rowIndex].cells];
-    const cell = rowCells[colIndex];
-    rowCells[colIndex] = { ...cell, cellState: CellState.alive };
-    rows[rowIndex] = { cells: rowCells };
+  useEffect(() => {
+    setRows(prepareCells(columnCount, rowCount, fillingPercent));
+  }, [columnCount, rowCount, fillingPercent]);
 
-    this.setState({ rows });
-  };
+  const onCellClick = useCallback(
+    (colIndex: number, rowIndex: number) => {
+      const newRows = [...rows];
+      const rowCells = [...newRows[rowIndex].cells];
+      const cell = rowCells[colIndex];
+      rowCells[colIndex] = { ...cell, cellState: CellState.alive };
+      newRows[rowIndex] = { cells: rowCells };
 
-  static getDerivedStateFromProps(props: FieldProps, state: FieldState) {
-    if (
-      state.columnCount !== props.columnCount ||
-      state.rowCount !== props.rowCount ||
-      state.fillingPercent !== props.fillingPercent
-    ) {
-      return {
-        rowCount: props.rowCount,
-        columnCount: props.columnCount,
-        fillingPercent: props.fillingPercent,
-        rows: prepareCells(props),
-      };
-    }
+      setRows(newRows);
+    },
+    [rows, setRows]
+  );
 
-    return null;
-  }
-
-  render() {
-    return (
-      <FieldStyled width={this.props.width} height={this.props.height}>
-        {this.state.rows.map((row, rowIndex) => (
-          <RowStyled key={rowIndex}>
-            {row.cells.map((cell, colIndex) => (
-              <Cell
-                key={colIndex}
-                cell={{ cellState: cell.cellState }}
-                onClick={() => this.onCellClick(colIndex, rowIndex)}
-              />
-            ))}
-          </RowStyled>
-        ))}
-      </FieldStyled>
-    );
-  }
-}
+  return (
+    <FieldStyled width={width} height={height}>
+      {rows.map((row, rowIndex) => (
+        <RowStyled key={rowIndex}>
+          {row.cells.map((cell, colIndex) => (
+            <Cell
+              key={colIndex}
+              cell={{ cellState: cell.cellState }}
+              onClick={() => onCellClick(colIndex, rowIndex)}
+            />
+          ))}
+        </RowStyled>
+      ))}
+    </FieldStyled>
+  );
+};
