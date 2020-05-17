@@ -1,5 +1,5 @@
 import { mount, render, shallow } from "enzyme";
-import { Field, FieldState } from "./Field";
+import { Field, FieldState, CellRow } from "./Field";
 import React from "react";
 import { CellState, CellModel } from "./Cell/Cell";
 
@@ -35,7 +35,7 @@ describe("Dead cell is clicked", () => {
 
     deadCell.simulate("click");
 
-    const cellState = (wrapper.state() as FieldState).cells[0].cellState;
+    const cellState = wrapper.state<CellRow[]>("rows")[0].cells[0].cellState;
     expect(cellState).toBe(CellState.alive);
   });
 });
@@ -61,8 +61,13 @@ describe("Field is rendered with 10 columns and 10 rows", () => {
       );
 
       const aliveCellsCount = wrapper
-        .state<CellModel[]>("cells")
-        .filter((x) => x.cellState === CellState.alive).length;
+        .state<CellRow[]>("rows")
+        .reduce<number>(
+          (aliveCellTotal: number, cellRow: CellRow) =>
+            aliveCellTotal +
+            cellRow.cells.filter((c) => c.cellState === CellState.alive).length,
+          0
+        );
 
       expect(aliveCellsCount).toBeLessThanOrEqual(maxAliveCount);
     }

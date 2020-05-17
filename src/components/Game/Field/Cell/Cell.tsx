@@ -7,14 +7,12 @@ export enum CellState {
 }
 
 export interface CellModel {
-  row: number;
-  column: number;
   cellState: CellState;
 }
 
 export interface CellProps {
   cell: CellModel;
-  onClick: (c: number, r: number) => void;
+  onClick: () => void;
 }
 
 interface CellComponentState {
@@ -44,9 +42,7 @@ export class Cell extends PureComponent<CellProps, CellComponentState> {
       <CellStyled
         newCellState={this.state.newCellState}
         cellState={this.props.cell.cellState}
-        onClick={() =>
-          this.props.onClick(this.props.cell.column, this.props.cell.row)
-        }
+        onClick={this.props.onClick}
       ></CellStyled>
     );
   }

@@ -10,21 +10,27 @@ export interface FieldProps {
   width: number;
 }
 
+export interface CellRow {
+  cells: CellModel[];
+}
+
 export interface FieldState {
   rowCount: number;
   columnCount: number;
   fillingPercent: number;
-  cells: CellModel[];
+  rows: CellRow[];
 }
 
-const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
-  const result: CellModel[] = [];
+const prepareCells: (fieldProps: FieldProps) => CellRow[] = (fieldProps) => {
+  const result: CellRow[] = [];
   const cellsCount = fieldProps.columnCount * fieldProps.rowCount;
   const maxAliveCount = (cellsCount / 100) * fieldProps.fillingPercent;
   let aliveCount = 0;
 
-  for (let x = 0; x < fieldProps.columnCount; x++) {
-    for (let y = 0; y < fieldProps.rowCount; y++) {
+  for (let y = 0; y < fieldProps.rowCount; y++) {
+    const rowCells: CellModel[] = [];
+
+    for (let x = 0; x < fieldProps.columnCount; x++) {
       let cellState = CellState.dead;
 
       if (Math.round(Math.random() * 100) <= fieldProps.fillingPercent) {
@@ -34,12 +40,11 @@ const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
         }
       }
 
-      result.push({
-        row: y,
-        column: x,
+      rowCells.push({
         cellState,
       });
     }
+    result.push({ cells: rowCells });
   }
 
   return result;
@@ -50,50 +55,18 @@ export class Field extends React.Component<FieldProps, FieldState> {
     rowCount: this.props.rowCount,
     columnCount: this.props.columnCount,
     fillingPercent: this.props.fillingPercent,
-    cells: prepareCells(this.props),
+    rows: prepareCells(this.props),
   };
 
-  onCellClick = (col: number, row: number) => {
-    const cellIndex = this.state.cells.findIndex(
-      (x) => x.column === col && x.row === row
-    );
+  onCellClick = (colIndex: number, rowIndex: number) => {
+    const rows = [...this.state.rows];
+    const rowCells = [...rows[rowIndex].cells];
+    const cell = rowCells[colIndex];
+    rowCells[colIndex] = { ...cell, cellState: CellState.alive };
+    rows[rowIndex] = { cells: rowCells };
 
-    if (cellIndex !== -1) {
-      const cells = [...this.state.cells];
-      cells[cellIndex] = {
-        ...this.state.cells[cellIndex],
-        cellState: CellState.alive,
-      };
-
-      this.setState({ cells });
-    }
+    this.setState({ rows });
   };
-
-  getRow(row: number) {
-    const cells = [];
-
-    for (let col = 0; col < this.props.columnCount; col++) {
-      const cell = this.state.cells.find(
-        (c) => c.column === col && c.row === row
-      );
-
-      if (!cell) {
-        throw TypeError("Unexpected error");
-      }
-
-      const cellModel: CellModel = {
-        column: col,
-        row: row,
-        cellState: cell.cellState,
-      };
-
-      cells.push(
-        <Cell key={col} cell={cellModel} onClick={this.onCellClick} />
-      );
-    }
-
-    return cells;
-  }
 
   static getDerivedStateFromProps(props: FieldProps, state: FieldState) {
     if (
@@ -105,7 +78,7 @@ export class Field extends React.Component<FieldProps, FieldState> {
         rowCount: props.rowCount,
         columnCount: props.columnCount,
         fillingPercent: props.fillingPercent,
-        cells: prepareCells(props),
+        rows: prepareCells(props),
       };
     }
 
@@ -113,15 +86,19 @@ export class Field extends React.Component<FieldProps, FieldState> {
   }
 
   render() {
-    const rows: JSX.Element[] = [];
-
-    for (let row = 0; row < this.props.rowCount; row++) {
-      rows.push(<RowStyled key={row}>{this.getRow(row)}</RowStyled>);
-    }
-
     return (
       <FieldStyled width={this.props.width} height={this.props.height}>
-        {rows}
+        {this.state.rows.map((row, rowIndex) => (
+          <RowStyled key={rowIndex}>
+            {row.cells.map((cell, colIndex) => (
+              <Cell
+                key={colIndex}
+                cell={{ cellState: cell.cellState }}
+                onClick={() => this.onCellClick(colIndex, rowIndex)}
+              />
+            ))}
+          </RowStyled>
+        ))}
       </FieldStyled>
     );
   }
