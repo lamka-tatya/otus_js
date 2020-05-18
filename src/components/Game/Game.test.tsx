@@ -33,3 +33,16 @@ describe("When click on play button", () => {
     expect(isPlayingAfter).toBeTruthy();
   });
 });
+
+describe("When click on reset button", () => {
+  it("should purge isReset state after reset", async () => {
+    const resetBtn = wrapper.findWhere((x) => x.key() === "resetBtn");
+    const isResetBefore = wrapper.state("isReset");
+
+    resetBtn.simulate("click");
+
+    const isResetAfter = wrapper.state("isReset");
+    expect(isResetBefore).toBeFalsy();
+    expect(isResetAfter).toBeFalsy();
+  });
+});

@@ -20,7 +20,7 @@ interface CellComponentState {
   newCellState: boolean;
 }
 
-export class Cell extends PureComponent<CellProps, CellComponentState> {
+export class Cell extends React.Component<CellProps, CellComponentState> {
   state = {
     cellState: this.props.cell.cellState,
     newCellState: false,

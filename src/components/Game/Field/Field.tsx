@@ -8,6 +8,8 @@ export interface FieldProps {
   fillingPercent: number;
   height: number;
   width: number;
+  isReset: boolean;
+  afterReset: () => void;
 }
 
 export interface CellRow {
@@ -60,12 +62,16 @@ export const Field: FC<FieldProps> = ({
   fillingPercent,
   height,
   width,
+  isReset,
+  afterReset,
 }) => {
   const [rows, setRows] = useState<CellRow[]>([]);
 
   useEffect(() => {
     setRows(prepareCells(columnCount, rowCount, fillingPercent));
-  }, [columnCount, rowCount, fillingPercent]);
+
+    isReset && afterReset();
+  }, [columnCount, rowCount, fillingPercent, isReset, afterReset]);
 
   const onCellClick = useCallback(
     (colIndex: number, rowIndex: number) => {

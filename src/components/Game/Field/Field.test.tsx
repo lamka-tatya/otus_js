@@ -3,6 +3,7 @@ import { Field, CellRow } from "./Field";
 import React from "react";
 import { CellState, CellModel } from "./Cell/Cell";
 import { CellStyled } from "./Cell/Cell.styles";
+import { mockComponent } from "react-dom/test-utils";
 
 describe("Field is rendered with 2 columns and 2 rows", () => {
   it("should has 4 cells", () => {
@@ -13,6 +14,8 @@ describe("Field is rendered with 2 columns and 2 rows", () => {
         columnCount={2}
         fillingPercent={0}
         rowCount={2}
+        isReset={false}
+        afterReset={jest.fn()}
       />
     );
     const cells = wrapper.find("button");
@@ -30,6 +33,8 @@ describe("Dead cell is clicked", () => {
         columnCount={1}
         fillingPercent={0}
         rowCount={1}
+        isReset={false}
+        afterReset={jest.fn()}
       />
     );
     const deadCell = wrapper.find("button");
@@ -40,6 +45,25 @@ describe("Dead cell is clicked", () => {
     expect(
       (cell.instance() as any).className.indexOf("aliveStyle")
     ).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe("Field is rendered due to reset", () => {
+  it("should call afterReset function", () => {
+    const mock = jest.fn();
+    const wrapper = mount(
+      <Field
+        width={200}
+        height={200}
+        columnCount={1}
+        fillingPercent={0}
+        rowCount={1}
+        isReset={true}
+        afterReset={mock}
+      />
+    );
+
+    expect(mock).toBeCalledTimes(1);
   });
 });
 
@@ -60,6 +84,8 @@ describe("Field is rendered with 10 columns and 10 rows", () => {
           columnCount={10}
           fillingPercent={percent}
           rowCount={10}
+          isReset={false}
+          afterReset={jest.fn()}
         />
       );
 

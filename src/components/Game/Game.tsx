@@ -13,17 +13,20 @@ import SettingsImg from "./assets/settings_svg.svg";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
+import ResetImg from "./assets/reset.svg";
 
 export interface GameState {
   gameSettings: GameSettings;
   isSettingsVisible: boolean;
   isPlaying: boolean;
+  isReset: boolean;
 }
 
 export class Game extends React.Component<{}, GameState> {
   state = {
     isPlaying: false,
     isSettingsVisible: false,
+    isReset: false,
     gameSettings: {
       height: 200,
       width: 200,
@@ -40,6 +43,14 @@ export class Game extends React.Component<{}, GameState> {
 
   onClickSettings = () => {
     this.setState({ isSettingsVisible: true });
+  };
+
+  onReset = () => {
+    this.setState({ isReset: true });
+  };
+
+  afterReset = () => {
+    this.setState({ isReset: false });
   };
 
   onCancelSettings = () => {
@@ -65,7 +76,12 @@ export class Game extends React.Component<{}, GameState> {
         <GameContainer>
           <MainContainer>
             <FieldContainer>
-              <Field key="field" {...this.state.gameSettings} />
+              <Field
+                key="field"
+                {...this.state.gameSettings}
+                isReset={this.state.isReset}
+                afterReset={this.afterReset}
+              />
             </FieldContainer>
             <ButtonsContainer>
               <ImageButton
@@ -92,6 +108,12 @@ export class Game extends React.Component<{}, GameState> {
               src={SettingsImg}
               type="button"
               onClick={this.onClickSettings}
+            ></ImageButton>
+            <ImageButton
+              key="resetBtn"
+              src={ResetImg}
+              type="button"
+              onClick={this.onReset}
             ></ImageButton>
           </SettingsContainer>
         </GameContainer>
