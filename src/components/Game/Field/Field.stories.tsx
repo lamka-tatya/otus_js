@@ -19,7 +19,7 @@ export const FieldStory: FC = () => {
       width={width}
       rowCount={rowsCount}
       columnCount={columnsCount}
-      emptyPercent={0}
+      fillingPercent={0}
     />
   );
 };

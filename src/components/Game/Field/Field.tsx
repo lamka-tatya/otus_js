@@ -1,117 +1,104 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 import { Cell, CellState, CellModel } from "./Cell/Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
 
 export interface FieldProps {
   rowCount: number;
   columnCount: number;
-  emptyPercent: number;
+  fillingPercent: number;
   height: number;
   width: number;
+  isReset: boolean;
+  afterReset: () => void;
+}
+
+export interface CellRow {
+  cells: CellModel[];
 }
 
 export interface FieldState {
   rowCount: number;
   columnCount: number;
-  emptyPercent: number;
-  cells: CellModel[];
+  fillingPercent: number;
+  rows: CellRow[];
 }
 
-const prepareCells: (fieldProps: FieldProps) => CellModel[] = (fieldProps) => {
-  const result: CellModel[] = [];
+const prepareCells: (
+  columnCount: number,
+  rowCount: number,
+  fillingPercent: number
+) => CellRow[] = (columnCount, rowCount, fillingPercent) => {
+  const result: CellRow[] = [];
+  const cellsCount = columnCount * rowCount;
+  const maxAliveCount = (cellsCount / 100) * fillingPercent;
+  let aliveCount = 0;
 
-  for (let x = 0; x < fieldProps.columnCount; x++) {
-    for (let y = 0; y < fieldProps.rowCount; y++) {
-      // todo: handle emptyPercent
-      result.push({
-        row: y,
-        column: x,
-        cellState: y % 2 === 0 ? CellState.dead : CellState.empty,
+  for (let y = 0; y < rowCount; y++) {
+    const rowCells: CellModel[] = [];
+
+    for (let x = 0; x < columnCount; x++) {
+      let cellState = CellState.dead;
+
+      if (Math.round(Math.random() * 100) <= fillingPercent) {
+        aliveCount++;
+        if (aliveCount <= maxAliveCount) {
+          cellState = CellState.alive;
+        }
+      }
+
+      rowCells.push({
+        cellState,
       });
     }
+    result.push({ cells: rowCells });
   }
 
   return result;
 };
 
-export class Field extends React.Component<FieldProps, FieldState> {
-  state = {
-    rowCount: this.props.rowCount,
-    columnCount: this.props.columnCount,
-    emptyPercent: this.props.emptyPercent,
-    cells: prepareCells(this.props),
-  };
+export const Field: FC<FieldProps> = ({
+  rowCount,
+  columnCount,
+  fillingPercent,
+  height,
+  width,
+  isReset,
+  afterReset,
+}) => {
+  const [rows, setRows] = useState<CellRow[]>([]);
 
-  onCellClick = (col: number, row: number) => {
-    const cellIndex = this.state.cells.findIndex(
-      (x) => x.column === col && x.row === row
-    );
+  useEffect(() => {
+    setRows(prepareCells(columnCount, rowCount, fillingPercent));
 
-    if (cellIndex !== -1) {
-      const cells = [...this.state.cells];
-      cells[cellIndex] = {
-        ...this.state.cells[cellIndex],
-        cellState: CellState.alive,
-      };
+    isReset && afterReset();
+  }, [columnCount, rowCount, fillingPercent, isReset, afterReset]);
 
-      this.setState({ cells });
-    }
-  };
+  const onCellClick = useCallback(
+    (colIndex: number, rowIndex: number) => {
+      const newRows = [...rows];
+      const rowCells = [...newRows[rowIndex].cells];
+      const cell = rowCells[colIndex];
+      rowCells[colIndex] = { ...cell, cellState: CellState.alive };
+      newRows[rowIndex] = { cells: rowCells };
 
-  getRow(row: number) {
-    const cells = [];
+      setRows(newRows);
+    },
+    [rows, setRows]
+  );
 
-    for (let col = 0; col < this.props.columnCount; col++) {
-      const cell = this.state.cells.find(
-        (c) => c.column === col && c.row === row
-      );
-
-      if (!cell) {
-        throw TypeError("Unexpected error");
-      }
-
-      const cellModel: CellModel = {
-        column: col,
-        row: row,
-        cellState: cell.cellState,
-      };
-
-      cells.push(
-        <Cell key={col} cell={cellModel} onClick={this.onCellClick} />
-      );
-    }
-
-    return cells;
-  }
-
-  static getDerivedStateFromProps(props: FieldProps, state: FieldState) {
-    if (
-      state.columnCount !== props.columnCount ||
-      state.rowCount !== props.rowCount ||
-      state.emptyPercent !== props.emptyPercent
-    ) {
-      return {
-        rowCount: props.rowCount,
-        columnCount: props.columnCount,
-        emptyPercent: props.emptyPercent,
-        cells: prepareCells(props),
-      };
-    }
-
-    return null;
-  }
-
-  render() {
-    const rows: JSX.Element[] = [];
-
-    for (let row = 0; row < this.props.rowCount; row++) {
-      rows.push(<RowStyled key={row}>{this.getRow(row)}</RowStyled>);
-    }
-
-    return (
-      <FieldStyled width={this.props.width} height={this.props.height}>
-        {rows}
-      </FieldStyled>
-    );
-  }
-}
+  return (
+    <FieldStyled width={width} height={height}>
+      {rows.map((row, rowIndex) => (
+        <RowStyled key={rowIndex}>
+          {row.cells.map((cell, colIndex) => (
+            <Cell
+              key={colIndex}
+              cell={{ cellState: cell.cellState }}
+              onClick={() => onCellClick(colIndex, rowIndex)}
+            />
+          ))}
+        </RowStyled>
+      ))}
+    </FieldStyled>
+  );
+};

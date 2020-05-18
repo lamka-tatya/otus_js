@@ -23,7 +23,7 @@ export interface GameSettings {
   width: number;
   rowCount: number;
   columnCount: number;
-  emptyPercent: number;
+  fillingPercent: number;
   frequency: number;
 }
 
@@ -81,8 +81,8 @@ export const Settings: FC<{
               <FieldStyled type="number" name="frequency" />
             </FieldContainer>
             <FieldContainer>
-              <LabelStyled>% пустых клеток</LabelStyled>
-              <FieldStyled type="number" name="emptyPercent" />
+              <LabelStyled>max % заполненности</LabelStyled>
+              <FieldStyled type="number" name="fillingPercent" />
             </FieldContainer>
           </FieldsContainer>
 

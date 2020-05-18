@@ -14,9 +14,11 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
-  "plugins": ["html"],
+  "plugins": ["html", "react-hooks"],
   "settings": {
     "import/resolver": {
       "webpack": {

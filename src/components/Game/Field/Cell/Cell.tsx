@@ -2,20 +2,17 @@ import React, { Component, PureComponent } from "react";
 import { CellStyled } from "./Cell.styles";
 
 export enum CellState {
-  empty = "empty",
   alive = "alive",
   dead = "dead",
 }
 
 export interface CellModel {
-  row: number;
-  column: number;
   cellState: CellState;
 }
 
 export interface CellProps {
   cell: CellModel;
-  onClick: (c: number, r: number) => void;
+  onClick: () => void;
 }
 
 interface CellComponentState {
@@ -23,7 +20,7 @@ interface CellComponentState {
   newCellState: boolean;
 }
 
-export class Cell extends PureComponent<CellProps, CellComponentState> {
+export class Cell extends React.Component<CellProps, CellComponentState> {
   state = {
     cellState: this.props.cell.cellState,
     newCellState: false,
@@ -45,10 +42,7 @@ export class Cell extends PureComponent<CellProps, CellComponentState> {
       <CellStyled
         newCellState={this.state.newCellState}
         cellState={this.props.cell.cellState}
-        disabled={this.props.cell.cellState === CellState.empty}
-        onClick={() =>
-          this.props.onClick(this.props.cell.column, this.props.cell.row)
-        }
+        onClick={this.props.onClick}
       ></CellStyled>
     );
   }

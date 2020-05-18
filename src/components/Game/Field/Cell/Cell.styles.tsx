@@ -9,11 +9,6 @@ const aliveStyle = css`
 `;
 
 const deadStyle = css`
-  border-color: red;
-  background: red;
-`;
-
-const emptyStyle = css`
   border-color: grey;
   opacity: 0.5;
 `;
@@ -24,8 +19,6 @@ const getStyle: (cellState: CellState) => SerializedStyles = (cellState) => {
       return aliveStyle;
     case CellState.dead:
       return deadStyle;
-    case CellState.empty:
-      return emptyStyle;
     default:
       throw TypeError("Unknown cell state");
   }
@@ -46,6 +39,8 @@ export const CellStyled = styled.button<{
   border-radius: 25px;
   line-height: 25px;
   margin: 5px;
+  cursor: pointer;
+  outline: none;
 
   ${(props) => getStyle(props.cellState)};
 

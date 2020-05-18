@@ -16,13 +16,13 @@ export const OverlayChildrenStyled = styled(FlexContainer)`
 `;
 
 export const OverlayStyled = styled(OverlayChildrenStyled)`
-  z-index: 1;
+  z-index: 10;
   background: grey;
   opacity: 0.5;
 `;
 
 export const FormStyled = styled(Form)`
-  z-index: 1;
+  z-index: 10;
   background: white;
   display: flex;
   flex-direction: column;

@@ -23,7 +23,7 @@ describe("When change settings and call submit", () => {
           width: 123,
           rowCount: 3,
           columnCount: 3,
-          emptyPercent: 3,
+          fillingPercent: 3,
           frequency: 4,
         }}
         onSubmit={jestMock}
@@ -31,7 +31,9 @@ describe("When change settings and call submit", () => {
       />
     );
     const frequency = container.querySelector('input[name="frequency"]');
-    const emptyPercent = container.querySelector('input[name="emptyPercent"]');
+    const fillingPercent = container.querySelector(
+      'input[name="fillingPercent"]'
+    );
     const height = container.querySelector('input[name="height"]');
     const width = container.querySelector('input[name="width"]');
     const columnCount = container.querySelector('input[name="columnCount"]');
@@ -39,7 +41,7 @@ describe("When change settings and call submit", () => {
     const submit = container.querySelector('button[type="submit"]');
 
     await changeNumberInput(frequency!, 1);
-    await changeNumberInput(emptyPercent!, 2);
+    await changeNumberInput(fillingPercent!, 2);
     await changeNumberInput(height!, 3);
     await changeNumberInput(width!, 4);
     await changeNumberInput(columnCount!, 5);
@@ -54,7 +56,7 @@ describe("When change settings and call submit", () => {
         width: 4,
         rowCount: 6,
         columnCount: 5,
-        emptyPercent: 2,
+        fillingPercent: 2,
         frequency: 1,
       }),
       expect.anything()

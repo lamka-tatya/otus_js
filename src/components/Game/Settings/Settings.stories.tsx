@@ -16,7 +16,7 @@ export const SettingsStory: FC = () => {
         width: 50,
         rowCount: 5,
         columnCount: 5,
-        emptyPercent: 0,
+        fillingPercent: 0,
         frequency: 1,
       }}
       onSubmit={action("Submit")}
