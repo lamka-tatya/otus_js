@@ -44,4 +44,21 @@ describe("When render start", () => {
     expect(userNameBefore).toBeUndefined;
     expect(userNameAfter).toBe("test name");
   });
+
+  it("should save user gender to localStorage", () => {
+    const form = wrapper.find('form[name="startForm"]');
+    const userGenderBefore = localStorage.getItem("userGender");
+    const gender = wrapper.find('input[value="male"]');
+
+    gender.simulate("change", {
+      target: {
+        value: "male",
+      },
+    });
+    form.simulate("submit");
+
+    const userGenderAfter = localStorage.getItem("userGender");
+    expect(userGenderBefore).toBeUndefined;
+    expect(userGenderAfter).toBe("male");
+  });
 });

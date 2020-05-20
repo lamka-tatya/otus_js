@@ -7,6 +7,9 @@ import {
   MainContainer,
   ButtonsContainer,
   FieldContainer,
+  BottomContainer,
+  ImageStyled,
+  RightSideContainer,
 } from "./Game.styles";
 import { ImageButton } from "@/ImageButton/ImageButton";
 import SettingsImg from "./assets/settings_svg.svg";
@@ -14,12 +17,20 @@ import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
 import ResetImg from "./assets/reset.svg";
+import { Gender } from "../Start/Start";
+import Avatars, { SpriteCollection } from "@dicebear/avatars";
+import { default as spritesMale } from "@dicebear/avatars-male-sprites";
+import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
+import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 
 export interface GameState {
   gameSettings: GameSettings;
   isSettingsVisible: boolean;
   isPlaying: boolean;
   isReset: boolean;
+  userName: string;
+  userGender: Gender;
+  userPic?: string;
 }
 
 export class Game extends React.Component<{}, GameState> {
@@ -27,6 +38,9 @@ export class Game extends React.Component<{}, GameState> {
     isPlaying: false,
     isSettingsVisible: false,
     isReset: false,
+    userName: "",
+    userGender: "robot" as Gender,
+    userPic: "",
     gameSettings: {
       height: 200,
       width: 200,
@@ -36,6 +50,34 @@ export class Game extends React.Component<{}, GameState> {
       frequency: 1,
     },
   };
+
+  componentDidMount() {
+    const name = localStorage.getItem("userName") ?? "";
+    const gender = localStorage.getItem("userGender") as Gender;
+
+    let sprite: SpriteCollection | undefined = undefined;
+    switch (gender) {
+      case "robot":
+        sprite = spritesBottts;
+        break;
+      case "male":
+        sprite = spritesMale;
+        break;
+      case "female":
+        sprite = spritesFemale;
+        break;
+    }
+
+    const userPicSvg = !!sprite
+      ? new Avatars(sprite, { base64: true }).create(name)
+      : undefined;
+
+    this.setState({
+      userName: name,
+      userGender: gender,
+      userPic: userPicSvg,
+    });
+  }
 
   onClickPlayPause = () => {
     this.setState({ isPlaying: !this.state.isPlaying });
@@ -83,39 +125,45 @@ export class Game extends React.Component<{}, GameState> {
                 afterReset={this.afterReset}
               />
             </FieldContainer>
-            <ButtonsContainer>
-              <ImageButton
-                src={BackImg}
-                type="button"
-                disabled={true}
-              ></ImageButton>
-              <ImageButton
-                key="playBtn"
-                src={PlayImg}
-                type="button"
-                onClick={this.onClickPlayPause}
-              ></ImageButton>
-              <ImageButton
-                src={ForwardImg}
-                type="button"
-                disabled={true}
-              ></ImageButton>
-            </ButtonsContainer>
+            <BottomContainer>
+              <ButtonsContainer>
+                <ImageButton
+                  src={BackImg}
+                  type="button"
+                  disabled={true}
+                ></ImageButton>
+                <ImageButton
+                  key="playBtn"
+                  src={PlayImg}
+                  type="button"
+                  onClick={this.onClickPlayPause}
+                ></ImageButton>
+                <ImageButton
+                  src={ForwardImg}
+                  type="button"
+                  disabled={true}
+                ></ImageButton>
+              </ButtonsContainer>
+              {this.state.userName}
+            </BottomContainer>
           </MainContainer>
-          <SettingsContainer>
-            <ImageButton
-              key="settingsBtn"
-              src={SettingsImg}
-              type="button"
-              onClick={this.onClickSettings}
-            ></ImageButton>
-            <ImageButton
-              key="resetBtn"
-              src={ResetImg}
-              type="button"
-              onClick={this.onReset}
-            ></ImageButton>
-          </SettingsContainer>
+          <RightSideContainer>
+            <SettingsContainer>
+              <ImageButton
+                key="settingsBtn"
+                src={SettingsImg}
+                type="button"
+                onClick={this.onClickSettings}
+              ></ImageButton>
+              <ImageButton
+                key="resetBtn"
+                src={ResetImg}
+                type="button"
+                onClick={this.onReset}
+              ></ImageButton>
+            </SettingsContainer>
+            <ImageStyled src={this.state.userPic}></ImageStyled>
+          </RightSideContainer>
         </GameContainer>
       </>
     );

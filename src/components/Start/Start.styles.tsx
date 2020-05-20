@@ -16,6 +16,16 @@ export const NameContainer = styled.div`
   align-items: center;
 `;
 
+export const GenderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > * {
+    margin-left: 2rem;
+  }
+`;
+
 export const FieldStyled = styled.input`
   font-family: inherit;
   font-size: inherit;
