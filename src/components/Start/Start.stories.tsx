@@ -1,4 +1,4 @@
-import { Start } from "./Start";
+import Start from "./Start";
 import React, { FC } from "react";
 import { action } from "@storybook/addon-actions";
 
@@ -8,5 +8,5 @@ export default {
 };
 
 export const StartStory: FC = () => {
-  return <Start onSubmit={action("Submit")} />;
+  return <Start />;
 };

@@ -1,32 +1,47 @@
 import React from "react";
-import { Start } from "./Start";
-import { render, fireEvent, wait } from "@testing-library/react";
+import Start from "./Start";
+import { mount, ReactWrapper } from "enzyme";
+import { BrowserRouter } from "react-router-dom";
+
+let wrapper: ReactWrapper;
+
+beforeEach(() => {
+  localStorage.clear();
+
+  wrapper = mount(
+    <BrowserRouter>
+      <Start />
+    </BrowserRouter>
+  );
+});
 
 describe("When render start", () => {
-  it("should be able to change name", async () => {
-    const { container } = render(<Start onSubmit={jest.fn()} />);
-    const name = container.querySelector('input[name="name"]');
+  it("should be able to change name", () => {
+    const name = wrapper.find('input[name="userName"]');
 
-    await wait(() => {
-      fireEvent.change(name!, {
-        target: {
-          value: "test name",
-        },
-      });
+    name.simulate("change", {
+      target: {
+        value: "test name",
+      },
     });
 
-    expect((name as any).value).toBe("test name");
+    expect((name.instance() as any).value).toBe("test name");
   });
 
-  it("should be able call submit", async () => {
-    const jestMock = jest.fn();
-    const { container } = render(<Start onSubmit={jestMock} />);
-    const submit = container.querySelector('button[type="submit"]');
+  it("should save user name to localStorage", () => {
+    const form = wrapper.find('form[name="startForm"]');
+    const userNameBefore = localStorage.getItem("userName");
+    const name = wrapper.find('input[name="userName"]');
 
-    await wait(() => {
-      fireEvent.click(submit!);
+    name.simulate("change", {
+      target: {
+        value: "test name",
+      },
     });
+    form.simulate("submit");
 
-    expect(jestMock).toBeCalledTimes(1);
+    const userNameAfter = localStorage.getItem("userName");
+    expect(userNameBefore).toBeUndefined;
+    expect(userNameAfter).toBe("test name");
   });
 });

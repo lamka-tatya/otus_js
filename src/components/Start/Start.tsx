@@ -1,28 +1,52 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
-import {
-  FormStyled,
-  NameContainer,
-  FieldStyled,
-  ButtonStyled,
-} from "./Start.styles";
+import React, {
+  FC,
+  useCallback,
+  useState,
+  useEffect,
+  ChangeEvent,
+} from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { FormStyled, NameContainer, FieldStyled } from "./Start.styles";
+import { ImageButton } from "@/ImageButton/ImageButton";
+import GameImg from "./assets/game.svg";
 
-export class Start extends React.Component<
-  { onSubmit: () => void },
-  { name: string }
-> {
-  render() {
-    return (
-      <Formik initialValues={{ name: "" }} onSubmit={this.props.onSubmit}>
-        <FormStyled>
-          <NameContainer>
-            <label>Привет, </label>
-            <FieldStyled type="text" name="name" />
-            <label>!</label>
-          </NameContainer>
-          <ButtonStyled type="submit">Start</ButtonStyled>
-        </FormStyled>
-      </Formik>
-    );
-  }
-}
+const Start: FC<RouteComponentProps> = ({ history }) => {
+  const [userName, setUserName] = useState<string>("");
+
+  const onSubmit = useCallback(() => {
+    localStorage.setItem("userName", userName);
+    history.push("game");
+  }, [userName]);
+
+  const onChangeName = useCallback(
+    (e: ChangeEvent) => {
+      setUserName((e.target as HTMLInputElement).value);
+    },
+    [setUserName]
+  );
+
+  useEffect(() => {
+    setUserName(localStorage.getItem("userName") ?? "");
+  }, []);
+
+  return (
+    <FormStyled name="startForm" onSubmit={onSubmit}>
+      <NameContainer>
+        <label>Привет, </label>
+        <FieldStyled
+          type="text"
+          name="userName"
+          value={userName}
+          onChange={onChangeName}
+        />
+      </NameContainer>
+      <ImageButton
+        title="Let's play!"
+        type="submit"
+        src={GameImg}
+      ></ImageButton>
+    </FormStyled>
+  );
+};
+
+export default withRouter(Start);
