@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Field } from "./Field/Field";
 import { Settings, GameSettings } from "./Settings/Settings";
 import {
@@ -23,35 +23,108 @@ import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 
+interface User {
+  name: string;
+  gender: Gender;
+  pic?: string;
+}
+
 export interface GameState {
   gameSettings: GameSettings;
   isSettingsVisible: boolean;
   isPlaying: boolean;
   isReset: boolean;
-  userName: string;
-  userGender: Gender;
-  userPic?: string;
+  user: User;
 }
 
-export class Game extends React.Component<{}, GameState> {
-  state = {
-    isPlaying: false,
-    isSettingsVisible: false,
-    isReset: false,
-    userName: "",
-    userGender: "robot" as Gender,
-    userPic: "",
-    gameSettings: {
-      height: 200,
-      width: 200,
-      rowCount: 5,
-      columnCount: 5,
-      fillingPercent: 0,
-      frequency: 1,
-    },
-  };
+const MainLayout: FC<{
+  gameSettings: GameSettings;
+  isReset: boolean;
+  afterReset: () => void;
+  onClickPlayPause: () => void;
+  userName: string;
+  isPlaying: boolean;
+}> = ({
+  gameSettings,
+  isReset,
+  afterReset,
+  onClickPlayPause,
+  userName,
+  isPlaying,
+}) => (
+  <MainContainer>
+    <FieldContainer>
+      <Field
+        key="field"
+        {...gameSettings}
+        isReset={isReset}
+        afterReset={afterReset}
+        isPlaying={isPlaying}
+      />
+    </FieldContainer>
+    <BottomContainer>
+      <ButtonsContainer>
+        <ImageButton src={BackImg} type="button" disabled={true}></ImageButton>
+        <ImageButton
+          key="playBtn"
+          src={PlayImg}
+          type="button"
+          onClick={onClickPlayPause}
+        ></ImageButton>
+        <ImageButton
+          src={ForwardImg}
+          type="button"
+          disabled={true}
+        ></ImageButton>
+      </ButtonsContainer>
+      {userName}
+    </BottomContainer>
+  </MainContainer>
+);
 
-  componentDidMount() {
+const RightSideLayout: FC<{
+  onClickSettings: () => void;
+  onReset: () => void;
+  userPic?: string;
+}> = ({ onClickSettings, onReset, userPic }) => (
+  <RightSideContainer>
+    <SettingsContainer>
+      <ImageButton
+        key="settingsBtn"
+        src={SettingsImg}
+        type="button"
+        onClick={onClickSettings}
+      ></ImageButton>
+      <ImageButton
+        key="resetBtn"
+        src={ResetImg}
+        type="button"
+        onClick={onReset}
+      ></ImageButton>
+    </SettingsContainer>
+    {userPic && <ImageStyled src={userPic}></ImageStyled>}
+  </RightSideContainer>
+);
+
+export const Game: FC = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const [isReset, setIsReset] = useState(false);
+  const [user, setUser] = useState<User>({
+    name: "",
+    gender: "robot" as Gender,
+    pic: "",
+  });
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    height: 200,
+    width: 200,
+    rowCount: 5,
+    columnCount: 5,
+    fillingPercent: 0,
+    frequency: 1,
+  });
+
+  useEffect(() => {
     const name = localStorage.getItem("userName") ?? "";
     const gender = localStorage.getItem("userGender") as Gender;
 
@@ -72,100 +145,62 @@ export class Game extends React.Component<{}, GameState> {
       ? new Avatars(sprite, { base64: true }).create(name)
       : undefined;
 
-    this.setState({
-      userName: name,
-      userGender: gender,
-      userPic: userPicSvg,
+    setUser({
+      name,
+      gender,
+      pic: userPicSvg,
     });
-  }
+  }, []);
 
-  onClickPlayPause = () => {
-    this.setState({ isPlaying: !this.state.isPlaying });
+  const onClickPlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
 
-  onClickSettings = () => {
-    this.setState({ isSettingsVisible: true });
+  const onClickSettings = () => {
+    setIsSettingsVisible(true);
   };
 
-  onReset = () => {
-    this.setState({ isReset: true });
+  const onReset = () => {
+    setIsReset(true);
   };
 
-  afterReset = () => {
-    this.setState({ isReset: false });
+  const afterReset = () => {
+    setIsReset(false);
   };
 
-  onCancelSettings = () => {
-    this.setState({ isSettingsVisible: false });
+  const onCancelSettings = () => {
+    setIsSettingsVisible(false);
   };
 
-  onSubmitSettings = (settings: GameSettings) => {
-    this.setState({
-      gameSettings: settings,
-      isSettingsVisible: false,
-    });
+  const onSubmitSettings = (settings: GameSettings) => {
+    setGameSettings(settings);
+    setIsSettingsVisible(false);
   };
 
-  render() {
-    return (
-      <>
-        <Settings
-          visible={this.state.isSettingsVisible}
-          settings={this.state.gameSettings}
-          onSubmit={this.onSubmitSettings}
-          onCancel={this.onCancelSettings}
+  return (
+    <>
+      <Settings
+        key="settingsWindow"
+        visible={isSettingsVisible}
+        settings={gameSettings}
+        onSubmit={onSubmitSettings}
+        onCancel={onCancelSettings}
+      />
+      <GameContainer>
+        <MainLayout
+          gameSettings={gameSettings}
+          isReset={isReset}
+          afterReset={afterReset}
+          onClickPlayPause={onClickPlayPause}
+          userName={user.name}
+          isPlaying={isPlaying}
         />
-        <GameContainer>
-          <MainContainer>
-            <FieldContainer>
-              <Field
-                key="field"
-                {...this.state.gameSettings}
-                isReset={this.state.isReset}
-                afterReset={this.afterReset}
-              />
-            </FieldContainer>
-            <BottomContainer>
-              <ButtonsContainer>
-                <ImageButton
-                  src={BackImg}
-                  type="button"
-                  disabled={true}
-                ></ImageButton>
-                <ImageButton
-                  key="playBtn"
-                  src={PlayImg}
-                  type="button"
-                  onClick={this.onClickPlayPause}
-                ></ImageButton>
-                <ImageButton
-                  src={ForwardImg}
-                  type="button"
-                  disabled={true}
-                ></ImageButton>
-              </ButtonsContainer>
-              {this.state.userName}
-            </BottomContainer>
-          </MainContainer>
-          <RightSideContainer>
-            <SettingsContainer>
-              <ImageButton
-                key="settingsBtn"
-                src={SettingsImg}
-                type="button"
-                onClick={this.onClickSettings}
-              ></ImageButton>
-              <ImageButton
-                key="resetBtn"
-                src={ResetImg}
-                type="button"
-                onClick={this.onReset}
-              ></ImageButton>
-            </SettingsContainer>
-            <ImageStyled src={this.state.userPic}></ImageStyled>
-          </RightSideContainer>
-        </GameContainer>
-      </>
-    );
-  }
-}
+        <RightSideLayout
+          onClickSettings={onClickSettings}
+          onReset={onReset}
+          userPic={user.pic}
+        />
+      </GameContainer>
+    </>
+  );
+};

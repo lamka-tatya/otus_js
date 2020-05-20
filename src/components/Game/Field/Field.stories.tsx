@@ -21,6 +21,8 @@ export const FieldStory: FC = () => {
       columnCount={columnsCount}
       fillingPercent={0}
       isReset={false}
+      isPlaying={false}
+      frequency={0}
       afterReset={() => {
         return void 0;
       }}

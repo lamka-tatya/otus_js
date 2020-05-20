@@ -9,39 +9,49 @@ beforeEach(() => {
 });
 
 describe("When click on settings button", () => {
-  it("should show settings form", async () => {
+  it("should show settings form", () => {
     const settingsBtn = wrapper.findWhere((x) => x.key() === "settingsBtn");
-    const settingsIsVisibleBefore = wrapper.state("isSettingsVisible");
+    const settingsIsVisibleBefore = wrapper
+      .findWhere((x) => x.key() === "settingsWindow")
+      .props().visible;
 
     settingsBtn.simulate("click");
 
-    const settingsIsVisibleAfter = wrapper.state("isSettingsVisible");
+    const settingsIsVisibleAfter = wrapper
+      .findWhere((x) => x.key() === "settingsWindow")
+      .props().visible;
     expect(settingsIsVisibleBefore).toBeFalsy();
     expect(settingsIsVisibleAfter).toBeTruthy();
   });
 });
 
 describe("When click on play button", () => {
-  it("should change play|pause state", async () => {
-    const settingsBtn = wrapper.findWhere((x) => x.key() === "playBtn");
-    const isPlayingBefore = wrapper.state("isPlaying");
+  it("should change play|pause state", () => {
+    const playBtn = wrapper.findWhere((x) => x.key() === "playBtn");
+    const gameIsPlayingBefore = wrapper
+      .findWhere((x) => x.key() === "field")
+      .props().isPlaying;
 
-    settingsBtn.simulate("click");
+    playBtn.simulate("click");
 
-    const isPlayingAfter = wrapper.state("isPlaying");
-    expect(isPlayingBefore).toBeFalsy();
-    expect(isPlayingAfter).toBeTruthy();
+    const gameIsPlayingAfter = wrapper
+      .findWhere((x) => x.key() === "field")
+      .props().isPlaying;
+    expect(gameIsPlayingBefore).toBeFalsy();
+    expect(gameIsPlayingAfter).toBeTruthy();
   });
 });
 
 describe("When click on reset button", () => {
-  it("should purge isReset state after reset", async () => {
+  it("should purge isReset state after reset", () => {
     const resetBtn = wrapper.findWhere((x) => x.key() === "resetBtn");
-    const isResetBefore = wrapper.state("isReset");
+    const isResetBefore = wrapper.findWhere((x) => x.key() === "field").props()
+      .isReset;
 
     resetBtn.simulate("click");
 
-    const isResetAfter = wrapper.state("isReset");
+    const isResetAfter = wrapper.findWhere((x) => x.key() === "field").props()
+      .isReset;
     expect(isResetBefore).toBeFalsy();
     expect(isResetAfter).toBeFalsy();
   });
