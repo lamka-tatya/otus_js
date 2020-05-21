@@ -16,12 +16,14 @@ import SettingsImg from "./assets/settings_svg.svg";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
-import ResetImg from "./assets/reset.svg";
+import LogoutImg from "./assets/reset.svg";
+import ResetImg from "./assets/recycle.svg";
 import { Gender } from "../Start/Start";
 import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 interface User {
   name: string;
@@ -64,16 +66,23 @@ const MainLayout: FC<{
     </FieldContainer>
     <BottomContainer>
       <ButtonsContainer>
-        <ImageButton src={BackImg} type="button" disabled={true}></ImageButton>
+        <ImageButton
+          src={BackImg}
+          type="button"
+          disabled={true}
+          title="Previous state"
+        ></ImageButton>
         <ImageButton
           key="playBtn"
           src={PlayImg}
           type="button"
+          title="Play"
           onClick={onClickPlayPause}
         ></ImageButton>
         <ImageButton
           src={ForwardImg}
           type="button"
+          title="Next state"
           disabled={true}
         ></ImageButton>
       </ButtonsContainer>
@@ -85,28 +94,38 @@ const MainLayout: FC<{
 const RightSideLayout: FC<{
   onClickSettings: () => void;
   onReset: () => void;
+  onLogout: () => void;
   userPic?: string;
-}> = ({ onClickSettings, onReset, userPic }) => (
+}> = ({ onClickSettings, onReset, onLogout, userPic }) => (
   <RightSideContainer>
     <SettingsContainer>
       <ImageButton
         key="settingsBtn"
         src={SettingsImg}
         type="button"
+        title="Settings"
         onClick={onClickSettings}
       ></ImageButton>
       <ImageButton
         key="resetBtn"
         src={ResetImg}
         type="button"
+        title="Reset field"
         onClick={onReset}
+      ></ImageButton>
+      <ImageButton
+        key="logoutBtn"
+        src={LogoutImg}
+        type="button"
+        title="Quit"
+        onClick={onLogout}
       ></ImageButton>
     </SettingsContainer>
     {userPic && <ImageStyled src={userPic}></ImageStyled>}
   </RightSideContainer>
 );
 
-export const Game: FC = () => {
+const Game: FC<RouteComponentProps> = ({ history }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isReset, setIsReset] = useState(false);
@@ -116,11 +135,11 @@ export const Game: FC = () => {
     pic: "",
   });
   const [gameSettings, setGameSettings] = useState<GameSettings>({
-    height: 200,
-    width: 200,
-    rowCount: 5,
-    columnCount: 5,
-    fillingPercent: 0,
+    height: 350,
+    width: 350,
+    rowCount: 10,
+    columnCount: 10,
+    fillingPercent: 30,
     frequency: 1,
   });
 
@@ -177,6 +196,10 @@ export const Game: FC = () => {
     setIsSettingsVisible(false);
   };
 
+  const onLogout = () => {
+    history.push("/");
+  };
+
   return (
     <>
       <Settings
@@ -198,9 +221,12 @@ export const Game: FC = () => {
         <RightSideLayout
           onClickSettings={onClickSettings}
           onReset={onReset}
+          onLogout={onLogout}
           userPic={user.pic}
         />
       </GameContainer>
     </>
   );
 };
+
+export default withRouter(Game);

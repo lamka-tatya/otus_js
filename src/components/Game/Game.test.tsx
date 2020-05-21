@@ -1,11 +1,16 @@
 import React from "react";
-import { Game } from "./Game";
+import Game from "./Game";
 import { mount, ReactWrapper } from "enzyme";
+import { BrowserRouter } from "react-router-dom";
 
 let wrapper: ReactWrapper;
 
 beforeEach(() => {
-  wrapper = mount(<Game />);
+  wrapper = mount(
+    <BrowserRouter>
+      <Game />
+    </BrowserRouter>
+  );
 });
 
 describe("When click on settings button", () => {

@@ -13,8 +13,10 @@ module.exports = {
 	output: {
 		filename: 'index.js',
 		path: path.resolve(__dirname, 'dist'),
+		publicPath: '/',
 	},
 	devServer: {
+		historyApiFallback: true,
 		contentBase: path.join(__dirname, 'index.html'),
 		port: 9000,
 	},
