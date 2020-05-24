@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ChangeEvent,
 } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import {
   FormStyled,
   NameContainer,
@@ -14,18 +14,22 @@ import {
 } from "./Start.styles";
 import { ImageButton } from "@/ImageButton/ImageButton";
 import GameImg from "./assets/game.svg";
+import { Gender } from "@/withLoggedInUser";
 
-export type Gender = "robot" | "male" | "female";
-
-const Start: FC<RouteComponentProps> = ({ history }) => {
-  const [userName, setUserName] = useState<string>("");
+export const Start: FC = ({}) => {
+  const [isGoGame, setIsGoGame] = useState(false);
+  const [userName, setUserName] = useState("");
   const [userGender, setUserGender] = useState<Gender>("robot");
 
-  const onSubmit = useCallback(() => {
-    localStorage.setItem("userName", userName);
-    localStorage.setItem("userGender", userGender);
-    history.push("game");
-  }, [userName, userGender]);
+  const onSubmit = useCallback(
+    (evt) => {
+      evt.preventDefault();
+      localStorage.setItem("userName", userName);
+      localStorage.setItem("userGender", userGender);
+      setIsGoGame(true);
+    },
+    [userName, userGender, setIsGoGame]
+  );
 
   const onChangeName = useCallback(
     (e: ChangeEvent) => {
@@ -43,10 +47,12 @@ const Start: FC<RouteComponentProps> = ({ history }) => {
 
   useEffect(() => {
     setUserName(localStorage.getItem("userName") ?? "");
-    setUserGender(localStorage.getItem("userGender") as Gender);
+    setUserGender((localStorage.getItem("userGender") ?? "robot") as Gender);
   }, []);
 
-  return (
+  return isGoGame ? (
+    <Redirect to="/game" push={true} />
+  ) : (
     <FormStyled name="startForm" onSubmit={onSubmit}>
       <NameContainer>
         <label>Привет, </label>
@@ -91,5 +97,3 @@ const Start: FC<RouteComponentProps> = ({ history }) => {
     </FormStyled>
   );
 };
-
-export default withRouter(Start);

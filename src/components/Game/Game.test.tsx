@@ -1,11 +1,14 @@
 import React from "react";
-import Game from "./Game";
+import { Game } from "./Game";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 
 let wrapper: ReactWrapper;
 
 beforeEach(() => {
+  localStorage.setItem("userName", "test");
+  localStorage.setItem("userGender", "robot");
+
   wrapper = mount(
     <BrowserRouter>
       <Game />

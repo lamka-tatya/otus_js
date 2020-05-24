@@ -1,14 +1,13 @@
-import { mount, render, shallow } from "enzyme";
-import { Field, CellRow } from "./Field";
+import { mount } from "enzyme";
+import { Field } from "./Field";
 import React from "react";
-import { CellState, CellModel } from "./Cell/Cell";
-import { CellStyled } from "./Cell/Cell.styles";
-import { mockComponent } from "react-dom/test-utils";
 
 describe("Field is rendered with 2 columns and 2 rows", () => {
   it("should has 4 cells", () => {
     const wrapper = mount(
       <Field
+        frequency={0}
+        isPlaying={false}
         width={200}
         height={200}
         columnCount={2}
@@ -28,6 +27,8 @@ describe("Dead cell is clicked", () => {
   it("should became alive", () => {
     const wrapper = mount(
       <Field
+        frequency={0}
+        isPlaying={false}
         width={200}
         height={200}
         columnCount={1}
@@ -53,6 +54,8 @@ describe("Field is rendered due to reset", () => {
     const mock = jest.fn();
     const wrapper = mount(
       <Field
+        frequency={0}
+        isPlaying={false}
         width={200}
         height={200}
         columnCount={1}
@@ -79,6 +82,8 @@ describe("Field is rendered with 10 columns and 10 rows", () => {
     (percent, maxAliveCount) => {
       const wrapper = mount(
         <Field
+          frequency={0}
+          isPlaying={false}
           width={200}
           height={200}
           columnCount={10}

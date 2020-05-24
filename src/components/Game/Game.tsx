@@ -18,12 +18,13 @@ import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
 import LogoutImg from "./assets/reset.svg";
 import ResetImg from "./assets/recycle.svg";
-import { Gender } from "../Start/Start";
 import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Gender, withLoggedInUser } from "@/withLoggedInUser";
+import { Redirect } from "react-router-dom";
 
 interface User {
   name: string;
@@ -125,7 +126,11 @@ const RightSideLayout: FC<{
   </RightSideContainer>
 );
 
-const Game: FC<RouteComponentProps> = ({ history }) => {
+const GameInternal: FC<{
+  userName?: string;
+  userGender?: Gender;
+  onLogout?: () => void;
+}> = ({ userName, userGender, onLogout }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isReset, setIsReset] = useState(false);
@@ -142,6 +147,8 @@ const Game: FC<RouteComponentProps> = ({ history }) => {
     fillingPercent: 30,
     frequency: 1,
   });
+
+  const [isLogout, setIsLogout] = useState(false);
 
   useEffect(() => {
     const name = localStorage.getItem("userName") ?? "";
@@ -196,11 +203,14 @@ const Game: FC<RouteComponentProps> = ({ history }) => {
     setIsSettingsVisible(false);
   };
 
-  const onLogout = () => {
-    history.push("/");
+  const onDoLogout = () => {
+    onLogout && onLogout();
+    setIsLogout(true);
   };
 
-  return (
+  return isLogout ? (
+    <Redirect to="/" push={true} />
+  ) : (
     <>
       <Settings
         key="settingsWindow"
@@ -221,7 +231,7 @@ const Game: FC<RouteComponentProps> = ({ history }) => {
         <RightSideLayout
           onClickSettings={onClickSettings}
           onReset={onReset}
-          onLogout={onLogout}
+          onLogout={onDoLogout}
           userPic={user.pic}
         />
       </GameContainer>
@@ -229,4 +239,4 @@ const Game: FC<RouteComponentProps> = ({ history }) => {
   );
 };
 
-export default withRouter(Game);
+export const Game = withLoggedInUser(GameInternal);
