@@ -1,29 +1,15 @@
 import React, { FC, useState, useEffect } from "react";
-import { Field } from "./Field/Field";
 import { Settings, GameSettings } from "./Settings/Settings";
-import {
-  GameContainer,
-  SettingsContainer,
-  MainContainer,
-  ButtonsContainer,
-  FieldContainer,
-  BottomContainer,
-  ImageStyled,
-  RightSideContainer,
-} from "./Game.styles";
-import { ImageButton } from "@/common/ImageButton/ImageButton";
-import SettingsImg from "./assets/settings_svg.svg";
-import PlayImg from "./assets/play_pause.svg";
-import BackImg from "./assets/back.svg";
-import ForwardImg from "./assets/forward.svg";
-import LogoutImg from "./assets/reset.svg";
-import ResetImg from "./assets/recycle.svg";
+import { GameContainer } from "./Game.styles";
+
 import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { Gender, withLoggedInUser } from "@/common/withLoggedInUser";
 import { Redirect } from "react-router-dom";
+import { MainLayout } from "./MainLayout";
+import { RightSideLayout } from "./RightSideLayout";
 
 interface User {
   name: string;
@@ -38,92 +24,6 @@ export interface GameState {
   isReset: boolean;
   user: User;
 }
-
-const MainLayout: FC<{
-  gameSettings: GameSettings;
-  isReset: boolean;
-  afterReset: () => void;
-  onClickPlayPause: () => void;
-  userName: string;
-  isPlaying: boolean;
-}> = ({
-  gameSettings,
-  isReset,
-  afterReset,
-  onClickPlayPause,
-  userName,
-  isPlaying,
-}) => (
-  <MainContainer>
-    <FieldContainer>
-      <Field
-        key="field"
-        {...gameSettings}
-        isReset={isReset}
-        afterReset={afterReset}
-        isPlaying={isPlaying}
-      />
-    </FieldContainer>
-    <BottomContainer>
-      <ButtonsContainer>
-        <ImageButton
-          src={BackImg}
-          type="button"
-          disabled={true}
-          title="Previous state"
-        ></ImageButton>
-        <ImageButton
-          key="playBtn"
-          src={PlayImg}
-          type="button"
-          title="Play"
-          onClick={onClickPlayPause}
-        ></ImageButton>
-        <ImageButton
-          src={ForwardImg}
-          type="button"
-          title="Next state"
-          disabled={true}
-        ></ImageButton>
-      </ButtonsContainer>
-      {userName}
-    </BottomContainer>
-  </MainContainer>
-);
-
-const RightSideLayout: FC<{
-  onClickSettings: () => void;
-  onReset: () => void;
-  onLogout: () => void;
-  userPic?: string;
-}> = ({ onClickSettings, onReset, onLogout, userPic }) => (
-  <RightSideContainer>
-    <SettingsContainer>
-      <ImageButton
-        key="settingsBtn"
-        src={SettingsImg}
-        type="button"
-        title="Settings"
-        onClick={onClickSettings}
-      ></ImageButton>
-      <ImageButton
-        key="resetBtn"
-        src={ResetImg}
-        type="button"
-        title="Reset field"
-        onClick={onReset}
-      ></ImageButton>
-      <ImageButton
-        key="logoutBtn"
-        src={LogoutImg}
-        type="button"
-        title="Quit"
-        onClick={onLogout}
-      ></ImageButton>
-    </SettingsContainer>
-    {userPic && <ImageStyled src={userPic}></ImageStyled>}
-  </RightSideContainer>
-);
 
 const GameInternal: FC<{
   userName?: string;
