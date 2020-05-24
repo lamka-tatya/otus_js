@@ -50,11 +50,8 @@ const GameInternal: FC<{
   const [isLogout, setIsLogout] = useState(false);
 
   useEffect(() => {
-    const name = localStorage.getItem("userName") ?? "";
-    const gender = localStorage.getItem("userGender") as Gender;
-
     let sprite: SpriteCollection | undefined = undefined;
-    switch (gender) {
+    switch (userGender) {
       case "robot":
         sprite = spritesBottts;
         break;
@@ -67,15 +64,15 @@ const GameInternal: FC<{
     }
 
     const userPicSvg = !!sprite
-      ? new Avatars(sprite, { base64: true }).create(name)
+      ? new Avatars(sprite, { base64: true }).create(userName ?? "")
       : undefined;
 
     setUser({
-      name,
-      gender,
+      name: userName ?? "",
+      gender: userGender!,
       pic: userPicSvg,
     });
-  }, []);
+  }, [userName, userGender]);
 
   const onClickPlayPause = () => {
     setIsPlaying(!isPlaying);

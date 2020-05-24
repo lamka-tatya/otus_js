@@ -1,7 +1,11 @@
 import React, { FC } from "react";
 import { GameSettings } from "./Settings/Settings";
-import { MainContainer, BottomContainer } from "./Game.styles";
-import { FieldContainer, ButtonsContainer } from "./Settings/Settings.styles";
+import {
+  MainContainer,
+  BottomContainer,
+  ButtonsContainer,
+  FieldContainer,
+} from "./Game.styles";
 import { Field } from "./Field/Field";
 import { ImageButton } from "@/common/ImageButton/ImageButton";
 import PlayImg from "./assets/play_pause.svg";
