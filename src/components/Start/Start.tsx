@@ -5,16 +5,16 @@ import React, {
   useEffect,
   ChangeEvent,
 } from "react";
-import { RouteComponentProps, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   FormStyled,
   NameContainer,
   FieldStyled,
   GenderContainer,
 } from "./Start.styles";
-import { ImageButton } from "@/ImageButton/ImageButton";
+import { ImageButton } from "@/common/ImageButton/ImageButton";
 import GameImg from "./assets/game.svg";
-import { Gender } from "@/withLoggedInUser";
+import { Gender } from "@/common/withLoggedInUser";
 
 export const Start: FC = ({}) => {
   const [isGoGame, setIsGoGame] = useState(false);

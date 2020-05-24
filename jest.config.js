@@ -10,6 +10,6 @@ module.exports = {
   },
   moduleNameMapper: {
 	"\\.(css|less)$": "<rootDir>/styleMock.js",
-	"^@/(.*)$": "<rootDir>/src/components/common/$1",
+	"^@/(.*)$": "<rootDir>/src/components/$1",
   },
 };

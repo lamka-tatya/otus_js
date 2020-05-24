@@ -38,7 +38,7 @@ module.exports = {
 		config.resolve.extensions.push('.ts', '.tsx', '.svg');
 		config.resolve.alias = {
 			...config.resolve.alias,
-			"@": path.resolve(__dirname, "../src/components/common"),
+			"@": path.resolve(__dirname, "../src/components"),
 		  };
 		return config;
 	},

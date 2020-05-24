@@ -11,7 +11,7 @@ import {
   ImageStyled,
   RightSideContainer,
 } from "./Game.styles";
-import { ImageButton } from "@/ImageButton/ImageButton";
+import { ImageButton } from "@/common/ImageButton/ImageButton";
 import SettingsImg from "./assets/settings_svg.svg";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
@@ -22,8 +22,7 @@ import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Gender, withLoggedInUser } from "@/withLoggedInUser";
+import { Gender, withLoggedInUser } from "@/common/withLoggedInUser";
 import { Redirect } from "react-router-dom";
 
 interface User {
