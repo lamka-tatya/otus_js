@@ -1,6 +1,7 @@
 import { Start } from "./Start";
 import React, { FC } from "react";
 import { action } from "@storybook/addon-actions";
+import { BrowserRouter } from "react-router-dom";
 
 export default {
   title: "Start",
@@ -8,5 +9,9 @@ export default {
 };
 
 export const StartStory: FC = () => {
-  return <Start onSubmit={action("Submit")} />;
+  return (
+    <BrowserRouter>
+      <Start />
+    </BrowserRouter>
+  );
 };

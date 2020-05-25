@@ -8,6 +8,8 @@ export interface FieldProps {
   fillingPercent: number;
   height: number;
   width: number;
+  frequency: number;
+  isPlaying: boolean;
   isReset: boolean;
   afterReset: () => void;
 }
@@ -62,6 +64,8 @@ export const Field: FC<FieldProps> = ({
   fillingPercent,
   height,
   width,
+  frequency,
+  isPlaying,
   isReset,
   afterReset,
 }) => {

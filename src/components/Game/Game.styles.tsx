@@ -25,18 +25,36 @@ export const FieldContainer = styled.div`
   box-shadow: 0px 0px 10px 18px #f1f1f1;
 `;
 
-export const SettingsContainer = styled.div`
+export const RightSideContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   background-color: #ece8e8;
   width: 80px;
+`;
+
+export const SettingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const BottomContainer = styled.div`
+  display: flex;
+  height: 80px;
+  background-color: #ece8e8;
+  justify-content: space-between;
+  align-items: center;
+  font-family: MONOSPACE;
+  font-size: 1.5rem;
 `;
 
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-  height: 80px;
-  background-color: #ece8e8;
+`;
+
+export const ImageStyled = styled.img`
+  height: 60px;
+  margin-bottom: 20px;
 `;

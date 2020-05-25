@@ -7,14 +7,16 @@ module.exports = {
 	resolve: {
 		extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
 		alias: {
-			"@": path.resolve(__dirname, "src/components/common"),
+			"@": path.resolve(__dirname, "src/components"),
 		  },
 	},
 	output: {
 		filename: 'index.js',
 		path: path.resolve(__dirname, 'dist'),
+		publicPath: '/',
 	},
 	devServer: {
+		historyApiFallback: true,
 		contentBase: path.join(__dirname, 'index.html'),
 		port: 9000,
 	},

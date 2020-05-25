@@ -20,6 +20,12 @@ export const FieldStory: FC = () => {
       rowCount={rowsCount}
       columnCount={columnsCount}
       fillingPercent={0}
+      isReset={false}
+      isPlaying={false}
+      frequency={0}
+      afterReset={() => {
+        return void 0;
+      }}
     />
   );
 };

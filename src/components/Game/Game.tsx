@@ -1,123 +1,116 @@
-import React, { FC } from "react";
-import { Field } from "./Field/Field";
+import React, { FC, useState, useEffect } from "react";
 import { Settings, GameSettings } from "./Settings/Settings";
-import {
-  GameContainer,
-  SettingsContainer,
-  MainContainer,
-  ButtonsContainer,
-  FieldContainer,
-} from "./Game.styles";
-import { ImageButton } from "@/ImageButton/ImageButton";
-import SettingsImg from "./assets/settings_svg.svg";
-import PlayImg from "./assets/play_pause.svg";
-import BackImg from "./assets/back.svg";
-import ForwardImg from "./assets/forward.svg";
-import ResetImg from "./assets/reset.svg";
+import { GameContainer } from "./Game.styles";
 
-export interface GameState {
-  gameSettings: GameSettings;
-  isSettingsVisible: boolean;
-  isPlaying: boolean;
-  isReset: boolean;
-}
+import Avatars, { SpriteCollection } from "@dicebear/avatars";
+import { default as spritesMale } from "@dicebear/avatars-male-sprites";
+import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
+import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
+import { withLoggedInUser } from "@/common/withLoggedInUser";
+import { Redirect } from "react-router-dom";
+import { MainLayout } from "./MainLayout";
+import { RightSideLayout } from "./RightSideLayout";
+import { User } from "@/common/authService";
 
-export class Game extends React.Component<{}, GameState> {
-  state = {
-    isPlaying: false,
-    isSettingsVisible: false,
-    isReset: false,
-    gameSettings: {
-      height: 200,
-      width: 200,
-      rowCount: 5,
-      columnCount: 5,
-      fillingPercent: 0,
-      frequency: 1,
-    },
+const GameInternal: FC<{
+  user?: User;
+  onLogout?: () => void;
+}> = ({ user, onLogout }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const [isReset, setIsReset] = useState(false);
+  const [userpic, setUserpic] = useState("");
+  const [gameSettings, setGameSettings] = useState<GameSettings>({
+    height: 350,
+    width: 350,
+    rowCount: 10,
+    columnCount: 10,
+    fillingPercent: 30,
+    frequency: 1,
+  });
+
+  const [isLogout, setIsLogout] = useState(false);
+
+  useEffect(() => {
+    let sprite: SpriteCollection | undefined = undefined;
+    switch (user?.gender) {
+      case "robot":
+        sprite = spritesBottts;
+        break;
+      case "male":
+        sprite = spritesMale;
+        break;
+      case "female":
+        sprite = spritesFemale;
+        break;
+    }
+
+    const userPicSvg = !!sprite
+      ? new Avatars(sprite, { base64: true }).create(user?.name ?? "")
+      : "";
+
+    setUserpic(userPicSvg);
+  }, [user, setUserpic]);
+
+  const onClickPlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
 
-  onClickPlayPause = () => {
-    this.setState({ isPlaying: !this.state.isPlaying });
+  const onClickSettings = () => {
+    setIsSettingsVisible(true);
   };
 
-  onClickSettings = () => {
-    this.setState({ isSettingsVisible: true });
+  const onReset = () => {
+    setIsReset(true);
   };
 
-  onReset = () => {
-    this.setState({ isReset: true });
+  const afterReset = () => {
+    setIsReset(false);
   };
 
-  afterReset = () => {
-    this.setState({ isReset: false });
+  const onCancelSettings = () => {
+    setIsSettingsVisible(false);
   };
 
-  onCancelSettings = () => {
-    this.setState({ isSettingsVisible: false });
+  const onSubmitSettings = (settings: GameSettings) => {
+    setGameSettings(settings);
+    setIsSettingsVisible(false);
   };
 
-  onSubmitSettings = (settings: GameSettings) => {
-    this.setState({
-      gameSettings: settings,
-      isSettingsVisible: false,
-    });
+  const onDoLogout = () => {
+    onLogout && onLogout();
+    setIsLogout(true);
   };
 
-  render() {
-    return (
-      <>
-        <Settings
-          visible={this.state.isSettingsVisible}
-          settings={this.state.gameSettings}
-          onSubmit={this.onSubmitSettings}
-          onCancel={this.onCancelSettings}
+  return isLogout ? (
+    <Redirect to="/" push={true} />
+  ) : (
+    <>
+      <Settings
+        key="settingsWindow"
+        visible={isSettingsVisible}
+        settings={gameSettings}
+        onSubmit={onSubmitSettings}
+        onCancel={onCancelSettings}
+      />
+      <GameContainer>
+        <MainLayout
+          gameSettings={gameSettings}
+          isReset={isReset}
+          afterReset={afterReset}
+          onClickPlayPause={onClickPlayPause}
+          userName={user?.name ?? ""}
+          isPlaying={isPlaying}
         />
-        <GameContainer>
-          <MainContainer>
-            <FieldContainer>
-              <Field
-                key="field"
-                {...this.state.gameSettings}
-                isReset={this.state.isReset}
-                afterReset={this.afterReset}
-              />
-            </FieldContainer>
-            <ButtonsContainer>
-              <ImageButton
-                src={BackImg}
-                type="button"
-                disabled={true}
-              ></ImageButton>
-              <ImageButton
-                key="playBtn"
-                src={PlayImg}
-                type="button"
-                onClick={this.onClickPlayPause}
-              ></ImageButton>
-              <ImageButton
-                src={ForwardImg}
-                type="button"
-                disabled={true}
-              ></ImageButton>
-            </ButtonsContainer>
-          </MainContainer>
-          <SettingsContainer>
-            <ImageButton
-              key="settingsBtn"
-              src={SettingsImg}
-              type="button"
-              onClick={this.onClickSettings}
-            ></ImageButton>
-            <ImageButton
-              key="resetBtn"
-              src={ResetImg}
-              type="button"
-              onClick={this.onReset}
-            ></ImageButton>
-          </SettingsContainer>
-        </GameContainer>
-      </>
-    );
-  }
-}
+        <RightSideLayout
+          onClickSettings={onClickSettings}
+          onReset={onReset}
+          onLogout={onDoLogout}
+          userPic={userpic}
+        />
+      </GameContainer>
+    </>
+  );
+};
+
+export const Game = withLoggedInUser(GameInternal);

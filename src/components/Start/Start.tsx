@@ -1,28 +1,99 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
+import React, {
+  FC,
+  useCallback,
+  useState,
+  useEffect,
+  ChangeEvent,
+} from "react";
+import { Redirect } from "react-router-dom";
 import {
   FormStyled,
   NameContainer,
   FieldStyled,
-  ButtonStyled,
+  GenderContainer,
 } from "./Start.styles";
+import { ImageButton } from "@/common/ImageButton/ImageButton";
+import GameImg from "./assets/game.svg";
+import authService, { User, Gender } from "@/common/authService";
 
-export class Start extends React.Component<
-  { onSubmit: () => void },
-  { name: string }
-> {
-  render() {
-    return (
-      <Formik initialValues={{ name: "" }} onSubmit={this.props.onSubmit}>
-        <FormStyled>
-          <NameContainer>
-            <label>Привет, </label>
-            <FieldStyled type="text" name="name" />
-            <label>!</label>
-          </NameContainer>
-          <ButtonStyled type="submit">Start</ButtonStyled>
-        </FormStyled>
-      </Formik>
-    );
-  }
-}
+export const Start: FC = ({}) => {
+  const [isGoGame, setIsGoGame] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userGender, setUserGender] = useState<Gender>("robot");
+
+  const onSubmit = useCallback(
+    (evt) => {
+      evt.preventDefault();
+      authService.login({ name: userName, gender: userGender } as User);
+      setIsGoGame(true);
+    },
+    [userName, userGender, setIsGoGame]
+  );
+
+  const onChangeName = useCallback(
+    (e: ChangeEvent) => {
+      setUserName((e.target as any).value);
+    },
+    [setUserName]
+  );
+
+  const onChangeGender = useCallback(
+    (e: ChangeEvent) => {
+      setUserGender((e.target as any).value as Gender);
+    },
+    [setUserGender]
+  );
+
+  useEffect(() => {
+    const loggedUser = authService.getLoggedInUser();
+    setUserName(loggedUser?.name ?? "");
+    setUserGender(loggedUser?.gender ?? "robot");
+  }, []);
+
+  return isGoGame ? (
+    <Redirect to="/game" push={true} />
+  ) : (
+    <FormStyled name="startForm" onSubmit={onSubmit}>
+      <NameContainer>
+        <label>Привет, </label>
+        <FieldStyled
+          type="text"
+          name="userName"
+          value={userName}
+          onChange={onChangeName}
+        />
+      </NameContainer>
+      <GenderContainer>
+        <input
+          type="radio"
+          checked={userGender === "male"}
+          value="male"
+          name="gender"
+          onChange={onChangeGender}
+        />{" "}
+        М
+        <input
+          type="radio"
+          checked={userGender === "female"}
+          value="female"
+          name="gender"
+          onChange={onChangeGender}
+        />{" "}
+        Ж
+        <input
+          type="radio"
+          checked={userGender === "robot"}
+          value="robot"
+          name="gender"
+          onChange={onChangeGender}
+        />{" "}
+        Нет
+      </GenderContainer>
+      <ImageButton
+        title="Let's play!"
+        type="submit"
+        src={GameImg}
+      ></ImageButton>
+    </FormStyled>
+  );
+};
