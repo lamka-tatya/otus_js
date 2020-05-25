@@ -14,7 +14,7 @@ import {
 } from "./Start.styles";
 import { ImageButton } from "@/common/ImageButton/ImageButton";
 import GameImg from "./assets/game.svg";
-import { Gender } from "@/common/withLoggedInUser";
+import authService, { User, Gender } from "@/common/authService";
 
 export const Start: FC = ({}) => {
   const [isGoGame, setIsGoGame] = useState(false);
@@ -24,8 +24,7 @@ export const Start: FC = ({}) => {
   const onSubmit = useCallback(
     (evt) => {
       evt.preventDefault();
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userGender", userGender);
+      authService.login({ name: userName, gender: userGender } as User);
       setIsGoGame(true);
     },
     [userName, userGender, setIsGoGame]
@@ -46,8 +45,9 @@ export const Start: FC = ({}) => {
   );
 
   useEffect(() => {
-    setUserName(localStorage.getItem("userName") ?? "");
-    setUserGender((localStorage.getItem("userGender") ?? "robot") as Gender);
+    const loggedUser = authService.getLoggedInUser();
+    setUserName(loggedUser?.name ?? "");
+    setUserGender(loggedUser?.gender ?? "robot");
   }, []);
 
   return isGoGame ? (

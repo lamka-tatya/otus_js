@@ -6,38 +6,20 @@ import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
-import { Gender, withLoggedInUser } from "@/common/withLoggedInUser";
+import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
-
-interface User {
-  name: string;
-  gender: Gender;
-  pic?: string;
-}
-
-export interface GameState {
-  gameSettings: GameSettings;
-  isSettingsVisible: boolean;
-  isPlaying: boolean;
-  isReset: boolean;
-  user: User;
-}
+import { User } from "@/common/authService";
 
 const GameInternal: FC<{
-  userName?: string;
-  userGender?: Gender;
+  user?: User;
   onLogout?: () => void;
-}> = ({ userName, userGender, onLogout }) => {
+}> = ({ user, onLogout }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isReset, setIsReset] = useState(false);
-  const [user, setUser] = useState<User>({
-    name: "",
-    gender: "robot" as Gender,
-    pic: "",
-  });
+  const [userpic, setUserpic] = useState("");
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     height: 350,
     width: 350,
@@ -51,7 +33,7 @@ const GameInternal: FC<{
 
   useEffect(() => {
     let sprite: SpriteCollection | undefined = undefined;
-    switch (userGender) {
+    switch (user?.gender) {
       case "robot":
         sprite = spritesBottts;
         break;
@@ -64,15 +46,11 @@ const GameInternal: FC<{
     }
 
     const userPicSvg = !!sprite
-      ? new Avatars(sprite, { base64: true }).create(userName ?? "")
-      : undefined;
+      ? new Avatars(sprite, { base64: true }).create(user?.name ?? "")
+      : "";
 
-    setUser({
-      name: userName ?? "",
-      gender: userGender!,
-      pic: userPicSvg,
-    });
-  }, [userName, userGender]);
+    setUserpic(userPicSvg);
+  }, [user, setUserpic]);
 
   const onClickPlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -121,14 +99,14 @@ const GameInternal: FC<{
           isReset={isReset}
           afterReset={afterReset}
           onClickPlayPause={onClickPlayPause}
-          userName={user.name}
+          userName={user?.name ?? ""}
           isPlaying={isPlaying}
         />
         <RightSideLayout
           onClickSettings={onClickSettings}
           onReset={onReset}
           onLogout={onDoLogout}
-          userPic={user.pic}
+          userPic={userpic}
         />
       </GameContainer>
     </>

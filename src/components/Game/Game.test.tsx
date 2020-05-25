@@ -2,12 +2,12 @@ import React from "react";
 import { Game } from "./Game";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
+import localStorageAuth from "@/common/authService";
 
 let wrapper: ReactWrapper;
 
 beforeEach(() => {
-  localStorage.setItem("userName", "test");
-  localStorage.setItem("userGender", "robot");
+  localStorageAuth.login({ name: "test", gender: "robot" });
 
   wrapper = mount(
     <BrowserRouter>
