@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ComponentType, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import authService, { User } from "@/common/authService";
+import localStorageAuth from "@services/authService";
 
 export const withLoggedInUser = <Props extends object>(
   Comp: ComponentType<Props>
@@ -9,11 +9,11 @@ export const withLoggedInUser = <Props extends object>(
   const [user, setUser] = useState<User>();
 
   const onLogout = useCallback(() => {
-    authService.logout();
+    localStorageAuth.logout();
   }, []);
 
   useEffect(() => {
-    const loggedUser = authService.getLoggedInUser();
+    const loggedUser = localStorageAuth.getLoggedInUser();
     setUser(loggedUser);
     setIsChecking(false);
   }, []);

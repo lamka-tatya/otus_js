@@ -1,4 +1,5 @@
-import localStorageAuth, { User } from "./authService";
+import localStorageAuth from ".";
+import { User } from "@/redux/state";
 
 describe("When user is logged in", () => {
   beforeEach(() => {

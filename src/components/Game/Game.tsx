@@ -6,11 +6,11 @@ import Avatars, { SpriteCollection } from "@dicebear/avatars";
 import { default as spritesMale } from "@dicebear/avatars-male-sprites";
 import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
-import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
 import { User } from "@/common/authService";
+import { withLoggedInUser } from "@/common/withLoggedInUser";
 
 const GameInternal: FC<{
   user?: User;

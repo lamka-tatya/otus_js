@@ -8,6 +8,7 @@ module.exports = {
 		extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
 		alias: {
 			"@": path.resolve(__dirname, "src/components"),
+			"@services": path.resolve(__dirname, "src/services"),
 		  },
 	},
 	output: {

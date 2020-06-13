@@ -11,5 +11,6 @@ module.exports = {
   moduleNameMapper: {
 	"\\.(css|less)$": "<rootDir>/jest/styleMock.js",
 	"^@/(.*)$": "<rootDir>/src/components/$1",
+	"^@services/(.*)$": "<rootDir>/src/services/$1",
   },
 };

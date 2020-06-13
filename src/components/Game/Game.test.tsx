@@ -2,7 +2,7 @@ import React from "react";
 import { Game } from "./Game";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
-import localStorageAuth from "@/common/authService";
+import localStorageAuth from "@services/authService";
 
 let wrapper: ReactWrapper;
 

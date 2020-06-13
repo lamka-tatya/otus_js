@@ -8,6 +8,6 @@ describe("When render application", () => {
 
     const settingsForm = wrapper.findWhere((x) => x.key() === "settingsForm");
 
-    expect(settingsForm.isEmpty()).toBeTruthy();
+    expect(settingsForm.exists()).toBeFalsy();
   });
 });

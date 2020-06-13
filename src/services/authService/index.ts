@@ -1,9 +1,4 @@
-export type Gender = "robot" | "male" | "female";
-
-export interface User {
-  name: string;
-  gender: Gender;
-}
+import { User, Gender } from "@/redux/state";
 
 interface AuthService {
   login: (user: User) => void;
