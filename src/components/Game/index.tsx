@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Settings, GameSettings } from "./Settings/Settings";
+import { Settings } from "./Settings";
 import { GameContainer } from "./Game.styles";
 
 import Avatars, { SpriteCollection } from "@dicebear/avatars";
@@ -9,7 +9,7 @@ import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
-import { User } from "@/common/authService";
+import { User, GameSettings } from "@/redux/state";
 import { withLoggedInUser } from "@/common/withLoggedInUser";
 
 const GameInternal: FC<{

@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import React from "react";
-import { App } from "./App";
+import { App } from ".";
 
 describe("When render application", () => {
   it("should not show settings", () => {

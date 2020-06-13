@@ -1,14 +1,6 @@
 import React, { Component, PureComponent } from "react";
 import { CellStyled } from "./Cell.styles";
-
-export enum CellState {
-  alive = "alive",
-  dead = "dead",
-}
-
-export interface CellModel {
-  cellState: CellState;
-}
+import { CellModel, CellState } from "@/redux/state";
 
 export interface CellProps {
   cell: CellModel;
@@ -23,7 +15,7 @@ interface CellComponentState {
 export class Cell extends React.Component<CellProps, CellComponentState> {
   state = {
     cellState: this.props.cell.cellState,
-    newCellState: false,
+    newCellState: this.props.cell.isNewState,
   };
 
   componentDidUpdate(prevProps: CellProps) {

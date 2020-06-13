@@ -12,9 +12,9 @@ import {
   FieldStyled,
   GenderContainer,
 } from "./Start.styles";
-import { ImageButton } from "@/common/ImageButton/ImageButton";
+import { ImageButton } from "@/common/ImageButton";
 import GameImg from "./assets/game.svg";
-import authService, { User, Gender } from "@/common/authService";
+import { Gender, User } from "@/redux/state";
 import localStorageAuth from "@services/authService";
 
 export const Start: FC = ({}) => {

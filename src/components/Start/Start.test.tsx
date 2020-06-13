@@ -1,5 +1,5 @@
 import React from "react";
-import { Start } from "./Start";
+import { Start } from ".";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 

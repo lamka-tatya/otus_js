@@ -1,4 +1,4 @@
-import { Settings } from "./Settings";
+import { Settings } from ".";
 import React, { FC } from "react";
 import { action } from "@storybook/addon-actions";
 

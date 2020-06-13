@@ -2,6 +2,7 @@ import { Cell, CellState, CellModel } from "./Cell";
 import React, { FC } from "react";
 import { withKnobs, select } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
+import { Cell } from ".";
 
 export default {
   title: "Cell",

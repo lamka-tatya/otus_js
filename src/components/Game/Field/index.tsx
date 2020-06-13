@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
-import { Cell, CellState, CellModel } from "./Cell/Cell";
+import { Cell } from "./Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
+import { CellRow, CellState, CellModel } from "@/redux/state";
 
 export interface FieldProps {
   rowCount: number;
@@ -12,17 +13,6 @@ export interface FieldProps {
   isPlaying: boolean;
   isReset: boolean;
   afterReset: () => void;
-}
-
-export interface CellRow {
-  cells: CellModel[];
-}
-
-export interface FieldState {
-  rowCount: number;
-  columnCount: number;
-  fillingPercent: number;
-  rows: CellRow[];
 }
 
 const prepareCells: (
@@ -50,6 +40,7 @@ const prepareCells: (
 
       rowCells.push({
         cellState,
+        isNewState: false,
       });
     }
     result.push({ cells: rowCells });
@@ -97,7 +88,7 @@ export const Field: FC<FieldProps> = ({
           {row.cells.map((cell, colIndex) => (
             <Cell
               key={colIndex}
-              cell={{ cellState: cell.cellState }}
+              cell={{ cellState: cell.cellState, isNewState: false }}
               onClick={() => onCellClick(colIndex, rowIndex)}
             />
           ))}

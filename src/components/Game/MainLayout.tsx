@@ -6,8 +6,8 @@ import {
   ButtonsContainer,
   FieldContainer,
 } from "./Game.styles";
-import { Field } from "./Field/Field";
-import { ImageButton } from "@/common/ImageButton/ImageButton";
+import { Field } from "./Field";
+import { ImageButton } from "@/common/ImageButton";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";

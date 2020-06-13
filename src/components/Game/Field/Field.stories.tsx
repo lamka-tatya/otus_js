@@ -1,4 +1,4 @@
-import { Field } from "./Field";
+import { Field } from ".";
 import React, { FC } from "react";
 import { withKnobs, number } from "@storybook/addon-knobs";
 

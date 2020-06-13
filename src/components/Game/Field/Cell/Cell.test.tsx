@@ -1,5 +1,6 @@
 import { shallow } from "enzyme";
 import { Cell, CellState, CellModel } from "./Cell";
+import { Cell } from ".";
 import React from "react";
 
 describe("Cell is rendered", () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Game } from "./Game";
+import { Game } from ".";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 import localStorageAuth from "@services/authService";

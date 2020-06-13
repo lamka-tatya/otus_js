@@ -16,16 +16,8 @@ import VArrowsImg from "./assets/v_arrows_svg.svg";
 import HArrowsImg from "./assets/h_arrows_svg.svg";
 import CancelImg from "./assets/cancel_svg.svg";
 import OkImg from "./assets/ok_svg.svg";
-import { ImageButton } from "@/common/ImageButton/ImageButton";
-
-export interface GameSettings {
-  height: number;
-  width: number;
-  rowCount: number;
-  columnCount: number;
-  fillingPercent: number;
-  frequency: number;
-}
+import { GameSettings } from "@/redux/state";
+import { ImageButton } from "@/common/ImageButton";
 
 const XYSettingsSet: FC<{
   legend: string;

@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import { Field } from "./Field";
+import { Field } from ".";
 import React from "react";
 
 describe("Field is rendered with 2 columns and 2 rows", () => {

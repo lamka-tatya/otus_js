@@ -1,4 +1,4 @@
-import { Start } from "./Start";
+import { Start } from ".";
 import React, { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
 

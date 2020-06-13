@@ -1,4 +1,4 @@
-import { ImageButton } from "@/common/ImageButton/ImageButton";
+import { ImageButton } from "@/common/ImageButton";
 import React, { FC } from "react";
 import {
   RightSideContainer,
