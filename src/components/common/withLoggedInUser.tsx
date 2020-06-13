@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ComponentType, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import localStorageAuth from "@services/authService";
+import { User } from "@/redux/state";
 
 export const withLoggedInUser = <Props extends object>(
   Comp: ComponentType<Props>

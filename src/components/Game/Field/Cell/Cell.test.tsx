@@ -1,7 +1,7 @@
 import { shallow } from "enzyme";
-import { Cell, CellState, CellModel } from "./Cell";
 import { Cell } from ".";
 import React from "react";
+import { CellModel, CellState } from "@/redux/state";
 
 describe("Cell is rendered", () => {
   it.each`
@@ -11,6 +11,7 @@ describe("Cell is rendered", () => {
   `(`when cell is $stateName`, (state) => {
     const cellModel: CellModel = {
       cellState: state,
+      isNewState: false,
     };
     const cell = shallow(<Cell cell={cellModel} onClick={jest.fn()} />);
 
@@ -23,6 +24,7 @@ describe("When click on cell", () => {
     const mock = jest.fn();
     const cellModel: CellModel = {
       cellState: CellState.dead,
+      isNewState: false,
     };
     const wrapper = shallow(<Cell cell={cellModel} onClick={mock} />);
 

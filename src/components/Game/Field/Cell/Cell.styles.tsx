@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
-import { CellState } from "./Cell";
 import { SerializedStyles } from "@emotion/serialize";
+import { CellState } from "@/redux/state";
 
 const aliveStyle = css`
   border-color: green;
