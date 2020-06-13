@@ -9,8 +9,9 @@ import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
-import { User, GameSettings } from "@/redux/state";
+import { GameSettingsState } from "@/redux/state";
 import { withLoggedInUser } from "@/common/withLoggedInUser";
+import { User } from "@models/User";
 
 const GameInternal: FC<{
   user?: User;
@@ -20,7 +21,7 @@ const GameInternal: FC<{
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [userpic, setUserpic] = useState("");
-  const [gameSettings, setGameSettings] = useState<GameSettings>({
+  const [gameSettings, setGameSettings] = useState<GameSettingsState>({
     height: 350,
     width: 350,
     rowCount: 10,
@@ -72,7 +73,7 @@ const GameInternal: FC<{
     setIsSettingsVisible(false);
   };
 
-  const onSubmitSettings = (settings: GameSettings) => {
+  const onSubmitSettings = (settings: GameSettingsState) => {
     setGameSettings(settings);
     setIsSettingsVisible(false);
   };

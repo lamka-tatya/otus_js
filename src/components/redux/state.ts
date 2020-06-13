@@ -1,11 +1,7 @@
-export type Gender = "robot" | "male" | "female";
+import { User } from "@models/User";
+import { CellRow } from "@models/CellRow";
 
-export interface User {
-  name: string;
-  gender: Gender;
-}
-
-export interface GameSettings {
+export interface GameSettingsState {
   height: number;
   width: number;
   rowCount: number;
@@ -13,36 +9,27 @@ export interface GameSettings {
   fillingPercent: number;
   frequency: number;
 }
+export const initGameSettingsState: GameSettingsState = {
+  height: 350,
+  width: 350,
+  rowCount: 10,
+  columnCount: 10,
+  fillingPercent: 30,
+  frequency: 1,
+};
 
-export enum CellState {
-  alive = "alive",
-  dead = "dead",
+export interface FieldState {
+  rows: CellRow[];
 }
-
-export interface CellModel {
-  cellState: CellState;
-  isNewState: boolean;
-}
-
-export interface CellRow {
-  cells: CellModel[];
-}
+export const initFieldState: FieldState = { rows: [] };
 
 export interface GameState {
   user?: User;
-  gameSettings: GameSettings;
-  field: CellRow[];
+  gameSettings: GameSettingsState;
+  field: FieldState;
 }
-
 export const initGameState: GameState = {
   user: undefined,
-  gameSettings: {
-    height: 350,
-    width: 350,
-    rowCount: 10,
-    columnCount: 10,
-    fillingPercent: 30,
-    frequency: 1,
-  },
-  field: [],
+  gameSettings: initGameSettingsState,
+  field: initFieldState,
 };

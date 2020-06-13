@@ -10,10 +10,10 @@ import { ImageButton } from "@/common/ImageButton";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
-import { GameSettings } from "@/redux/state";
+import { GameSettingsState } from "@/redux/state";
 
 export const MainLayout: FC<{
-  gameSettings: GameSettings;
+  gameSettings: GameSettingsState;
   isReset: boolean;
   afterReset: () => void;
   onClickPlayPause: () => void;

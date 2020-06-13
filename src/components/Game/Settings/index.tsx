@@ -16,7 +16,7 @@ import VArrowsImg from "./assets/v_arrows_svg.svg";
 import HArrowsImg from "./assets/h_arrows_svg.svg";
 import CancelImg from "./assets/cancel_svg.svg";
 import OkImg from "./assets/ok_svg.svg";
-import { GameSettings } from "@/redux/state";
+import { GameSettingsState } from "@/redux/state";
 import { ImageButton } from "@/common/ImageButton";
 
 const XYSettingsSet: FC<{
@@ -48,8 +48,8 @@ const Overlay: FC = ({ children }) => (
 
 export const Settings: FC<{
   visible: boolean;
-  settings: GameSettings;
-  onSubmit: (s: GameSettings) => void;
+  settings: GameSettingsState;
+  onSubmit: (s: GameSettingsState) => void;
   onCancel: () => void;
 }> = ({ visible, settings, onSubmit, onCancel }) => {
   return visible ? (

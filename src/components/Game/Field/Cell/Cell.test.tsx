@@ -1,7 +1,8 @@
 import { shallow } from "enzyme";
 import { Cell } from ".";
 import React from "react";
-import { CellModel, CellState } from "@/redux/state";
+import { CellModel } from "@models/CellModel";
+import { CellState } from "@models/CellState";
 
 describe("Cell is rendered", () => {
   it.each`

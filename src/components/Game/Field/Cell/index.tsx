@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from "react";
 import { CellStyled } from "./Cell.styles";
-import { CellModel, CellState } from "@/redux/state";
+import { CellState } from "@models/CellState";
+import { CellModel } from "@models/CellModel";
 
 export interface CellProps {
   cell: CellModel;

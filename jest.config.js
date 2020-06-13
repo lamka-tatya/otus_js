@@ -12,5 +12,6 @@ module.exports = {
 	"\\.(css|less)$": "<rootDir>/jest/styleMock.js",
 	"^@/(.*)$": "<rootDir>/src/components/$1",
 	"^@services/(.*)$": "<rootDir>/src/services/$1",
+	"^@models/(.*)$": "<rootDir>/src/models/$1",
   },
 };

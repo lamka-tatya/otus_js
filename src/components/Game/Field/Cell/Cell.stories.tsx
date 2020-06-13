@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import { withKnobs, select } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
-import { CellState, CellModel } from "@/redux/state";
 import { Cell } from ".";
+import { CellState } from "@models/CellState";
+import { CellModel } from "@models/CellModel";
 
 export default {
   title: "Cell",

@@ -14,8 +14,9 @@ import {
 } from "./Start.styles";
 import { ImageButton } from "@/common/ImageButton";
 import GameImg from "./assets/game.svg";
-import { Gender, User } from "@/redux/state";
 import localStorageAuth from "@services/authService";
+import { Gender } from "@models/Gender";
+import { User } from "@models/User";
 
 export const Start: FC = ({}) => {
   const [isGoGame, setIsGoGame] = useState(false);

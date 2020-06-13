@@ -1,7 +1,9 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 import { Cell } from "./Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
-import { CellRow, CellState, CellModel } from "@/redux/state";
+import { CellRow } from "@models/CellRow";
+import { CellModel } from "@models/CellModel";
+import { CellState } from "@models/CellState";
 
 export interface FieldProps {
   rowCount: number;

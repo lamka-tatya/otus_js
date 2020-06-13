@@ -1,4 +1,5 @@
-import { User, Gender } from "@/redux/state";
+import { User } from "@models/User";
+import { Gender } from "@models/Gender";
 
 interface AuthService {
   login: (user: User) => void;
