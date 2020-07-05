@@ -1,15 +1,21 @@
-import { User } from "@models/User";
-import { GameSettingsState, initGameSettingsState } from "./gameSettingsState";
+import { SettingsState, initSettingsState } from "./settingsState";
 import { FieldState, initFieldState } from "./fieldState";
+import { initAuthState, AuthState } from "./authState";
+import { StartState, initStartState } from "./startState";
+import { initGameState, GameState } from "./gameState";
 
-export interface GameState {
-  user?: User;
-  gameSettings: GameSettingsState;
-  field: FieldState;
+export interface AppState {
+	start: StartState;
+	auth: AuthState;
+	game: GameState;
+	settings: SettingsState;
+	field: FieldState;
 }
 
-export const initGameState: GameState = {
-  user: undefined,
-  gameSettings: initGameSettingsState,
-  field: initFieldState,
+export const initAppState: AppState = {
+	start: initStartState,
+	auth: initAuthState,
+	game: initGameState,
+	settings: initSettingsState,
+	field: initFieldState,
 };
