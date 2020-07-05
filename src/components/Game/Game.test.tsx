@@ -3,64 +3,95 @@ import { Game } from ".";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 import localStorageAuth from "@services/authService";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import { initStartState } from "@/redux/state/startState";
+import { initSettingsState } from "@/redux/state/settingsState";
+import { initFieldState } from "@/redux/state/fieldState";
+import { initGameState } from "@/redux/state/gameState";
+import {
+  SET_IS_SETTINGS_VISIBLE,
+  SET_IS_PLAYING,
+  SET_IS_RESET,
+} from "@/redux/actions";
 
 let wrapper: ReactWrapper;
+let store: any;
+const mockStore = configureStore([]);
 
 beforeEach(() => {
   localStorageAuth.login({ name: "test", gender: "robot" });
 
+  store = mockStore({
+    start: initStartState,
+    auth: {
+      user: {
+        name: "test",
+        gender: "robot",
+      },
+      isChecking: false,
+    },
+    game: initGameState,
+    settings: initSettingsState,
+    field: initFieldState,
+  });
+
   wrapper = mount(
-    <BrowserRouter>
-      <Game />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Game />
+      </BrowserRouter>
+    </Provider>
   );
 });
 
 describe("When click on settings button", () => {
   it("should show settings form", () => {
     const settingsBtn = wrapper.findWhere((x) => x.key() === "settingsBtn");
-    const settingsIsVisibleBefore = wrapper
-      .findWhere((x) => x.key() === "settingsWindow")
-      .props().visible;
 
     settingsBtn.simulate("click");
 
-    const settingsIsVisibleAfter = wrapper
-      .findWhere((x) => x.key() === "settingsWindow")
-      .props().visible;
-    expect(settingsIsVisibleBefore).toBeFalsy();
-    expect(settingsIsVisibleAfter).toBeTruthy();
+    expect(store.getActions()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: SET_IS_SETTINGS_VISIBLE,
+          payload: true,
+        }),
+      ])
+    );
   });
 });
 
 describe("When click on play button", () => {
   it("should change play|pause state", () => {
     const playBtn = wrapper.findWhere((x) => x.key() === "playBtn");
-    const gameIsPlayingBefore = wrapper
-      .findWhere((x) => x.key() === "field")
-      .props().isPlaying;
 
     playBtn.simulate("click");
 
-    const gameIsPlayingAfter = wrapper
-      .findWhere((x) => x.key() === "field")
-      .props().isPlaying;
-    expect(gameIsPlayingBefore).toBeFalsy();
-    expect(gameIsPlayingAfter).toBeTruthy();
+    expect(store.getActions()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: SET_IS_PLAYING,
+          payload: true,
+        }),
+      ])
+    );
   });
 });
 
 describe("When click on reset button", () => {
   it("should purge isReset state after reset", () => {
     const resetBtn = wrapper.findWhere((x) => x.key() === "resetBtn");
-    const isResetBefore = wrapper.findWhere((x) => x.key() === "field").props()
-      .isReset;
 
     resetBtn.simulate("click");
 
-    const isResetAfter = wrapper.findWhere((x) => x.key() === "field").props()
-      .isReset;
-    expect(isResetBefore).toBeFalsy();
-    expect(isResetAfter).toBeFalsy();
+    expect(store.getActions()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: SET_IS_RESET,
+          payload: true,
+        }),
+      ])
+    );
   });
 });

@@ -1,4 +1,4 @@
-export interface GameSettingsState {
+export interface SettingsState {
   height: number;
   width: number;
   rowCount: number;
@@ -6,7 +6,8 @@ export interface GameSettingsState {
   fillingPercent: number;
   frequency: number;
 }
-export const initGameSettingsState: GameSettingsState = {
+
+export const initSettingsState: SettingsState = {
   height: 350,
   width: 350,
   rowCount: 10,

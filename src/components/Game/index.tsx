@@ -9,28 +9,49 @@ import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
-import { GameSettingsState } from "@/redux/state";
 import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { User } from "@models/User";
+import { SettingsState } from "@/redux/state/settingsState";
+import { connect } from "react-redux";
+import { AppState } from "@/redux/state";
+import {
+  setIsPlaying,
+  setIsSettingsVisible,
+  setIsReset,
+  setUserpic,
+  logout,
+} from "@/redux/actions";
 
-const GameInternal: FC<{
+interface GameProps {
   user?: User;
   onLogout?: () => void;
-}> = ({ user, onLogout }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const [isReset, setIsReset] = useState(false);
-  const [userpic, setUserpic] = useState("");
-  const [gameSettings, setGameSettings] = useState<GameSettingsState>({
-    height: 350,
-    width: 350,
-    rowCount: 10,
-    columnCount: 10,
-    fillingPercent: 30,
-    frequency: 1,
-  });
+  isPlaying: boolean;
+  setIsPlaying: (x: boolean) => void;
+  setIsSettingsVisible: (x: boolean) => void;
+  isReset: boolean;
+  setIsReset: (x: boolean) => void;
+  userpic: string;
+  setUserpic: (x: string) => void;
+  gameSettings: SettingsState;
+  isLogout: boolean;
+  logout: () => void;
+}
 
-  const [isLogout, setIsLogout] = useState(false);
+const GameInternal: FC<GameProps> = ({
+  user,
+  onLogout,
+  isPlaying,
+  setIsPlaying,
+  setIsSettingsVisible,
+  isReset,
+  setIsReset,
+  userpic,
+  setUserpic,
+  gameSettings,
+  isLogout,
+  logout,
+}) => {
+  const [] = useState(false);
 
   useEffect(() => {
     let sprite: SpriteCollection | undefined = undefined;
@@ -69,31 +90,16 @@ const GameInternal: FC<{
     setIsReset(false);
   };
 
-  const onCancelSettings = () => {
-    setIsSettingsVisible(false);
-  };
-
-  const onSubmitSettings = (settings: GameSettingsState) => {
-    setGameSettings(settings);
-    setIsSettingsVisible(false);
-  };
-
   const onDoLogout = () => {
     onLogout && onLogout();
-    setIsLogout(true);
+    logout();
   };
 
   return isLogout ? (
     <Redirect to="/" push={true} />
   ) : (
     <>
-      <Settings
-        key="settingsWindow"
-        visible={isSettingsVisible}
-        settings={gameSettings}
-        onSubmit={onSubmitSettings}
-        onCancel={onCancelSettings}
-      />
+      <Settings key="settingsWindow" />
       <GameContainer>
         <MainLayout
           gameSettings={gameSettings}
@@ -114,4 +120,21 @@ const GameInternal: FC<{
   );
 };
 
-export const Game = withLoggedInUser(GameInternal);
+const mapStateFromProps = (state: AppState) => ({
+  isPlaying: state.game.isPlaying,
+  isLogout: state.game.isLogout,
+  isReset: state.game.isReset,
+  userpic: state.game.userpic,
+  gameSettings: state.settings,
+  user: state.auth.user,
+});
+
+const connectedGame = connect(mapStateFromProps, {
+  setIsPlaying,
+  setIsSettingsVisible,
+  setIsReset,
+  setUserpic,
+  logout,
+})(GameInternal);
+
+export const Game = withLoggedInUser(connectedGame);
