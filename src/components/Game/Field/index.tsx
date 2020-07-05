@@ -68,7 +68,7 @@ export const Field: FC<FieldProps> = ({
     setRows(prepareCells(columnCount, rowCount, fillingPercent));
 
     isReset && afterReset();
-  }, [columnCount, rowCount, fillingPercent, isReset, afterReset]);
+  }, [setRows, columnCount, rowCount, fillingPercent, isReset, afterReset]);
 
   const onCellClick = useCallback(
     (colIndex: number, rowIndex: number) => {

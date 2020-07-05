@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from "react";
+import React from "react";
 import { CellStyled } from "./Cell.styles";
 import { CellState } from "@models/CellState";
 import { CellModel } from "@models/CellModel";
@@ -26,7 +26,7 @@ export class Cell extends React.Component<CellProps, CellComponentState> {
       this.props.cell.cellState === prevProps.cell.cellState &&
       this.state.newCellState
     ) {
-      setTimeout(() => this.setState({ newCellState: false }), 300);
+      setTimeout(() => this.setState({ newCellState: false }), 100);
     }
   }
 
