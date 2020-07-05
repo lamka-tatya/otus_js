@@ -1,6 +1,8 @@
 import { Start } from ".";
 import React, { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 export default {
   title: "Start",
@@ -9,8 +11,10 @@ export default {
 
 export const StartStory: FC = () => {
   return (
-    <BrowserRouter>
-      <Start />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Start />
+      </BrowserRouter>
+    </Provider>
   );
 };

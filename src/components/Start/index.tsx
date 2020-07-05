@@ -17,19 +17,32 @@ import GameImg from "./assets/game.svg";
 import localStorageAuth from "@services/authService";
 import { Gender } from "@models/Gender";
 import { User } from "@models/User";
+import { connect } from "react-redux";
+import { setUserName, setUserGender, goToGame } from "@/redux/actions";
+import { AppState } from "@/redux/state";
 
-export const Start: FC = ({}) => {
-  const [isGoGame, setIsGoGame] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userGender, setUserGender] = useState<Gender>("robot");
-
+const StartInternal: FC<{
+  isGoGame: boolean;
+  userName: string;
+  userGender: Gender;
+  goToGame: () => void;
+  setUserName: (name: string) => void;
+  setUserGender: (gender: Gender) => void;
+}> = ({
+  isGoGame,
+  goToGame,
+  userName,
+  setUserName,
+  userGender,
+  setUserGender,
+}) => {
   const onSubmit = useCallback(
     (evt) => {
       evt.preventDefault();
       localStorageAuth.login({ name: userName, gender: userGender } as User);
-      setIsGoGame(true);
+      goToGame();
     },
-    [userName, userGender, setIsGoGame]
+    [userName, userGender, goToGame]
   );
 
   const onChangeName = useCallback(
@@ -99,3 +112,15 @@ export const Start: FC = ({}) => {
     </FormStyled>
   );
 };
+
+const mapStateFromProps = (state: AppState) => ({
+  userName: state.start.userName,
+  userGender: state.start.userGender,
+  isGoGame: state.start.isGoGame,
+});
+
+export const Start = connect(mapStateFromProps, {
+  setUserName,
+  setUserGender,
+  goToGame,
+})(StartInternal);
