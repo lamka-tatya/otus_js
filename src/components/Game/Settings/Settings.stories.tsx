@@ -1,6 +1,8 @@
 import { Settings } from ".";
 import React, { FC } from "react";
-import { action } from "@storybook/addon-actions";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
+import { setIsSettingsVisible } from "@/redux/actions";
 
 export default {
   title: "Settings",
@@ -8,19 +10,10 @@ export default {
 };
 
 export const SettingsStory: FC = () => {
+  store.dispatch(setIsSettingsVisible(true));
   return (
-    <Settings
-      visible={true}
-      settings={{
-        height: 50,
-        width: 50,
-        rowCount: 5,
-        columnCount: 5,
-        fillingPercent: 0,
-        frequency: 1,
-      }}
-      onSubmit={action("Submit")}
-      onCancel={action("Cancel")}
-    />
+    <Provider store={store}>
+      <Settings />
+    </Provider>
   );
 };

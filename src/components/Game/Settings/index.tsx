@@ -16,8 +16,11 @@ import VArrowsImg from "./assets/v_arrows_svg.svg";
 import HArrowsImg from "./assets/h_arrows_svg.svg";
 import CancelImg from "./assets/cancel_svg.svg";
 import OkImg from "./assets/ok_svg.svg";
-import { GameSettingsState } from "@/redux/state";
+import { AppState } from "@/redux/state";
 import { ImageButton } from "@/common/ImageButton";
+import { connect } from "react-redux";
+import { SettingsState } from "@/redux/state/settingsState";
+import { setSettings, setIsSettingsVisible } from "@/redux/actions";
 
 const XYSettingsSet: FC<{
   legend: string;
@@ -46,15 +49,24 @@ const Overlay: FC = ({ children }) => (
   </>
 );
 
-export const Settings: FC<{
+const SettingsInternal: FC<{
   visible: boolean;
-  settings: GameSettingsState;
-  onSubmit: (s: GameSettingsState) => void;
-  onCancel: () => void;
-}> = ({ visible, settings, onSubmit, onCancel }) => {
+  settings: SettingsState;
+  setSettings: (s: SettingsState) => void;
+  setIsSettingsVisible: (x: boolean) => void;
+}> = ({ visible, settings, setSettings, setIsSettingsVisible }) => {
+	const onSubmitSettings = (settings: SettingsState) => {
+		setSettings(settings);
+		setIsSettingsVisible(false);
+	  };
+
   return visible ? (
     <Overlay>
-      <Formik initialValues={settings} onSubmit={onSubmit} key="settingsForm">
+      <Formik
+        initialValues={settings}
+        onSubmit={onSubmitSettings}
+        key="settingsForm"
+      >
         <FormStyled>
           <XYSettingsSet
             legend="Размер окна, px"
@@ -81,7 +93,7 @@ export const Settings: FC<{
           <ButtonsContainer>
             <ImageButton
               type="button"
-              onClick={onCancel}
+              onClick={() => setIsSettingsVisible(false)}
               src={CancelImg}
             ></ImageButton>
             <ImageButton
@@ -95,3 +107,12 @@ export const Settings: FC<{
     </Overlay>
   ) : null;
 };
+
+const mapStateFromProps = (state: AppState) => ({
+  settings: state.settings,
+  visible: state.game.isSettingsVisible,
+});
+
+export const Settings = connect(mapStateFromProps, { setSettings, setIsSettingsVisible })(
+  SettingsInternal
+);
