@@ -1,10 +1,14 @@
 import { combineReducers } from "redux";
-import { user } from "./user";
-import { gameSettings } from "./gameSettings";
+import { auth } from "./auth";
+import { start } from "./start";
+import { settings } from "./settings";
 import { field } from "./field";
+import { game } from "./game";
 
 export const reducer = combineReducers({
-  user,
-  gameSettings,
-  field,
+	start,
+	auth,
+	game,
+	settings,
+	field,
 });
