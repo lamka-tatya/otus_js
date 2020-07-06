@@ -4,39 +4,27 @@ import { createReducer } from "@reduxjs/toolkit";
 
 export const game = createReducer<GameState>(initGameState, {
   [actions.setIsPlaying.type]: (state, action) => {
-    return {
-      ...state,
-      isPlaying: action.payload,
-    };
+    state.isPlaying = action.payload;
+    return state;
   },
   [actions.setIsSettingsVisible.type]: (state, action) => {
-    return {
-      ...state,
-      isSettingsVisible: action.payload,
-    };
+    state.isSettingsVisible = action.payload;
+    return state;
   },
   [actions.setIsReset.type]: (state, action) => {
-    return {
-      ...state,
-      isReset: action.payload,
-    };
+    state.isReset = action.payload;
+    return state;
   },
   [actions.setUserpic.type]: (state, action) => {
-    return {
-      ...state,
-      userpic: action.payload,
-    };
+    state.userpic = action.payload;
+    return state;
   },
   [actions.goToGame.type]: (state, _) => {
-    return {
-      ...state,
-      isLogout: false,
-    };
+    state.isLogout = false;
+    return state;
   },
   [actions.logout.type]: (state, _) => {
-    return {
-      ...state,
-      isLogout: true,
-    };
+    state.isLogout = true;
+    return state;
   },
 });

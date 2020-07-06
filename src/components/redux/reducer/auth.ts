@@ -4,15 +4,11 @@ import { createReducer } from "@reduxjs/toolkit";
 
 export const auth = createReducer<AuthState>(initAuthState, {
   [actions.setUser.type]: (state, action) => {
-    return {
-      ...state,
-      user: action.payload,
-    };
+    state.user = action.payload;
+    return state;
   },
   [actions.setIsChecking.type]: (state, action) => {
-    return {
-      ...state,
-      isChecking: action.payload,
-    };
+    state.isChecking = action.payload;
+    return state;
   },
 });
