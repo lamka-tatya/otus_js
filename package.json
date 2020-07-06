@@ -95,6 +95,7 @@
     "@dicebear/avatars-bottts-sprites": "^4.1.1",
     "@dicebear/avatars-female-sprites": "^4.1.1",
     "@dicebear/avatars-male-sprites": "^4.1.1",
+    "@reduxjs/toolkit": "^1.4.0",
     "@types/node": "^13.11.1",
     "emotion": "^10.0.27",
     "formik": "^2.1.4",

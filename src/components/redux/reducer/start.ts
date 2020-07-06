@@ -1,33 +1,31 @@
 import { Action } from "redux";
-import * as actionTypes from "../actions";
+import * as actions from "../actions";
 import { StartState, initStartState } from "../state/startState";
+import { createReducer } from "@reduxjs/toolkit";
 
-export function start(
-	state: StartState = initStartState,
-	action: Action & { payload?: any }
-) {
-	switch (action.type) {
-		case actionTypes.SET_USER_NAME:
-			return {
-				...state,
-				userName: action.payload,
-			};
-		case actionTypes.SET_USER_GENDER:
-			return {
-				...state,
-				userGender: action.payload,
-			};
-		case actionTypes.GO_TO_GAME:
-			return {
-				...state,
-				isGoGame: true,
-			};
-		case actionTypes.LOGOUT:
-			return {
-				...state,
-				isGoGame: false,
-			};
-	}
-
-	return state;
-}
+export const start = createReducer<StartState>(initStartState, {
+  [actions.setUserName.type]: (state, action) => {
+    return {
+      ...state,
+      userName: action.payload,
+    };
+  },
+  [actions.setUserGender.type]: (state, action) => {
+    return {
+      ...state,
+      userGender: action.payload,
+    };
+  },
+  [actions.goToGame.type]: (state, _) => {
+    return {
+      ...state,
+      isGoGame: true,
+    };
+  },
+  [actions.logout.type]: (state, _) => {
+    return {
+      ...state,
+      isGoGame: false,
+    };
+  },
+});

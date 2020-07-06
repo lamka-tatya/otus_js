@@ -1,23 +1,18 @@
-import { Action } from "redux";
-import * as actionTypes from "../actions";
+import * as actions from "../actions";
 import { AuthState, initAuthState } from "../state/authState";
+import { createReducer } from "@reduxjs/toolkit";
 
-export function auth(
-	state: AuthState = initAuthState,
-	action: Action & { payload?: any }
-) {
-	switch (action.type) {
-		case actionTypes.SET_USER:
-			return {
-				...state,
-				user: action.payload,
-			};
-		case actionTypes.SET_IS_CHECKING:
-			return {
-				...state,
-				isChecking: action.payload,
-			};
-	}
-
-	return state;
-}
+export const auth = createReducer<AuthState>(initAuthState, {
+  [actions.setUser.type]: (state, action) => {
+    return {
+      ...state,
+      user: action.payload,
+    };
+  },
+  [actions.setIsChecking.type]: (state, action) => {
+    return {
+      ...state,
+      isChecking: action.payload,
+    };
+  },
+});

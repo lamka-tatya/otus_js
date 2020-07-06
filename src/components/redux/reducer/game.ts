@@ -1,43 +1,42 @@
-import { Action } from "redux";
-import * as actionTypes from "../actions";
+import * as actions from "../actions";
 import { GameState, initGameState } from "../state/gameState";
+import { createReducer } from "@reduxjs/toolkit";
 
-export function game(
-	state: GameState = initGameState,
-	action: Action & { payload?: any }
-) {
-	switch (action.type) {
-		case actionTypes.SET_IS_PLAYING:
-			return {
-				...state,
-				isPlaying: action.payload,
-			};
-		case actionTypes.SET_IS_SETTINGS_VISIBLE:
-			return {
-				...state,
-				isSettingsVisible: action.payload,
-			};
-		case actionTypes.SET_IS_RESET:
-			return {
-				...state,
-				isReset: action.payload,
-			};
-		case actionTypes.SET_USERPIC:
-			return {
-				...state,
-				userpic: action.payload,
-			};
-		case actionTypes.GO_TO_GAME:
-			return {
-				...state,
-				isLogout: false,
-			};
-		case actionTypes.LOGOUT:
-			return {
-				...state,
-				isLogout: true,
-			};
-	}
-
-	return state;
-}
+export const game = createReducer<GameState>(initGameState, {
+  [actions.setIsPlaying.type]: (state, action) => {
+    return {
+      ...state,
+      isPlaying: action.payload,
+    };
+  },
+  [actions.setIsSettingsVisible.type]: (state, action) => {
+    return {
+      ...state,
+      isSettingsVisible: action.payload,
+    };
+  },
+  [actions.setIsReset.type]: (state, action) => {
+    return {
+      ...state,
+      isReset: action.payload,
+    };
+  },
+  [actions.setUserpic.type]: (state, action) => {
+    return {
+      ...state,
+      userpic: action.payload,
+    };
+  },
+  [actions.goToGame.type]: (state, _) => {
+    return {
+      ...state,
+      isLogout: false,
+    };
+  },
+  [actions.logout.type]: (state, _) => {
+    return {
+      ...state,
+      isLogout: true,
+    };
+  },
+});

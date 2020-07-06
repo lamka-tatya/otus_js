@@ -7,7 +7,7 @@ import { initStartState } from "@/redux/state/startState";
 import { initSettingsState } from "@/redux/state/settingsState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
-import { SET_SETTINGS } from "@/redux/actions";
+import * as actions from "@/redux/actions";
 import { initAuthState } from "@/redux/state/authState";
 
 const changeNumberInput = (input: Element, value: number): Promise<void> => {
@@ -26,7 +26,7 @@ describe("When change settings and call submit", () => {
     const store = mockStore({
       start: initStartState,
       auth: initAuthState,
-      game: {...initGameState, isSettingsVisible: true},
+      game: { ...initGameState, isSettingsVisible: true },
       settings: initSettingsState,
       field: initFieldState,
     });
@@ -58,7 +58,7 @@ describe("When change settings and call submit", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: SET_SETTINGS,
+          type: actions.setSettings.type,
           payload: {
             height: 3,
             width: 4,

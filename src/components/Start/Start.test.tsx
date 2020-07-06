@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initAppState } from "@/redux/state";
-import { SET_USER_NAME } from "@/redux/actions";
+import * as actions from "@/redux/actions";
 
 let wrapper: ReactWrapper;
 let store: any;
@@ -34,49 +34,49 @@ describe("When render start", () => {
       },
     });
 
-	expect(store.getActions()).toEqual(
-		expect.arrayContaining([
-		  expect.objectContaining({
-			type: SET_USER_NAME,
-			payload: "test name",
-		  }),
-		])
-	  );
+    expect(store.getActions()).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: actions.setUserName.type,
+          payload: "test name",
+        }),
+      ])
+    );
   });
 
-//  TODO: move to saga test
+  //  TODO: move to saga test
 
-//   it("should save user name to localStorage", () => {
-//     const form = wrapper.find('form[name="startForm"]');
-//     const userNameBefore = localStorage.getItem("userName");
-//     const name = wrapper.find('input[name="userName"]');
+  //   it("should save user name to localStorage", () => {
+  //     const form = wrapper.find('form[name="startForm"]');
+  //     const userNameBefore = localStorage.getItem("userName");
+  //     const name = wrapper.find('input[name="userName"]');
 
-//     name.simulate("change", {
-//       target: {
-//         value: "test name",
-//       },
-//     });
-//     form.simulate("submit");
+  //     name.simulate("change", {
+  //       target: {
+  //         value: "test name",
+  //       },
+  //     });
+  //     form.simulate("submit");
 
-//     const userNameAfter = localStorage.getItem("userName");
-//     expect(userNameBefore).toBeUndefined;
-//     expect(userNameAfter).toBe("test name");
-//   });
+  //     const userNameAfter = localStorage.getItem("userName");
+  //     expect(userNameBefore).toBeUndefined;
+  //     expect(userNameAfter).toBe("test name");
+  //   });
 
-//   it("should save user gender to localStorage", () => {
-//     const form = wrapper.find('form[name="startForm"]');
-//     const userGenderBefore = localStorage.getItem("userGender");
-//     const gender = wrapper.find('input[value="male"]');
+  //   it("should save user gender to localStorage", () => {
+  //     const form = wrapper.find('form[name="startForm"]');
+  //     const userGenderBefore = localStorage.getItem("userGender");
+  //     const gender = wrapper.find('input[value="male"]');
 
-//     gender.simulate("change", {
-//       target: {
-//         value: "male",
-//       },
-//     });
-//     form.simulate("submit");
+  //     gender.simulate("change", {
+  //       target: {
+  //         value: "male",
+  //       },
+  //     });
+  //     form.simulate("submit");
 
-//     const userGenderAfter = localStorage.getItem("userGender");
-//     expect(userGenderBefore).toBeUndefined;
-//     expect(userGenderAfter).toBe("male");
-//   });
+  //     const userGenderAfter = localStorage.getItem("userGender");
+  //     expect(userGenderBefore).toBeUndefined;
+  //     expect(userGenderAfter).toBe("male");
+  //   });
 });

@@ -9,11 +9,7 @@ import { initStartState } from "@/redux/state/startState";
 import { initSettingsState } from "@/redux/state/settingsState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
-import {
-  SET_IS_SETTINGS_VISIBLE,
-  SET_IS_PLAYING,
-  SET_IS_RESET,
-} from "@/redux/actions";
+import * as actions from "@/redux/actions";
 
 let wrapper: ReactWrapper;
 let store: any;
@@ -54,7 +50,7 @@ describe("When click on settings button", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: SET_IS_SETTINGS_VISIBLE,
+          type: actions.setIsSettingsVisible.type,
           payload: true,
         }),
       ])
@@ -71,7 +67,7 @@ describe("When click on play button", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: SET_IS_PLAYING,
+          type: actions.setIsPlaying.type,
           payload: true,
         }),
       ])
@@ -88,7 +84,7 @@ describe("When click on reset button", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: SET_IS_RESET,
+          type: actions.setIsReset.type,
           payload: true,
         }),
       ])

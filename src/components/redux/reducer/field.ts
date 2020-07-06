@@ -1,18 +1,13 @@
 import { Action } from "redux";
-import * as actionTypes from "../actions";
+import * as actions from "../actions";
 import { FieldState, initFieldState } from "../state/fieldState";
+import { createReducer } from "@reduxjs/toolkit";
 
-export function field(
-  state: FieldState = initFieldState,
-  action: Action & { payload?: any }
-) {
-  switch (action.type) {
-    case actionTypes.SET_FIELD:
-      return {
-        ...state,
-        field: action.payload,
-      };
-  }
-
-  return state;
-}
+export const field = createReducer<FieldState>(initFieldState, {
+  [actions.setField.type]: (state, action) => {
+    return {
+      ...state,
+      field: action.payload,
+    };
+  },
+});
