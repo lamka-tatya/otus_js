@@ -2,7 +2,7 @@ import { Settings } from ".";
 import React, { FC } from "react";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import { setIsSettingsVisible } from "@/redux/actions";
+import { setIsSettingsVisible } from "@/redux/reducer/game";
 
 export default {
   title: "Settings",
