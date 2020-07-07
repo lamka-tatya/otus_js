@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useState,
-  useEffect,
-  ChangeEvent,
-} from "react";
+import React, { FC, useCallback, useEffect, ChangeEvent } from "react";
 import { Redirect } from "react-router-dom";
 import {
   FormStyled,
@@ -18,14 +12,15 @@ import localStorageAuth from "@services/authService";
 import { Gender } from "@models/Gender";
 import { User } from "@models/User";
 import { connect } from "react-redux";
-import { setUserName, setUserGender, goToGame } from "@/redux/actions";
+import { goToGame } from "@/redux/reducer/game";
+import { setUserName, setUserGender } from "@/redux/reducer/start";
 import { AppState } from "@/redux/state";
 
 const StartInternal: FC<{
   isGoGame: boolean;
   userName: string;
   userGender: Gender;
-  goToGame: () => void;
+  goToGame: (v: string) => void;
   setUserName: (name: string) => void;
   setUserGender: (gender: Gender) => void;
 }> = ({
@@ -40,7 +35,7 @@ const StartInternal: FC<{
     (evt) => {
       evt.preventDefault();
       localStorageAuth.login({ name: userName, gender: userGender } as User);
-      goToGame();
+      goToGame("");
     },
     [userName, userGender, goToGame]
   );
@@ -116,7 +111,7 @@ const StartInternal: FC<{
 const mapStateFromProps = (state: AppState) => ({
   userName: state.start.userName,
   userGender: state.start.userGender,
-  isGoGame: state.start.isGoGame,
+  isGoGame: state.game.isGoGame,
 });
 
 export const Start = connect(mapStateFromProps, {

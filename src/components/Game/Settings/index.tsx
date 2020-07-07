@@ -19,8 +19,9 @@ import OkImg from "./assets/ok_svg.svg";
 import { AppState } from "@/redux/state";
 import { ImageButton } from "@/common/ImageButton";
 import { connect } from "react-redux";
-import { SettingsState } from "@/redux/state/settingsState";
-import { setSettings, setIsSettingsVisible } from "@/redux/actions";
+import { GameSettings } from "@/redux/state/gameState";
+import { setIsSettingsVisible } from "@/redux/reducer/game";
+import { setSettings } from "@/redux/reducer/game";
 
 const XYSettingsSet: FC<{
   legend: string;
@@ -51,14 +52,14 @@ const Overlay: FC = ({ children }) => (
 
 const SettingsInternal: FC<{
   visible: boolean;
-  settings: SettingsState;
-  setSettings: (s: SettingsState) => void;
+  settings: GameSettings;
+  setSettings: (s: GameSettings) => void;
   setIsSettingsVisible: (x: boolean) => void;
 }> = ({ visible, settings, setSettings, setIsSettingsVisible }) => {
-	const onSubmitSettings = (settings: SettingsState) => {
-		setSettings(settings);
-		setIsSettingsVisible(false);
-	  };
+  const onSubmitSettings = (settings: GameSettings) => {
+    setSettings(settings);
+    setIsSettingsVisible(false);
+  };
 
   return visible ? (
     <Overlay>
@@ -75,8 +76,8 @@ const SettingsInternal: FC<{
           />
           <XYSettingsSet
             legend="Количество клеток"
-            ySettingName="columnCount"
-            xSettngName="rowCount"
+            ySettingName="rowCount"
+            xSettngName="columnCount"
           />
 
           <FieldsContainer>
@@ -109,10 +110,11 @@ const SettingsInternal: FC<{
 };
 
 const mapStateFromProps = (state: AppState) => ({
-  settings: state.settings,
+  settings: state.game.settings,
   visible: state.game.isSettingsVisible,
 });
 
-export const Settings = connect(mapStateFromProps, { setSettings, setIsSettingsVisible })(
-  SettingsInternal
-);
+export const Settings = connect(mapStateFromProps, {
+  setSettings,
+  setIsSettingsVisible,
+})(SettingsInternal);

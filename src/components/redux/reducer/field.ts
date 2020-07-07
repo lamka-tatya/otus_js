@@ -1,10 +1,15 @@
-import * as actions from "../actions";
-import { FieldState, initFieldState } from "../state/fieldState";
-import { createReducer } from "@reduxjs/toolkit";
+import { initFieldState } from "../state/fieldState";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const field = createReducer<FieldState>(initFieldState, {
-  [actions.setField.type]: (state, action) => {
-    state.rows = action.payload;
-    return state;
+const fieldSlice = createSlice({
+  name: "field",
+  initialState: initFieldState,
+  reducers: {
+    setField(state, action) {
+      state.rows = action.payload;
+    },
   },
 });
+
+export const { setField } = fieldSlice.actions;
+export default fieldSlice.reducer;

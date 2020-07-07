@@ -11,7 +11,6 @@ import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
 import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { User } from "@models/User";
-import { SettingsState } from "@/redux/state/settingsState";
 import { connect } from "react-redux";
 import { AppState } from "@/redux/state";
 import {
@@ -20,7 +19,8 @@ import {
   setIsReset,
   setUserpic,
   logout,
-} from "@/redux/actions";
+} from "@/redux/reducer/game";
+import { GameSettings } from "@/redux/state/gameState";
 
 interface GameProps {
   user?: User;
@@ -32,9 +32,9 @@ interface GameProps {
   setIsReset: (x: boolean) => void;
   userpic: string;
   setUserpic: (x: string) => void;
-  gameSettings: SettingsState;
+  gameSettings: GameSettings;
   isLogout: boolean;
-  logout: () => void;
+  logout: (v: string) => void;
 }
 
 const GameInternal: FC<GameProps> = ({
@@ -92,7 +92,7 @@ const GameInternal: FC<GameProps> = ({
 
   const onDoLogout = () => {
     onLogout && onLogout();
-    logout();
+    logout("");
   };
 
   return isLogout ? (
@@ -125,7 +125,7 @@ const mapStateFromProps = (state: AppState) => ({
   isLogout: state.game.isLogout,
   isReset: state.game.isReset,
   userpic: state.game.userpic,
-  gameSettings: state.settings,
+  gameSettings: state.game.settings,
   user: state.auth.user,
 });
 

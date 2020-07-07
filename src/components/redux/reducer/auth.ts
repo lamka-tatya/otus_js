@@ -1,14 +1,18 @@
-import * as actions from "../actions";
-import { AuthState, initAuthState } from "../state/authState";
-import { createReducer } from "@reduxjs/toolkit";
+import { initAuthState } from "../state/authState";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const auth = createReducer<AuthState>(initAuthState, {
-  [actions.setUser.type]: (state, action) => {
-    state.user = action.payload;
-    return state;
-  },
-  [actions.setIsChecking.type]: (state, action) => {
-    state.isChecking = action.payload;
-    return state;
+const authSlice = createSlice({
+  name: "auth",
+  initialState: initAuthState,
+  reducers: {
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+    setIsChecking(state, action) {
+      state.isChecking = action.payload;
+    },
   },
 });
+
+export const { setUser, setIsChecking } = authSlice.actions;
+export default authSlice.reducer;

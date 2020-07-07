@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initAppState } from "@/redux/state";
-import * as actions from "@/redux/actions";
+import { setUserName } from "@/redux/reducer/start";
 
 let wrapper: ReactWrapper;
 let store: any;
@@ -37,7 +37,7 @@ describe("When render start", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: actions.setUserName.type,
+          type: setUserName.type,
           payload: "test name",
         }),
       ])

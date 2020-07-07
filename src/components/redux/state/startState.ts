@@ -1,13 +1,11 @@
 import { Gender } from "@models/Gender";
 
 export interface StartState {
-	userName: string;
-	userGender: Gender;
-	isGoGame: boolean;
+  userName: string;
+  userGender: Gender;
 }
 
 export const initStartState: StartState = {
-	userName: '',
-	userGender: "robot",
-	isGoGame: false
+  userName: "",
+  userGender: "robot",
 };

@@ -4,11 +4,10 @@ import { render, fireEvent, wait } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initStartState } from "@/redux/state/startState";
-import { initSettingsState } from "@/redux/state/settingsState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
-import * as actions from "@/redux/actions";
 import { initAuthState } from "@/redux/state/authState";
+import { setSettings } from "@/redux/reducer/game";
 
 const changeNumberInput = (input: Element, value: number): Promise<void> => {
   return wait(() => {
@@ -27,7 +26,6 @@ describe("When change settings and call submit", () => {
       start: initStartState,
       auth: initAuthState,
       game: { ...initGameState, isSettingsVisible: true },
-      settings: initSettingsState,
       field: initFieldState,
     });
     const { container } = render(
@@ -58,7 +56,7 @@ describe("When change settings and call submit", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: actions.setSettings.type,
+          type: setSettings.type,
           payload: {
             height: 3,
             width: 4,

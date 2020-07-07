@@ -1,14 +1,12 @@
 import { combineReducers } from "redux";
-import { auth } from "./auth";
-import { start } from "./start";
-import { settings } from "./settings";
-import { field } from "./field";
-import { game } from "./game";
+import authReducer from "./auth";
+import startReducer from "./start";
+import fieldReducer from "./field";
+import gameReducer from "./game";
 
 export const reducer = combineReducers({
-	start,
-	auth,
-	game,
-	settings,
-	field,
+  start: startReducer,
+  auth: authReducer,
+  game: gameReducer,
+  field: fieldReducer,
 });

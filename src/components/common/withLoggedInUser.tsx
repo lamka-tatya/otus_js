@@ -4,7 +4,8 @@ import localStorageAuth from "@services/authService";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { AppState } from "@/redux/state";
-import { logout, setUser, setIsChecking } from "@/redux/actions";
+import { setUser, setIsChecking } from "@/redux/reducer/auth";
+import { logout } from "@/redux/reducer/game";
 
 const withLoggedInUserWrapper = <Props extends object>(
   Comp: ComponentType<Props>
