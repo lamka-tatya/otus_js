@@ -21,9 +21,10 @@ export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
       break;
   }
 
-  const userPicSvg = !!sprite
-    ? new Avatars(sprite, { base64: true }).create(payload?.name ?? "")
-    : "";
+  const userPicSvg =
+    !!sprite && payload?.name
+      ? new Avatars(sprite, { base64: true }).create(payload.name)
+      : "";
 
   yield put(setUserpic(userPicSvg));
 }
