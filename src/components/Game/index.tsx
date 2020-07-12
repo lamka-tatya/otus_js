@@ -1,11 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { Settings } from "./Settings";
 import { GameContainer } from "./Game.styles";
 
-import Avatars, { SpriteCollection } from "@dicebear/avatars";
-import { default as spritesMale } from "@dicebear/avatars-male-sprites";
-import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
-import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { Redirect } from "react-router-dom";
 import { MainLayout } from "./MainLayout";
 import { RightSideLayout } from "./RightSideLayout";
@@ -17,7 +13,6 @@ import {
   setIsPlaying,
   setIsSettingsVisible,
   setIsReset,
-  setUserpic,
   logout,
 } from "@/redux/reducer/game";
 import { GameSettings } from "@/redux/state/gameState";
@@ -31,7 +26,6 @@ interface GameProps {
   isReset: boolean;
   setIsReset: (x: boolean) => void;
   userpic: string;
-  setUserpic: (x: string) => void;
   gameSettings: GameSettings;
   isLogout: boolean;
   logout: (v: string) => void;
@@ -46,33 +40,11 @@ const GameInternal: FC<GameProps> = ({
   isReset,
   setIsReset,
   userpic,
-  setUserpic,
   gameSettings,
   isLogout,
   logout,
 }) => {
   const [] = useState(false);
-
-  useEffect(() => {
-    let sprite: SpriteCollection | undefined = undefined;
-    switch (user?.gender) {
-      case "robot":
-        sprite = spritesBottts;
-        break;
-      case "male":
-        sprite = spritesMale;
-        break;
-      case "female":
-        sprite = spritesFemale;
-        break;
-    }
-
-    const userPicSvg = !!sprite
-      ? new Avatars(sprite, { base64: true }).create(user?.name ?? "")
-      : "";
-
-    setUserpic(userPicSvg);
-  }, [user, setUserpic]);
 
   const onClickPlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -133,7 +105,6 @@ const connectedGame = connect(mapStateFromProps, {
   setIsPlaying,
   setIsSettingsVisible,
   setIsReset,
-  setUserpic,
   logout,
 })(GameInternal);
 
