@@ -1,4 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import { setUser } from "../reducer/auth";
 import Avatars, { SpriteCollection } from "@dicebear/avatars";
 
@@ -7,8 +7,7 @@ import { default as spritesFemale } from "@dicebear/avatars-female-sprites";
 import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { setUserpic } from "../reducer/game";
 
-export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
-  const { gender, name } = payload;
+export function createAvatar(gender: any, name: string) {
   const spriteHandler: any = {
     robot: spritesBottts,
     male: spritesMale,
@@ -18,10 +17,13 @@ export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
   const sprite: SpriteCollection | undefined =
     spriteHandler[gender] ?? undefined;
 
-  let userPicSvg = "";
-  if (sprite && name) {
-    userPicSvg = new Avatars(sprite, { base64: true }).create(name);
-  }
+  return sprite ? new Avatars(sprite, { base64: true }).create(name) : "";
+}
+
+export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
+  const { gender, name } = payload;
+
+  const userPicSvg = name ? yield call(createAvatar, gender, name) : "";
 
   yield put(setUserpic(userPicSvg));
 }

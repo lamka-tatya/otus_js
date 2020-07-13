@@ -1,63 +1,38 @@
-import { getUserpic } from "./userpicSaga";
+import { getUserpic, createAvatar } from "./userpicSaga";
 import { setUser } from "../reducer/auth";
 import { setUserpic } from "../reducer/game";
-import { put } from "redux-saga/effects";
+import { put, call } from "redux-saga/effects";
+import { expectSaga } from "redux-saga-test-plan";
 
 describe("When call userpic saga", () => {
   it("should set userpic", () => {
-    const generator = getUserpic({
+    const user = { name: "test", gender: "robot" };
+    return expectSaga(getUserpic, {
       type: setUser.type,
-      payload: { name: "test", gender: "robot" },
-    });
-
-    const putSetUser = generator.next();
-    const putValue = putSetUser.value as any;
-
-    expect(putSetUser.done).toBeFalsy();
-    expect(putValue.type).toBe("PUT");
-    expect(putValue.payload.action).toEqual(
-      expect.objectContaining({
-        type: setUserpic.type,
-        payload: expect.any(String),
-      })
-    );
+      payload: user,
+    })
+      .provide([[call(createAvatar, user.gender, user.name), "test svg stub"]])
+      .put(setUserpic("test svg stub"))
+      .run();
   });
 
   it("should set empty userpic if gender not set", () => {
-    const generator = getUserpic({
+    const user = { name: "test" };
+    return expectSaga(getUserpic, {
       type: setUser.type,
-      payload: { name: "test" },
-    });
-
-    const putSetUser = generator.next();
-    const putValue = putSetUser.value as any;
-
-    expect(putSetUser.done).toBeFalsy();
-    expect(putValue.type).toBe("PUT");
-    expect(putValue.payload.action).toEqual(
-      expect.objectContaining({
-        type: setUserpic.type,
-        payload: "",
-      })
-    );
+      payload: user,
+    })
+      .put(setUserpic(""))
+      .run();
   });
 
   it("should set empty userpic if name not set", () => {
-    const generator = getUserpic({
+    const user = { gender: "robot" };
+    return expectSaga(getUserpic, {
       type: setUser.type,
-      payload: { gender: "robot" },
-    });
-
-    const putSetUser = generator.next();
-    const putValue = putSetUser.value as any;
-
-    expect(putSetUser.done).toBeFalsy();
-    expect(putValue.type).toBe("PUT");
-    expect(putValue.payload.action).toEqual(
-      expect.objectContaining({
-        type: setUserpic.type,
-        payload: "",
-      })
-    );
+      payload: user,
+    })
+      .put(setUserpic(""))
+      .run();
   });
 });
