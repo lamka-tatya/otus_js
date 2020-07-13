@@ -8,23 +8,20 @@ import { default as spritesBottts } from "@dicebear/avatars-bottts-sprites";
 import { setUserpic } from "../reducer/game";
 
 export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
-  let sprite: SpriteCollection | undefined = undefined;
-  switch (payload?.gender) {
-    case "robot":
-      sprite = spritesBottts;
-      break;
-    case "male":
-      sprite = spritesMale;
-      break;
-    case "female":
-      sprite = spritesFemale;
-      break;
-  }
+  const { gender, name } = payload;
+  const spriteHandler: any = {
+    robot: spritesBottts,
+    male: spritesMale,
+    female: spritesFemale,
+  };
 
-  const userPicSvg =
-    !!sprite && payload?.name
-      ? new Avatars(sprite, { base64: true }).create(payload.name)
-      : "";
+  const sprite: SpriteCollection | undefined =
+    spriteHandler[gender] ?? undefined;
+
+  let userPicSvg = "";
+  if (sprite && name) {
+    userPicSvg = new Avatars(sprite, { base64: true }).create(name);
+  }
 
   yield put(setUserpic(userPicSvg));
 }
