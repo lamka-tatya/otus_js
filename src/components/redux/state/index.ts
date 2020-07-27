@@ -1,7 +1,7 @@
 import { FieldState, initFieldState } from "./fieldState";
 import { initAuthState, AuthState } from "./authState";
-import { StartState, initStartState } from "./startState";
 import { initGameState, GameState } from "./gameState";
+import { StartState, initStartState } from "@modules/Start";
 
 export interface AppState {
   start: StartState;

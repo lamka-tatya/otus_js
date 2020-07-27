@@ -3,7 +3,7 @@ import { Settings } from ".";
 import { render, fireEvent, wait } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { initStartState } from "@/redux/state/startState";
+import { initStartState } from "@modules/Start/startState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
 import { initAuthState } from "@/redux/state/authState";

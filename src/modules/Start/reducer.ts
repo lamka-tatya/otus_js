@@ -1,7 +1,7 @@
-import { initStartState } from "../state/startState";
+import { initStartState } from "./startState";
 import { createSlice } from "@reduxjs/toolkit";
 
-const startSlice = createSlice({
+export const startSlice = createSlice({
   name: "stert",
   initialState: initStartState,
   reducers: {
@@ -14,5 +14,4 @@ const startSlice = createSlice({
   },
 });
 
-export const { setUserName, setUserGender } = startSlice.actions;
-export default startSlice.reducer;
+export const { reducer, actions } = startSlice;

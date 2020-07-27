@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import localStorageAuth from "@services/authService";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { initStartState } from "@/redux/state/startState";
+import { initStartState } from "@modules/Start/startState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
 import {
