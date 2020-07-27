@@ -4,27 +4,37 @@ import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { initAppState } from "@/redux/state";
 import { actions } from "@modules/Start/reducer";
-
-let wrapper: ReactWrapper;
-let store: any;
-const mockStore = configureStore([]);
-
-beforeEach(() => {
-  localStorage.clear();
-  store = mockStore(initAppState);
-
-  wrapper = mount(
-    <Provider store={store}>
-      <BrowserRouter>
-        <Start />
-      </BrowserRouter>
-    </Provider>
-  );
-});
+import { AppState } from "@/redux/store";
+import { initGameState } from "@/redux/state/gameState";
+import { initStartState } from "@modules/Start";
+import { initFieldState } from "@/redux/state/fieldState";
+import { initAuthState } from "@/redux/state/authState";
 
 describe("When render start", () => {
+  let wrapper: ReactWrapper;
+  let store: any;
+  const mockStore = configureStore([]);
+  const initAppState: AppState = {
+    game: initGameState,
+    start: initStartState,
+    auth: initAuthState,
+    field: initFieldState,
+  };
+
+  beforeEach(() => {
+    localStorage.clear();
+    store = mockStore(initAppState);
+
+    wrapper = mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Start />
+        </BrowserRouter>
+      </Provider>
+    );
+  });
+
   it("should be able to change name", () => {
     const name = wrapper.find('input[name="userName"]');
 

@@ -16,12 +16,12 @@ import VArrowsImg from "./assets/v_arrows_svg.svg";
 import HArrowsImg from "./assets/h_arrows_svg.svg";
 import CancelImg from "./assets/cancel_svg.svg";
 import OkImg from "./assets/ok_svg.svg";
-import { AppState } from "@/redux/state";
 import { ImageButton } from "@/common/ImageButton";
 import { connect } from "react-redux";
 import { GameSettings } from "@/redux/state/gameState";
 import { setIsSettingsVisible } from "@/redux/reducer/game";
 import { setSettings } from "@/redux/reducer/game";
+import { AppState } from "@/redux/store";
 
 const XYSettingsSet: FC<{
   legend: string;

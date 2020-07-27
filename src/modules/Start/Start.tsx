@@ -14,7 +14,7 @@ import { User } from "@models/User";
 import { connect } from "react-redux";
 import { goToGame } from "@/redux/reducer/game";
 import { actions } from "@modules/Start/reducer";
-import { AppState } from "@/redux/state";
+import { AppState } from "@/redux/store";
 
 const StartInternal: FC<{
   isGoGame: boolean;

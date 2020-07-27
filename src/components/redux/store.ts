@@ -16,3 +16,5 @@ export const store = configureStore({
 });
 
 sagaMiddleware.run(rootSaga);
+
+export type AppState = ReturnType<typeof reducer>;
