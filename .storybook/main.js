@@ -41,6 +41,7 @@ module.exports = {
 			"@": path.resolve(__dirname, "../src/components"),
 			"@services": path.resolve(__dirname, "../src/services"),
 			"@models": path.resolve(__dirname, "../src/models"),
+			"@modules": path.resolve(__dirname, "../src/modules"),
 		  };
 		return config;
 	},

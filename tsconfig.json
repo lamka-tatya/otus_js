@@ -5,6 +5,7 @@
       "@/*": ["src/components/*"],
       "@services/*": ["src/services/*"],
       "@models/*": ["src/models/*"],
+      "@modules/*": ["src/modules/*"],
     },
     "target": "es5",
     "module": "commonjs",
