@@ -21,7 +21,8 @@ export function createAvatar(gender: any, name: string) {
 }
 
 export function* getUserpic({ payload }: ReturnType<typeof setUser>) {
-  const { gender, name } = payload;
+  const gender = payload?.gender;
+  const name = payload?.name;
 
   const userPicSvg = name ? yield call(createAvatar, gender, name) : "";
 

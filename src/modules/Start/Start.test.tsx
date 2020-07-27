@@ -5,26 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { actions } from "@modules/Start/reducer";
-import { AppState } from "@/redux/store";
-import { initGameState } from "@/redux/state/gameState";
-import { initStartState } from "@modules/Start";
-import { initFieldState } from "@/redux/state/fieldState";
-import { initAuthState } from "@/redux/state/authState";
+import { initialAppState } from "@/redux/reducer";
 
 describe("When render start", () => {
   let wrapper: ReactWrapper;
   let store: any;
   const mockStore = configureStore([]);
-  const initAppState: AppState = {
-    game: initGameState,
-    start: initStartState,
-    auth: initAuthState,
-    field: initFieldState,
-  };
 
   beforeEach(() => {
     localStorage.clear();
-    store = mockStore(initAppState);
+    store = mockStore(initialAppState);
 
     wrapper = mount(
       <Provider store={store}>

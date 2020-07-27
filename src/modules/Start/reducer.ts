@@ -2,7 +2,7 @@ import { initStartState } from "./startState";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const startSlice = createSlice({
-  name: "stert",
+  name: "start",
   initialState: initStartState,
   reducers: {
     setUserName(state, action) {

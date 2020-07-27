@@ -1,4 +1,4 @@
-import { reducer } from "./reducer";
+import { rootReducer, reducer } from "./reducer";
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { fork } from "redux-saga/effects";
@@ -11,7 +11,7 @@ function* rootSaga() {
 }
 
 export const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: [sagaMiddleware],
 });
 
