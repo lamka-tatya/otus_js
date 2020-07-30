@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import {
   setIsPlaying,
   setIsSettingsVisible,
-  setIsReset,
+  reset,
   logout,
 } from "@/redux/reducer/game";
 import { GameSettings } from "@/redux/state/gameState";
@@ -19,16 +19,14 @@ import { AppState } from "@/redux/store";
 
 interface GameProps {
   user?: User;
-  onLogout?: () => void;
+  onLogout?: any;
   isPlaying: boolean;
   setIsPlaying: (x: boolean) => void;
   setIsSettingsVisible: (x: boolean) => void;
-  isReset: boolean;
-  setIsReset: (x: boolean) => void;
+  reset: any;
   userpic: string;
-  gameSettings: GameSettings;
   isLogout: boolean;
-  logout: (v: string) => void;
+  logout: any;
 }
 
 const GameInternal: FC<GameProps> = ({
@@ -37,10 +35,8 @@ const GameInternal: FC<GameProps> = ({
   isPlaying,
   setIsPlaying,
   setIsSettingsVisible,
-  isReset,
-  setIsReset,
+  reset,
   userpic,
-  gameSettings,
   isLogout,
   logout,
 }) => {
@@ -55,11 +51,7 @@ const GameInternal: FC<GameProps> = ({
   };
 
   const onReset = () => {
-    setIsReset(true);
-  };
-
-  const afterReset = () => {
-    setIsReset(false);
+    reset();
   };
 
   const onDoLogout = () => {
@@ -74,12 +66,8 @@ const GameInternal: FC<GameProps> = ({
       <Settings key="settingsWindow" />
       <GameContainer>
         <MainLayout
-          gameSettings={gameSettings}
-          isReset={isReset}
-          afterReset={afterReset}
           onClickPlayPause={onClickPlayPause}
           userName={user?.name ?? ""}
-          isPlaying={isPlaying}
         />
         <RightSideLayout
           onClickSettings={onClickSettings}
@@ -95,16 +83,14 @@ const GameInternal: FC<GameProps> = ({
 const mapStateFromProps = (state: AppState) => ({
   isPlaying: state.game.isPlaying,
   isLogout: state.game.isLogout,
-  isReset: state.game.isReset,
   userpic: state.game.userpic,
-  gameSettings: state.game.settings,
   user: state.auth.user,
 });
 
 const connectedGame = connect(mapStateFromProps, {
   setIsPlaying,
   setIsSettingsVisible,
-  setIsReset,
+  reset,
   logout,
 })(GameInternal);
 

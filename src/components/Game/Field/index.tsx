@@ -1,91 +1,35 @@
-import React, { FC, useState, useEffect, useCallback } from "react";
+import React, { FC, useCallback } from "react";
 import { Cell } from "./Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
 import { CellRow } from "@models/CellRow";
-import { CellModel } from "@models/CellModel";
 import { CellState } from "@models/CellState";
+import { connect } from "react-redux";
+import { AppState } from "@/redux/store";
+import { setField } from "@/redux/reducer/field";
+import { GameSettings } from "@/redux/state/gameState";
 
 export interface FieldProps {
-  rowCount: number;
-  columnCount: number;
-  fillingPercent: number;
-  height: number;
-  width: number;
-  frequency: number;
-  isPlaying: boolean;
-  isReset: boolean;
-  afterReset: () => void;
+  setField: (field: CellRow[]) => void;
+  gameSettings: GameSettings;
+  field: CellRow[];
 }
 
-const prepareCells: (
-  columnCount: number,
-  rowCount: number,
-  fillingPercent: number
-) => CellRow[] = (columnCount, rowCount, fillingPercent) => {
-  const result: CellRow[] = [];
-  const cellsCount = columnCount * rowCount;
-  const maxAliveCount = (cellsCount / 100) * fillingPercent;
-  let aliveCount = 0;
-
-  for (let y = 0; y < rowCount; y++) {
-    const rowCells: CellModel[] = [];
-
-    for (let x = 0; x < columnCount; x++) {
-      let cellState = CellState.dead;
-
-      if (Math.round(Math.random() * 100) <= fillingPercent) {
-        aliveCount++;
-        if (aliveCount <= maxAliveCount) {
-          cellState = CellState.alive;
-        }
-      }
-
-      rowCells.push({
-        cellState,
-        isNewState: false,
-      });
-    }
-    result.push({ cells: rowCells });
-  }
-
-  return result;
-};
-
-export const Field: FC<FieldProps> = ({
-  rowCount,
-  columnCount,
-  fillingPercent,
-  height,
-  width,
-  frequency,
-  isPlaying,
-  isReset,
-  afterReset,
-}) => {
-  const [rows, setRows] = useState<CellRow[]>([]);
-
-  useEffect(() => {
-    setRows(prepareCells(columnCount, rowCount, fillingPercent));
-
-    isReset && afterReset();
-  }, [setRows, columnCount, rowCount, fillingPercent, isReset, afterReset]);
-
+const FieldInternal: FC<FieldProps> = ({ setField, gameSettings, field }) => {
   const onCellClick = useCallback(
     (colIndex: number, rowIndex: number) => {
-      const newRows = [...rows];
+      const newRows = [...field];
       const rowCells = [...newRows[rowIndex].cells];
       const cell = rowCells[colIndex];
       rowCells[colIndex] = { ...cell, cellState: CellState.alive };
       newRows[rowIndex] = { cells: rowCells };
 
-      setRows(newRows);
+      setField(newRows);
     },
-    [rows, setRows]
+    [field, setField]
   );
-
   return (
-    <FieldStyled width={width} height={height}>
-      {rows.map((row, rowIndex) => (
+    <FieldStyled width={gameSettings.width} height={gameSettings.height}>
+      {field.map((row, rowIndex) => (
         <RowStyled key={rowIndex}>
           {row.cells.map((cell, colIndex) => (
             <Cell
@@ -99,3 +43,10 @@ export const Field: FC<FieldProps> = ({
     </FieldStyled>
   );
 };
+
+const mapStateFromProps = (state: AppState) => ({
+  field: state.field.rows,
+  gameSettings: state.game.settings,
+});
+
+export const Field = connect(mapStateFromProps, { setField })(FieldInternal);

@@ -10,32 +10,14 @@ import { ImageButton } from "@/common/ImageButton";
 import PlayImg from "./assets/play_pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
-import { GameSettings } from "@/redux/state/gameState";
 
 export const MainLayout: FC<{
-  gameSettings: GameSettings;
-  isReset: boolean;
-  afterReset: () => void;
   onClickPlayPause: () => void;
   userName: string;
-  isPlaying: boolean;
-}> = ({
-  gameSettings,
-  isReset,
-  afterReset,
-  onClickPlayPause,
-  userName,
-  isPlaying,
-}) => (
+}> = ({ onClickPlayPause, userName }) => (
   <MainContainer>
     <FieldContainer>
-      <Field
-        key="field"
-        {...gameSettings}
-        isReset={isReset}
-        afterReset={afterReset}
-        isPlaying={isPlaying}
-      />
+      <Field key="field" />
     </FieldContainer>
     <BottomContainer>
       <ButtonsContainer>

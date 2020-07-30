@@ -2,9 +2,7 @@ import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { App } from ".";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import { sagaMiddleware, store } from "@/redux/store";
-import { combineReducers } from "redux";
+import { store } from "@/redux/store";
 import { restore } from "./redux/reducer";
 
 describe("On app start", () => {

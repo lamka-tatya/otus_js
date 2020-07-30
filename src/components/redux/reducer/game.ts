@@ -11,13 +11,13 @@ const gameSlice = createSlice({
     setIsSettingsVisible(state, action) {
       state.isSettingsVisible = action.payload;
     },
-    setIsReset(state, action) {
-      state.isReset = action.payload;
-    },
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    reset(_) {},
+    /* eslint-enable @typescript-eslint/no-empty-function */
     setUserpic(state, action) {
       state.userpic = action.payload;
     },
-    goToGame(state, _) {
+    goToGame(state) {
       state.isLogout = false;
       state.isGoGame = true;
     },
@@ -35,7 +35,7 @@ export const {
   setSettings,
   setIsPlaying,
   setIsSettingsVisible,
-  setIsReset,
+  reset,
   setUserpic,
   goToGame,
   logout,

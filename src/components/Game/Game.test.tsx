@@ -8,11 +8,7 @@ import { Provider } from "react-redux";
 import { initStartState } from "@modules/Start/startState";
 import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
-import {
-  setIsSettingsVisible,
-  setIsPlaying,
-  setIsReset,
-} from "@/redux/reducer/game";
+import { setIsSettingsVisible, setIsPlaying } from "@/redux/reducer/game";
 
 let wrapper: ReactWrapper;
 let store: any;
@@ -70,23 +66,6 @@ describe("When click on play button", () => {
       expect.arrayContaining([
         expect.objectContaining({
           type: setIsPlaying.type,
-          payload: true,
-        }),
-      ])
-    );
-  });
-});
-
-describe("When click on reset button", () => {
-  it("should purge isReset state after reset", () => {
-    const resetBtn = wrapper.findWhere((x) => x.key() === "resetBtn");
-
-    resetBtn.simulate("click");
-
-    expect(store.getActions()).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          type: setIsReset.type,
           payload: true,
         }),
       ])
