@@ -16,14 +16,22 @@ import { goToGame } from "@/redux/reducer/game";
 import { actions } from "@modules/Start/reducer";
 import { AppState } from "@/redux/store";
 
-const StartInternal: FC<{
-  isGoGame: boolean;
-  userName: string;
-  userGender: Gender;
-  goToGame: (v: string) => void;
-  setUserName: (name: string) => void;
-  setUserGender: (gender: Gender) => void;
-}> = ({
+const mapStateToProps = (state: AppState) => ({
+  userName: state.start.userName,
+  userGender: state.start.userGender,
+  isGoGame: state.game.isGoGame,
+});
+
+const mapDispatchToProps = {
+  setUserName: actions.setUserName,
+  setUserGender: actions.setUserGender,
+  goToGame,
+};
+
+type StartProps = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps;
+
+const StartInternal: FC<StartProps> = ({
   isGoGame,
   goToGame,
   userName,
@@ -108,14 +116,7 @@ const StartInternal: FC<{
   );
 };
 
-const mapStateFromProps = (state: AppState) => ({
-  userName: state.start.userName,
-  userGender: state.start.userGender,
-  isGoGame: state.game.isGoGame,
-});
-
-export const Start = connect(mapStateFromProps, {
-  setUserName: actions.setUserName,
-  setUserGender: actions.setUserGender,
-  goToGame,
-})(StartInternal);
+export const Start = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StartInternal);

@@ -16,17 +16,22 @@ import {
 } from "@/redux/reducer/game";
 import { AppState } from "@/redux/store";
 
-interface GameProps {
-  user?: User;
-  onLogout?: any;
-  isPlaying: boolean;
-  setIsPlaying: (x: boolean) => void;
-  setIsSettingsVisible: (x: boolean) => void;
-  reset: any;
-  userpic: string;
-  isLogout: boolean;
-  logout: any;
-}
+const mapStateToProps = (state: AppState) => ({
+  isPlaying: state.game.isPlaying,
+  isLogout: state.game.isLogout,
+  userpic: state.game.userpic,
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = {
+  setIsPlaying,
+  setIsSettingsVisible,
+  reset,
+  logout,
+};
+
+type GameProps = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps & { onLogout?: any };
 
 const GameInternal: FC<GameProps> = ({
   user,
@@ -55,7 +60,7 @@ const GameInternal: FC<GameProps> = ({
 
   const onDoLogout = () => {
     onLogout && onLogout();
-    logout("");
+    logout();
   };
 
   return isLogout ? (
@@ -79,18 +84,9 @@ const GameInternal: FC<GameProps> = ({
   );
 };
 
-const mapStateFromProps = (state: AppState) => ({
-  isPlaying: state.game.isPlaying,
-  isLogout: state.game.isLogout,
-  userpic: state.game.userpic,
-  user: state.auth.user,
-});
-
-const connectedGame = connect(mapStateFromProps, {
-  setIsPlaying,
-  setIsSettingsVisible,
-  reset,
-  logout,
-})(GameInternal);
+const connectedGame = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GameInternal);
 
 export const Game = withLoggedInUser(connectedGame);

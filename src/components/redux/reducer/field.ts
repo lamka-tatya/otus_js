@@ -1,5 +1,6 @@
 import { initFieldState } from "../state/fieldState";
 import { createSlice } from "@reduxjs/toolkit";
+import { AppState } from "../store";
 
 const fieldSlice = createSlice({
   name: "field",
@@ -16,3 +17,8 @@ const fieldSlice = createSlice({
 
 export const { setField, makeCellAlive } = fieldSlice.actions;
 export default fieldSlice.reducer;
+
+export const selectors = {
+  settings: ({ game }: AppState) => game.settings,
+  field: ({ field }: AppState) => field,
+};

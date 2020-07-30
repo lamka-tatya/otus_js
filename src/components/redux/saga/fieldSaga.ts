@@ -1,15 +1,9 @@
 import { put, call, takeLatest, select, takeEvery } from "redux-saga/effects";
 import { setSettings, reset, goToGame } from "../reducer/game";
-import { setField, makeCellAlive } from "../reducer/field";
+import { setField, makeCellAlive, selectors } from "../reducer/field";
 import { CellRow } from "@models/CellRow";
 import { CellModel } from "@models/CellModel";
 import { CellState } from "@models/CellState";
-import { AppState } from "../store";
-
-export const selectors = {
-  settings: ({ game }: AppState) => game.settings,
-  field: ({ field }: AppState) => field,
-};
 
 export function* prepareField({
   payload,

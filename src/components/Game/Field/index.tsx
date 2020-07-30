@@ -1,18 +1,19 @@
 import React, { FC, useCallback } from "react";
 import { Cell } from "./Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
-import { CellRow } from "@models/CellRow";
 import { connect } from "react-redux";
 import { AppState } from "@/redux/store";
 import { setField, makeCellAlive } from "@/redux/reducer/field";
-import { GameSettings } from "@/redux/state/gameState";
 
-export interface FieldProps {
-  setField: any;
-  makeCellAlive: any;
-  gameSettings: GameSettings;
-  field: CellRow[];
-}
+const mapStateToProps = (state: AppState) => ({
+  field: state.field.rows,
+  gameSettings: state.game.settings,
+});
+
+const mapDispatchToProps = { setField, makeCellAlive };
+
+export type FieldProps = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps;
 
 const FieldInternal: FC<FieldProps> = ({
   setField,
@@ -43,11 +44,7 @@ const FieldInternal: FC<FieldProps> = ({
   );
 };
 
-const mapStateFromProps = (state: AppState) => ({
-  field: state.field.rows,
-  gameSettings: state.game.settings,
-});
-
-export const Field = connect(mapStateFromProps, { setField, makeCellAlive })(
-  FieldInternal
-);
+export const Field = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FieldInternal);
