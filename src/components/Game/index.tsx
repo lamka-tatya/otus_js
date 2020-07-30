@@ -14,7 +14,6 @@ import {
   reset,
   logout,
 } from "@/redux/reducer/game";
-import { GameSettings } from "@/redux/state/gameState";
 import { AppState } from "@/redux/store";
 
 interface GameProps {

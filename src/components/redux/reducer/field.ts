@@ -8,8 +8,11 @@ const fieldSlice = createSlice({
     setField(state, action) {
       state.rows = action.payload;
     },
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    makeCellAlive(state, action) {},
+    /* eslint-enable @typescript-eslint/no-empty-function */
   },
 });
 
-export const { setField } = fieldSlice.actions;
+export const { setField, makeCellAlive } = fieldSlice.actions;
 export default fieldSlice.reducer;

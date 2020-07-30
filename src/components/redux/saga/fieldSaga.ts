@@ -1,6 +1,6 @@
 import { put, call, takeLatest, select, takeEvery } from "redux-saga/effects";
 import { setSettings, reset, goToGame } from "../reducer/game";
-import { setField } from "../reducer/field";
+import { setField, makeCellAlive } from "../reducer/field";
 import { CellRow } from "@models/CellRow";
 import { CellModel } from "@models/CellModel";
 import { CellState } from "@models/CellState";
@@ -8,6 +8,7 @@ import { AppState } from "../store";
 
 export const selectors = {
   settings: ({ game }: AppState) => game.settings,
+  field: ({ field }: AppState) => field,
 };
 
 export function* prepareField({
@@ -46,6 +47,22 @@ export function* prepareField({
   yield put(setField(result));
 }
 
+export function* makeAlive({ payload }: ReturnType<typeof makeCellAlive>) {
+  const oldField = yield select(selectors.field);
+  const { colIndex, rowIndex } = payload;
+
+  if (oldField.rows[rowIndex].cells[colIndex].cellState !== CellState.alive) {
+    const newRows = [...oldField.rows];
+    const rowCells = [...newRows[rowIndex].cells];
+    const cell = rowCells[colIndex];
+    rowCells[colIndex] = { ...cell, cellState: CellState.alive };
+    newRows[rowIndex] = { cells: rowCells };
+
+    yield put(setField(newRows));
+  }
+}
+
 export function* fieldSaga() {
   yield takeEvery([setSettings.type, goToGame.type, reset.type], prepareField);
+  yield takeEvery(makeCellAlive.type, makeAlive);
 }
