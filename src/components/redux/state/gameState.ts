@@ -13,7 +13,7 @@ export const initSettingsState: GameSettings = {
   rowCount: 10,
   columnCount: 10,
   fillingPercent: 30,
-  frequency: 1,
+  frequency: 10,
 };
 
 export interface GameState {

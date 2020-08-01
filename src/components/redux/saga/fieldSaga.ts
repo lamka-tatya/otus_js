@@ -147,7 +147,7 @@ function* playWorker() {
 
   while (true) {
     yield call(nextGeneration);
-    yield delay(frequency * 1000);
+    yield delay(frequency * 100);
   }
 }
 

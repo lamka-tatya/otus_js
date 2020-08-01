@@ -26,7 +26,7 @@ export class Cell extends React.Component<CellProps, CellComponentState> {
       this.props.cell.cellState === prevProps.cell.cellState &&
       this.state.newCellState
     ) {
-      setTimeout(() => this.setState({ newCellState: false }), 100);
+      setTimeout(() => this.setState({ newCellState: false }), 20);
     }
   }
 

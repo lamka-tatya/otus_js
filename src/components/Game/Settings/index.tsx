@@ -95,7 +95,7 @@ const SettingsInternal: FC<SettingsProps> = ({
 
           <FieldsContainer>
             <FieldContainer>
-              <LabelStyled>Частота, сек</LabelStyled>
+              <LabelStyled>Частота, х100 мсек</LabelStyled>
               <FieldStyled type="number" name="frequency" />
             </FieldContainer>
             <FieldContainer>
