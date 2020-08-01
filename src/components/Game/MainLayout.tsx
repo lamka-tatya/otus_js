@@ -8,13 +8,15 @@ import {
 import { Field } from "./Field";
 import { ImageButton } from "@/common/ImageButton";
 import PlayImg from "./assets/play_pause.svg";
+import PauseImg from "./assets/pause.svg";
 import BackImg from "./assets/back.svg";
 import ForwardImg from "./assets/forward.svg";
 
 export const MainLayout: FC<{
   onClickPlayPause: () => void;
   userName: string;
-}> = ({ onClickPlayPause, userName }) => (
+  isPlaying: boolean;
+}> = ({ onClickPlayPause, userName, isPlaying }) => (
   <MainContainer>
     <FieldContainer>
       <Field key="field" />
@@ -29,7 +31,7 @@ export const MainLayout: FC<{
         ></ImageButton>
         <ImageButton
           key="playBtn"
-          src={PlayImg}
+          src={isPlaying ? PauseImg : PlayImg}
           type="button"
           title="Play"
           onClick={onClickPlayPause}

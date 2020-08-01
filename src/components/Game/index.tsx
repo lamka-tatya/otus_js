@@ -9,7 +9,8 @@ import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { User } from "@models/User";
 import { connect } from "react-redux";
 import {
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
   reset,
   logout,
@@ -24,7 +25,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
   reset,
   logout,
@@ -37,7 +39,8 @@ const GameInternal: FC<GameProps> = ({
   user,
   onLogout,
   isPlaying,
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
   reset,
   userpic,
@@ -47,7 +50,7 @@ const GameInternal: FC<GameProps> = ({
   const [] = useState(false);
 
   const onClickPlayPause = () => {
-    setIsPlaying(!isPlaying);
+    isPlaying ? stopGame() : playGame();
   };
 
   const onClickSettings = () => {
@@ -71,6 +74,7 @@ const GameInternal: FC<GameProps> = ({
       <GameContainer>
         <MainLayout
           onClickPlayPause={onClickPlayPause}
+          isPlaying={isPlaying}
           userName={user?.name ?? ""}
         />
         <RightSideLayout

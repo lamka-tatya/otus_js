@@ -5,8 +5,11 @@ const gameSlice = createSlice({
   name: "game",
   initialState: initGameState,
   reducers: {
-    setIsPlaying(state, action) {
-      state.isPlaying = action.payload;
+    playGame(state) {
+      state.isPlaying = true;
+    },
+    stopGame(state) {
+      state.isPlaying = false;
     },
     setIsSettingsVisible(state, action) {
       state.isSettingsVisible = action.payload;
@@ -33,7 +36,8 @@ const gameSlice = createSlice({
 
 export const {
   setSettings,
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
   reset,
   setUserpic,

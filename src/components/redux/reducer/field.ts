@@ -21,4 +21,5 @@ export default fieldSlice.reducer;
 export const selectors = {
   settings: ({ game }: AppState) => game.settings,
   field: ({ field }: AppState) => field,
+  gameIsPlaying: ({ game }: AppState) => game.isPlaying,
 };

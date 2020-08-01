@@ -1,5 +1,23 @@
-import { put, call, takeLatest, select, takeEvery } from "redux-saga/effects";
-import { setSettings, reset, goToGame } from "../reducer/game";
+import {
+  put,
+  call,
+  select,
+  takeEvery,
+  take,
+  all,
+  takeLatest,
+  race,
+  fork,
+  delay,
+  cancel,
+} from "redux-saga/effects";
+import {
+  setSettings,
+  reset,
+  goToGame,
+  playGame,
+  stopGame,
+} from "../reducer/game";
 import { setField, makeCellAlive, selectors } from "../reducer/field";
 import { CellRow } from "@models/CellRow";
 import { CellModel } from "@models/CellModel";
@@ -41,6 +59,10 @@ export function* prepareField({
   yield put(setField(result));
 }
 
+function* prepareFieldSaga() {
+  yield takeLatest([setSettings.type, goToGame.type, reset.type], prepareField);
+}
+
 export function* makeAlive({ payload }: ReturnType<typeof makeCellAlive>) {
   const oldField = yield select(selectors.field);
   const { colIndex, rowIndex } = payload;
@@ -56,7 +78,89 @@ export function* makeAlive({ payload }: ReturnType<typeof makeCellAlive>) {
   }
 }
 
-export function* fieldSaga() {
-  yield takeEvery([setSettings.type, goToGame.type, reset.type], prepareField);
+function* makeCellAliveSaga() {
   yield takeEvery(makeCellAlive.type, makeAlive);
+}
+
+// todo memorize
+function getNewCell(oldCell: CellModel, neighbours: CellModel[]): CellModel {
+  const aliveNeighbourCount = neighbours.filter(
+    (x) => x.cellState === CellState.alive
+  ).length;
+
+  if (
+    (oldCell.cellState === CellState.alive &&
+      (aliveNeighbourCount === 2 || aliveNeighbourCount === 3)) ||
+    (oldCell.cellState === CellState.dead && aliveNeighbourCount === 3)
+  ) {
+    return {
+      cellState: CellState.alive,
+      isNewState: true,
+    };
+  }
+
+  return {
+    cellState: CellState.dead,
+    isNewState: true,
+  };
+}
+
+function* nextGeneration() {
+  const oldField = yield select(selectors.field);
+  const { columnCount } = yield select(selectors.settings);
+  const getCellIndex = (index: number) =>
+    index < 0 ? 0 : index > columnCount ? columnCount : index;
+  const nextFieldRows: CellRow[] = [];
+
+  oldField.rows.forEach(
+    (row: CellRow, rowIndex: number, allRows: CellRow[]) => {
+      const newRowCells: CellModel[] = [];
+      row.cells.forEach((cell, cellIndex) => {
+        const neighbours: CellModel[] = [];
+        allRows[rowIndex - 1] &&
+          neighbours.push(
+            ...allRows[rowIndex - 1].cells.slice(
+              getCellIndex(cellIndex - 1),
+              getCellIndex(cellIndex + 2)
+            )
+          );
+        allRows[rowIndex + 1] &&
+          neighbours.push(
+            ...allRows[rowIndex + 1].cells.slice(
+              getCellIndex(cellIndex - 1),
+              getCellIndex(cellIndex + 2)
+            )
+          );
+        row.cells[cellIndex - 1] && neighbours.push(row.cells[cellIndex - 1]);
+        row.cells[cellIndex + 1] && neighbours.push(row.cells[cellIndex + 1]);
+        newRowCells.push(getNewCell(cell, neighbours));
+      });
+      nextFieldRows.push({ cells: newRowCells });
+    }
+  );
+
+  yield put(setField(nextFieldRows));
+}
+
+function* playWorker() {
+  const { frequency } = yield select(selectors.settings);
+
+  while (true) {
+    yield call(nextGeneration);
+    yield delay(frequency * 1000);
+  }
+}
+
+function* playGameFlow() {
+  const playTask = yield fork(playWorker);
+  yield take(stopGame.type);
+  yield cancel(playTask);
+}
+
+function* startGameSaga() {
+  yield takeEvery(playGame.type, playGameFlow);
+}
+
+export function* fieldSaga() {
+  yield all([prepareFieldSaga(), makeCellAliveSaga(), startGameSaga()]);
 }
