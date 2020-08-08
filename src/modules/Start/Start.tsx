@@ -13,8 +13,8 @@ import { Gender } from "@models/Gender";
 import { User } from "@models/User";
 import { connect } from "react-redux";
 import { goToGame } from "@/redux/reducer/game";
-import { setUserName, setUserGender } from "@/redux/reducer/start";
-import { AppState } from "@/redux/state";
+import { actions } from "@modules/Start/reducer";
+import { AppState } from "@/redux/store";
 
 const StartInternal: FC<{
   isGoGame: boolean;
@@ -115,7 +115,7 @@ const mapStateFromProps = (state: AppState) => ({
 });
 
 export const Start = connect(mapStateFromProps, {
-  setUserName,
-  setUserGender,
+  setUserName: actions.setUserName,
+  setUserGender: actions.setUserGender,
   goToGame,
 })(StartInternal);

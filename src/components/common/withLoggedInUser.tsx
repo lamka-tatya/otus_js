@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import localStorageAuth from "@services/authService";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { AppState } from "@/redux/state";
+import { AppState } from "@/redux/store";
 import { setUser, setIsChecking } from "@/redux/reducer/auth";
 import { logout } from "@/redux/reducer/game";
 

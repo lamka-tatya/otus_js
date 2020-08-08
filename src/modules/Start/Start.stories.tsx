@@ -1,4 +1,4 @@
-import { Start } from ".";
+import { Start } from "./Start";
 import React, { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";

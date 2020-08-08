@@ -1,30 +1,30 @@
 import React from "react";
-import { Start } from ".";
+import { Start } from "./Start";
 import { mount, ReactWrapper } from "enzyme";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { initAppState } from "@/redux/state";
-import { setUserName } from "@/redux/reducer/start";
-
-let wrapper: ReactWrapper;
-let store: any;
-const mockStore = configureStore([]);
-
-beforeEach(() => {
-  localStorage.clear();
-  store = mockStore(initAppState);
-
-  wrapper = mount(
-    <Provider store={store}>
-      <BrowserRouter>
-        <Start />
-      </BrowserRouter>
-    </Provider>
-  );
-});
+import { actions } from "@modules/Start/reducer";
+import { initialAppState } from "@/redux/reducer";
 
 describe("When render start", () => {
+  let wrapper: ReactWrapper;
+  let store: any;
+  const mockStore = configureStore([]);
+
+  beforeEach(() => {
+    localStorage.clear();
+    store = mockStore(initialAppState);
+
+    wrapper = mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Start />
+        </BrowserRouter>
+      </Provider>
+    );
+  });
+
   it("should be able to change name", () => {
     const name = wrapper.find('input[name="userName"]');
 
@@ -37,7 +37,7 @@ describe("When render start", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: setUserName.type,
+          type: actions.setUserName.type,
           payload: "test name",
         }),
       ])

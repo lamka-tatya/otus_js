@@ -8,7 +8,6 @@ import { RightSideLayout } from "./RightSideLayout";
 import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { User } from "@models/User";
 import { connect } from "react-redux";
-import { AppState } from "@/redux/state";
 import {
   setIsPlaying,
   setIsSettingsVisible,
@@ -16,6 +15,7 @@ import {
   logout,
 } from "@/redux/reducer/game";
 import { GameSettings } from "@/redux/state/gameState";
+import { AppState } from "@/redux/store";
 
 interface GameProps {
   user?: User;

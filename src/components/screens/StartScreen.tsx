@@ -1,4 +1,4 @@
 import React from "react";
-import { Start } from "@/Start";
+import { Start } from "@modules/Start";
 
 export const StartScreen = () => <Start />;
