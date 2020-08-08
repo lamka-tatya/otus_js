@@ -3,3 +3,4 @@ node_modules
 /commands.txt
 /lib
 /storybook-static
+/ssr/.next/*

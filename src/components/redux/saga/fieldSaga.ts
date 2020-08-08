@@ -82,7 +82,6 @@ function* makeCellAliveSaga() {
   yield takeEvery(makeCellAlive.type, makeAlive);
 }
 
-// todo memorize
 function getNewCell(oldCell: CellModel, neighbours: CellModel[]): CellModel {
   const aliveNeighbourCount = neighbours.filter(
     (x) => x.cellState === CellState.alive
@@ -110,33 +109,48 @@ function* nextGeneration() {
   const { columnCount } = yield select(selectors.settings);
   const getCellIndex = (index: number) =>
     index < 0 ? 0 : index > columnCount ? columnCount : index;
-  const nextFieldRows: CellRow[] = [];
 
-  oldField.rows.forEach(
-    (row: CellRow, rowIndex: number, allRows: CellRow[]) => {
-      const newRowCells: CellModel[] = [];
-      row.cells.forEach((cell, cellIndex) => {
-        const neighbours: CellModel[] = [];
-        allRows[rowIndex - 1] &&
-          neighbours.push(
-            ...allRows[rowIndex - 1].cells.slice(
-              getCellIndex(cellIndex - 1),
-              getCellIndex(cellIndex + 2)
-            )
-          );
-        allRows[rowIndex + 1] &&
-          neighbours.push(
-            ...allRows[rowIndex + 1].cells.slice(
-              getCellIndex(cellIndex - 1),
-              getCellIndex(cellIndex + 2)
-            )
-          );
-        row.cells[cellIndex - 1] && neighbours.push(row.cells[cellIndex - 1]);
-        row.cells[cellIndex + 1] && neighbours.push(row.cells[cellIndex + 1]);
-        newRowCells.push(getNewCell(cell, neighbours));
-      });
-      nextFieldRows.push({ cells: newRowCells });
-    }
+  const nextFieldRows: CellRow[] = (oldField.rows as CellRow[]).reduce(
+    (
+      newField: CellRow[],
+      currentRow: CellRow,
+      rowIndex: number,
+      allRows: CellRow[]
+    ) => {
+      const newCells = currentRow.cells.reduce(
+        (
+          newRowCells: CellModel[],
+          currentCell: CellModel,
+          cellIndex: number,
+          allCells: CellModel[]
+        ) => {
+          const neighbours: CellModel[] = [];
+          allRows[rowIndex - 1] &&
+            neighbours.push(
+              ...allRows[rowIndex - 1].cells.slice(
+                getCellIndex(cellIndex - 1),
+                getCellIndex(cellIndex + 2)
+              )
+            );
+          allRows[rowIndex + 1] &&
+            neighbours.push(
+              ...allRows[rowIndex + 1].cells.slice(
+                getCellIndex(cellIndex - 1),
+                getCellIndex(cellIndex + 2)
+              )
+            );
+          allCells[cellIndex - 1] && neighbours.push(allCells[cellIndex - 1]);
+          allCells[cellIndex + 1] && neighbours.push(allCells[cellIndex + 1]);
+          newRowCells.push(getNewCell(currentCell, neighbours));
+          return newRowCells;
+        },
+        []
+      );
+
+      newField.push({ cells: newCells });
+      return newField;
+    },
+    []
   );
 
   yield put(setField(nextFieldRows));
