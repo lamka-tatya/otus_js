@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 export const FieldStyled = styled.div<{ height: number; width: number }>`
   height: ${(p) => p.height}px;
   width: ${(p) => p.width}px;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;

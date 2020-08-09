@@ -5,6 +5,8 @@ import { CellModel } from "@models/CellModel";
 
 export interface CellProps {
   cell: CellModel;
+  cellHeight: number;
+  cellWidth: number;
   onClick: () => void;
 }
 
@@ -35,6 +37,8 @@ export class Cell extends React.Component<CellProps, CellComponentState> {
       <CellStyled
         newCellState={this.state.newCellState}
         cellState={this.props.cell.cellState}
+        cellHeight={this.props.cellHeight}
+        cellWidth={this.props.cellWidth}
         onClick={this.props.onClick}
       ></CellStyled>
     );

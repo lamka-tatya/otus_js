@@ -38,14 +38,16 @@ const newCellDeadStateStyle = css`
 export const CellStyled = styled.button<{
   cellState: CellState;
   newCellState: boolean;
+  cellWidth: number;
+  cellHeight: number;
 }>`
-  width: 25px;
-  height: 25px;
+  width: ${(props) => props.cellWidth}px;
+  height: ${(props) => props.cellHeight}px;
   border: 1px solid;
   display: inline-block;
-  border-radius: 25px;
+  border-radius: 20px;
   line-height: 25px;
-  margin: 5px;
+  margin: 2px;
   cursor: pointer;
   outline: none;
 

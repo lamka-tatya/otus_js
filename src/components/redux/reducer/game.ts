@@ -140,6 +140,26 @@ function getNewCell(oldCell: CellModel, neighbours: CellModel[]): CellModel {
   };
 }
 
+export const getCellWidth = createSelector(
+  [
+    ({ game }: AppState) => game.settings.columnCount,
+    ({ game }: AppState) => game.settings.width,
+  ],
+  (count, width) => {
+    return (width - (count + 1) * 4) / count;
+  }
+);
+
+export const getCellHeight = createSelector(
+  [
+    ({ game }: AppState) => game.settings.rowCount,
+    ({ game }: AppState) => game.settings.height,
+  ],
+  (count, height) => {
+    return (height - (count + 1) * 4) / count;
+  }
+);
+
 export const nextGeneration = createSelector(
   [selectors.field, selectors.settings],
   (oldField, settings) => {
