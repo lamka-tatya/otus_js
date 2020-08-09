@@ -6,13 +6,8 @@ import localStorageAuth from "@services/authService";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initStartState } from "@modules/Start/startState";
-import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
-import {
-  setIsSettingsVisible,
-  setIsPlaying,
-  setIsReset,
-} from "@/redux/reducer/game";
+import { setIsSettingsVisible, playGame } from "@/redux/reducer/game";
 
 let wrapper: ReactWrapper;
 let store: any;
@@ -31,7 +26,7 @@ beforeEach(() => {
       isChecking: false,
     },
     game: initGameState,
-    field: initFieldState,
+    field: [],
   });
 
   wrapper = mount(
@@ -69,25 +64,7 @@ describe("When click on play button", () => {
     expect(store.getActions()).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: setIsPlaying.type,
-          payload: true,
-        }),
-      ])
-    );
-  });
-});
-
-describe("When click on reset button", () => {
-  it("should purge isReset state after reset", () => {
-    const resetBtn = wrapper.findWhere((x) => x.key() === "resetBtn");
-
-    resetBtn.simulate("click");
-
-    expect(store.getActions()).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          type: setIsReset.type,
-          payload: true,
+          type: playGame.type,
         }),
       ])
     );

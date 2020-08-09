@@ -24,8 +24,15 @@ const getStyle: (cellState: CellState) => SerializedStyles = (cellState) => {
   }
 };
 
-const newCellStateStyle = css`
-  opacity: 0.7;
+const newCellAliveStateStyle = css`
+  border-color: #02a702;
+  background: #02a702;
+`;
+
+const newCellDeadStateStyle = css`
+  border-color: #025402;
+  background: #025402;
+  opacity: 1;
 `;
 
 export const CellStyled = styled.button<{
@@ -44,5 +51,10 @@ export const CellStyled = styled.button<{
 
   ${(props) => getStyle(props.cellState)};
 
-  ${(props) => (props.newCellState ? newCellStateStyle : null)};
+  ${(props) =>
+    props.newCellState
+      ? props.cellState === CellState.alive
+        ? newCellAliveStateStyle
+        : newCellDeadStateStyle
+      : null};
 `;

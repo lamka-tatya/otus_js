@@ -9,45 +9,48 @@ import { withLoggedInUser } from "@/common/withLoggedInUser";
 import { User } from "@models/User";
 import { connect } from "react-redux";
 import {
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
-  setIsReset,
+  reset,
   logout,
 } from "@/redux/reducer/game";
-import { GameSettings } from "@/redux/state/gameState";
 import { AppState } from "@/redux/store";
 
-interface GameProps {
-  user?: User;
-  onLogout?: () => void;
-  isPlaying: boolean;
-  setIsPlaying: (x: boolean) => void;
-  setIsSettingsVisible: (x: boolean) => void;
-  isReset: boolean;
-  setIsReset: (x: boolean) => void;
-  userpic: string;
-  gameSettings: GameSettings;
-  isLogout: boolean;
-  logout: (v: string) => void;
-}
+const mapStateToProps = (state: AppState) => ({
+  isPlaying: state.game.isPlaying,
+  isLogout: state.game.isLogout,
+  userpic: state.game.userpic,
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = {
+  playGame,
+  stopGame,
+  setIsSettingsVisible,
+  reset,
+  logout,
+};
+
+type GameProps = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps & { onLogout?: any };
 
 const GameInternal: FC<GameProps> = ({
   user,
   onLogout,
   isPlaying,
-  setIsPlaying,
+  playGame,
+  stopGame,
   setIsSettingsVisible,
-  isReset,
-  setIsReset,
+  reset,
   userpic,
-  gameSettings,
   isLogout,
   logout,
 }) => {
   const [] = useState(false);
 
   const onClickPlayPause = () => {
-    setIsPlaying(!isPlaying);
+    isPlaying ? stopGame() : playGame();
   };
 
   const onClickSettings = () => {
@@ -55,16 +58,12 @@ const GameInternal: FC<GameProps> = ({
   };
 
   const onReset = () => {
-    setIsReset(true);
-  };
-
-  const afterReset = () => {
-    setIsReset(false);
+    reset();
   };
 
   const onDoLogout = () => {
     onLogout && onLogout();
-    logout("");
+    logout();
   };
 
   return isLogout ? (
@@ -74,12 +73,9 @@ const GameInternal: FC<GameProps> = ({
       <Settings key="settingsWindow" />
       <GameContainer>
         <MainLayout
-          gameSettings={gameSettings}
-          isReset={isReset}
-          afterReset={afterReset}
           onClickPlayPause={onClickPlayPause}
-          userName={user?.name ?? ""}
           isPlaying={isPlaying}
+          userName={user?.name ?? ""}
         />
         <RightSideLayout
           onClickSettings={onClickSettings}
@@ -92,20 +88,9 @@ const GameInternal: FC<GameProps> = ({
   );
 };
 
-const mapStateFromProps = (state: AppState) => ({
-  isPlaying: state.game.isPlaying,
-  isLogout: state.game.isLogout,
-  isReset: state.game.isReset,
-  userpic: state.game.userpic,
-  gameSettings: state.game.settings,
-  user: state.auth.user,
-});
-
-const connectedGame = connect(mapStateFromProps, {
-  setIsPlaying,
-  setIsSettingsVisible,
-  setIsReset,
-  logout,
-})(GameInternal);
+const connectedGame = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GameInternal);
 
 export const Game = withLoggedInUser(connectedGame);

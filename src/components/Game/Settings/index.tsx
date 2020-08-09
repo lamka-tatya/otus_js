@@ -50,12 +50,25 @@ const Overlay: FC = ({ children }) => (
   </>
 );
 
-const SettingsInternal: FC<{
-  visible: boolean;
-  settings: GameSettings;
-  setSettings: (s: GameSettings) => void;
-  setIsSettingsVisible: (x: boolean) => void;
-}> = ({ visible, settings, setSettings, setIsSettingsVisible }) => {
+const mapStateToProps = (state: AppState) => ({
+  settings: state.game.settings,
+  visible: state.game.isSettingsVisible,
+});
+
+const mapDispatchToProps = {
+  setSettings,
+  setIsSettingsVisible,
+};
+
+export type SettingsProps = ReturnType<typeof mapStateToProps> &
+  typeof mapDispatchToProps;
+
+const SettingsInternal: FC<SettingsProps> = ({
+  visible,
+  settings,
+  setSettings,
+  setIsSettingsVisible,
+}) => {
   const onSubmitSettings = (settings: GameSettings) => {
     setSettings(settings);
     setIsSettingsVisible(false);
@@ -82,7 +95,7 @@ const SettingsInternal: FC<{
 
           <FieldsContainer>
             <FieldContainer>
-              <LabelStyled>Частота, сек</LabelStyled>
+              <LabelStyled>Частота, х100 мсек</LabelStyled>
               <FieldStyled type="number" name="frequency" />
             </FieldContainer>
             <FieldContainer>
@@ -109,12 +122,7 @@ const SettingsInternal: FC<{
   ) : null;
 };
 
-const mapStateFromProps = (state: AppState) => ({
-  settings: state.game.settings,
-  visible: state.game.isSettingsVisible,
-});
-
-export const Settings = connect(mapStateFromProps, {
-  setSettings,
-  setIsSettingsVisible,
-})(SettingsInternal);
+export const Settings = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsInternal);
