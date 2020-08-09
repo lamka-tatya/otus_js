@@ -1,3 +1,5 @@
+import { CellRow } from "@models/CellRow";
+
 export interface GameSettings {
   height: number;
   width: number;
@@ -23,6 +25,7 @@ export interface GameState {
   userpic: string;
   isLogout: boolean;
   isGoGame: boolean;
+  field: CellRow[];
 }
 
 export const initGameState: GameState = {
@@ -32,4 +35,5 @@ export const initGameState: GameState = {
   userpic: "",
   isLogout: false,
   isGoGame: false,
+  field: [],
 };

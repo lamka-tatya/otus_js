@@ -4,7 +4,6 @@ import { render, fireEvent, wait } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initStartState } from "@modules/Start/startState";
-import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
 import { initAuthState } from "@/redux/state/authState";
 import { setSettings } from "@/redux/reducer/game";
@@ -26,7 +25,7 @@ describe("When change settings and call submit", () => {
       start: initStartState,
       auth: initAuthState,
       game: { ...initGameState, isSettingsVisible: true },
-      field: initFieldState,
+      field: [],
     });
     const { container } = render(
       <Provider store={store}>

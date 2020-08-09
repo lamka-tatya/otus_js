@@ -6,7 +6,6 @@ import localStorageAuth from "@services/authService";
 import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import { initStartState } from "@modules/Start/startState";
-import { initFieldState } from "@/redux/state/fieldState";
 import { initGameState } from "@/redux/state/gameState";
 import { setIsSettingsVisible, playGame } from "@/redux/reducer/game";
 
@@ -27,7 +26,7 @@ beforeEach(() => {
       isChecking: false,
     },
     game: initGameState,
-    field: initFieldState,
+    field: [],
   });
 
   wrapper = mount(

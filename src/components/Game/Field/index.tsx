@@ -3,10 +3,10 @@ import { Cell } from "./Cell";
 import { RowStyled, FieldStyled } from "./Field.styles";
 import { connect } from "react-redux";
 import { AppState } from "@/redux/store";
-import { setField, makeCellAlive } from "@/redux/reducer/field";
+import { setField, makeCellAlive } from "@/redux/reducer/game";
 
 const mapStateToProps = (state: AppState) => ({
-  field: state.field.rows,
+  field: state.game.field,
   gameSettings: state.game.settings,
 });
 
