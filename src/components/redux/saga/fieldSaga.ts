@@ -12,9 +12,8 @@ import { playGame, stopGame } from "../reducer/game";
 import { setField, selectors, nextGeneration } from "../reducer/game";
 
 function* playWorker() {
-  const { frequency } = yield select(selectors.settings);
-
   while (true) {
+    const { frequency } = yield select(selectors.settings);
     const nextFieldRows = yield select(nextGeneration);
     yield put(setField(nextFieldRows));
     yield delay(frequency * 100);
