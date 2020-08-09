@@ -1,4 +1,6 @@
 import { CellRow } from "@models/CellRow";
+import { CellModel } from "@models/CellModel";
+import { CellState } from "@models/CellState";
 
 export interface GameSettings {
   height: number;
@@ -28,6 +30,36 @@ export interface GameState {
   field: CellRow[];
 }
 
+export const getRandomField = (settings: GameSettings) => {
+  const { columnCount, rowCount, fillingPercent } = settings;
+  const result: CellRow[] = [];
+  const cellsCount = columnCount * rowCount;
+  const maxAliveCount = (cellsCount / 100) * fillingPercent;
+  let aliveCount = 0;
+
+  for (let y = 0; y < rowCount; y++) {
+    const rowCells: CellModel[] = [];
+
+    for (let x = 0; x < columnCount; x++) {
+      let cellState = CellState.dead;
+
+      if (Math.round(Math.random() * 100) <= fillingPercent) {
+        aliveCount++;
+        if (aliveCount <= maxAliveCount) {
+          cellState = CellState.alive;
+        }
+      }
+
+      rowCells.push({
+        cellState,
+        isNewState: false,
+      });
+    }
+    result.push({ cells: rowCells });
+  }
+  return result;
+};
+
 export const initGameState: GameState = {
   settings: initSettingsState,
   isPlaying: false,
@@ -35,5 +67,5 @@ export const initGameState: GameState = {
   userpic: "",
   isLogout: false,
   isGoGame: false,
-  field: [],
+  field: getRandomField(initSettingsState),
 };

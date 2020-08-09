@@ -1,40 +1,10 @@
-import { initGameState, GameSettings } from "../state/gameState";
+import { initGameState, getRandomField } from "../state/gameState";
 import { createSlice } from "@reduxjs/toolkit";
 import { CellRow } from "@models/CellRow";
 import { CellState } from "@models/CellState";
 import { CellModel } from "@models/CellModel";
 import { createSelector } from "reselect";
 import { AppState } from "../store";
-
-const prepareField = (settings: GameSettings) => {
-  const { columnCount, rowCount, fillingPercent } = settings;
-  const result: CellRow[] = [];
-  const cellsCount = columnCount * rowCount;
-  const maxAliveCount = (cellsCount / 100) * fillingPercent;
-  let aliveCount = 0;
-
-  for (let y = 0; y < rowCount; y++) {
-    const rowCells: CellModel[] = [];
-
-    for (let x = 0; x < columnCount; x++) {
-      let cellState = CellState.dead;
-
-      if (Math.round(Math.random() * 100) <= fillingPercent) {
-        aliveCount++;
-        if (aliveCount <= maxAliveCount) {
-          cellState = CellState.alive;
-        }
-      }
-
-      rowCells.push({
-        cellState,
-        isNewState: false,
-      });
-    }
-    result.push({ cells: rowCells });
-  }
-  return result;
-};
 
 const makeCellAliveField = (
   oldField: CellRow[],
@@ -67,7 +37,7 @@ const gameSlice = createSlice({
       state.isSettingsVisible = action.payload;
     },
     reset(state) {
-      state.field = prepareField(state.settings);
+      state.field = getRandomField(state.settings);
     },
     setUserpic(state, action) {
       state.userpic = action.payload;
@@ -75,7 +45,7 @@ const gameSlice = createSlice({
     goToGame(state) {
       state.isLogout = false;
       state.isGoGame = true;
-      state.field = prepareField(state.settings);
+      state.field = getRandomField(state.settings);
     },
     logout(state) {
       state.isLogout = true;
@@ -83,7 +53,7 @@ const gameSlice = createSlice({
     },
     setSettings(state, action) {
       state.settings = action.payload;
-      state.field = prepareField(action.payload);
+      state.field = getRandomField(action.payload);
     },
     setField(state, action) {
       state.field = action.payload;
