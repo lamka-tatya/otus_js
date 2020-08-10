@@ -5,7 +5,7 @@ import { fork } from "redux-saga/effects";
 import { userpicSaga } from "./saga/userpicSaga";
 import { fieldSaga } from "./saga/fieldSaga";
 
-const sagaMiddleware = createSagaMiddleware();
+export const sagaMiddleware = createSagaMiddleware();
 
 function* rootSaga() {
   yield fork(userpicSaga);

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpackСonfig = require('../webpack.config.js');
 
 module.exports = {
 	stories: ['../src/**/*.stories.tsx'],
@@ -38,10 +39,7 @@ module.exports = {
 		config.resolve.extensions.push('.ts', '.tsx', '.svg');
 		config.resolve.alias = {
 			...config.resolve.alias,
-			"@": path.resolve(__dirname, "../src/components"),
-			"@services": path.resolve(__dirname, "../src/services"),
-			"@models": path.resolve(__dirname, "../src/models"),
-			"@modules": path.resolve(__dirname, "../src/modules"),
+			...webpackСonfig.resolve.alias,
 		  };
 		return config;
 	},
