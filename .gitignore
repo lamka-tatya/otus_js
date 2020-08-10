@@ -4,3 +4,6 @@ node_modules
 /lib
 /storybook-static
 /ssr/.next/*
+
+# stryker temp files
+.stryker-tmp
