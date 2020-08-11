@@ -15,4 +15,5 @@ module.exports = {
 	"^@models/(.*)$": "<rootDir>/src/models/$1",
 	"^@modules/(.*)$": "<rootDir>/src/modules/$1",
   },
+  testPathIgnorePatterns: ["e2e"],
 };
